@@ -23,6 +23,8 @@ public class EchoGame implements ApplicationListener {
 	private final String Hostname = "localhost";
 	private final int Port = 5000;
 
+	private int messageCount = 0;
+	
 	@Override
 	public void create() {        
 		batch = new SpriteBatch();
@@ -55,7 +57,8 @@ public class EchoGame implements ApplicationListener {
 					BufferedReader in = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
 					
-					out.println("This is a test message");
+					out.println(messageCount);
+					messageCount++;
 					System.out.println("Button clicked, response: " + in.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -71,6 +74,12 @@ public class EchoGame implements ApplicationListener {
 
 	@Override
 	public void dispose() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		batch.dispose();
 	}
 

@@ -1,4 +1,4 @@
-package com.WarGames.EchoClient;
+package com.wargames.echoclient;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -8,9 +8,9 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "EchoClient";
 		cfg.useGL20 = false;
-		cfg.width = 480;
-		cfg.height = 320;
+		cfg.width = 800;
+		cfg.height = 480;
 		
-		new LwjglApplication(new EchoClient(), cfg);
+		new LwjglApplication(new EchoGame(), cfg);
 	}
 }

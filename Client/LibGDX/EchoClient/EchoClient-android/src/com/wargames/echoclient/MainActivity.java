@@ -1,4 +1,4 @@
-package com.WarGames.EchoClient;
+package com.wargames.echoclient;
 
 import android.os.Bundle;
 
@@ -12,7 +12,10 @@ public class MainActivity extends AndroidApplication {
         
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
+        cfg.useAccelerometer = false;
+        cfg.useCompass = false;
         
-        initialize(new EchoClient(), cfg);
+        
+        initialize(new EchoGame(), cfg);
     }
 }

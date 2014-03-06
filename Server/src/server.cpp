@@ -2,17 +2,13 @@
 
 int8*  g_PBuff = NULL;
 int8*  PTempBuff = NULL;
+int32 fd;
 
-int32 process_sockets(fd_set* rfd, int32 next)
-{
-	struct timeval timeout;
-	
+int32 process_sockets(fd_set* rfd)
+{	
 	memcpy(rfd, &readfds, sizeof(*rfd));
 
-	timeout.tv_sec = next / 1000;
-	timeout.tv_usec = next % 1000 * 1000;
-
-	int32 ret = sSelect(fd_max, rfd, NULL, NULL, &timeout);
+	int32 ret = sSelect(fd_max, rfd, NULL, NULL, 0);
 
 	if (ret == SOCKET_ERROR)
 	{

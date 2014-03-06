@@ -352,7 +352,7 @@ uint16 ntows(uint16 netshort)
 	return ((netshort & 0xFF) << 8) | ((netshort & 0xFF00) >> 8);
 }
 /*****************************************************************************/
-#ifdef dsTCPSERV
+#ifdef TCPSERV
 /*
 *
 *			TCP LEVEL
@@ -921,76 +921,12 @@ void do_close_tcp(int32 fd)
 	if (session[fd])delete_session(fd);
 }
 
-int socket_config_read(const char* cfgName)
-{
-	char line[1024], w1[1024], w2[1024];
-	FILE *fp;
-
-	fp = fopen(cfgName, "r");
-	if (fp == NULL) {
-		ShowError("File not found: %s\n", cfgName);
-		return 1;
-	}
-
-	while (fgets(line, sizeof(line), fp))
-	{
-		if (line[0] == '/' && line[1] == '/')
-			continue;
-		if (sscanf(line, "%[^:]: %[^\r\n]", w1, w2) != 2)
-			continue;
-
-		if (!strcmpi(w1, "stall_time"))
-			stall_time = atoi(w2);
-#ifndef MINICORE
-		else if (!strcmpi(w1, "enable_ip_rules")) {
-			ip_rules = config_switch(w2);
-		}
-		else if (!strcmpi(w1, "order")) {
-			if (!strcmpi(w2, "deny,allow"))
-				access_order = ACO_DENY_ALLOW;
-			else if (!strcmpi(w2, "allow,deny"))
-				access_order = ACO_ALLOW_DENY;
-			else if (!strcmpi(w2, "mutual-failure"))
-				access_order = ACO_MUTUAL_FAILURE;
-		}
-		else if (!strcmpi(w1, "allow")) {
-			RECREATE(access_allow, AccessControl, access_allownum + 1);
-			if (access_ipmask(w2, &access_allow[access_allownum]))
-				++access_allownum;
-			else
-				ShowError("socket_config_read: Invalid ip or ip range '%s'!\n", line);
-		}
-		else if (!strcmpi(w1, "deny")) {
-			RECREATE(access_deny, AccessControl, access_denynum + 1);
-			if (access_ipmask(w2, &access_deny[access_denynum]))
-				++access_denynum;
-			else
-				ShowError("socket_config_read: Invalid ip or ip range '%s'!\n", line);
-		}
-		else if (!strcmpi(w1, "ddos_interval"))
-			ddos_interval = atoi(w2);
-		else if (!strcmpi(w1, "ddos_count"))
-			ddos_count = atoi(w2);
-		else if (!strcmpi(w1, "ddos_autoreset"))
-			ddos_autoreset = atoi(w2);
-		else if (!strcmpi(w1, "debug"))
-			access_debug = config_switch(w2);
-#endif
-		else if (!strcmpi(w1, "import"))
-			socket_config_read(w2);
-	}
-
-	fclose(fp);
-	return 0;
-}
-
 void socket_init_tcp(void)
 {
 	if (!_vsocket_init())
 		return;
 
 	char *SOCKET_CONF_FILENAME = "./conf/packet_darkstar_tcp.conf";
-	socket_config_read(SOCKET_CONF_FILENAME);
 	// session[0] is now currently used for disconnected sessions of the map server, and as such,
 	// should hold enough buffer (it is a vacuum so to speak) as it is never flushed. [Skotlex]
 	create_session(0, null_recv, null_send, null_parse);
@@ -1102,7 +1038,7 @@ void set_nonblocking(int fd, unsigned long yes)
 }
 
 
-#elif defined(dsUDPSERV)
+#elif defined(UDPSERV)
 /*
 *
 *			UDP LEVEL
@@ -1119,18 +1055,18 @@ int32 makeBind_udp(uint32 ip, uint16 port)
 
 	if (fd == -1)
 	{
-		ShowError("make_listen_bind: socket creation failed (code %d)!\n", sErrno);
+		//ShowError("make_listen_bind: socket creation failed (code %d)!\n", sErrno);
 		exit(EXIT_FAILURE);
 	}
 	if (fd == 0)
 	{// reserved
-		ShowError("make_listen_bind: Socket #0 is reserved - Please report this!!!\n");
+		//ShowError("make_listen_bind: Socket #0 is reserved - Please report this!!!\n");
 		sClose(fd);
 		return -1;
 	}
 	if (fd >= FD_SETSIZE)
 	{// socket number too big
-		ShowError("make_listen_bind: New socket #%d is greater than can we handle! Increase the value of FD_SETSIZE (currently %d) for your OS to fix this!\n", fd, FD_SETSIZE);
+		//ShowError("make_listen_bind: New socket #%d is greater than can we handle! Increase the value of FD_SETSIZE (currently %d) for your OS to fix this!\n", fd, FD_SETSIZE);
 		sClose(fd);
 		return -1;
 	}
@@ -1142,7 +1078,7 @@ int32 makeBind_udp(uint32 ip, uint16 port)
 	result = sBind(fd, (struct sockaddr*)&server_address, sizeof(server_address));
 	if (result == SOCKET_ERROR)
 	{
-		ShowError("make_listen_bind: bind failed (socket #%d, code %d)!\n", fd, sErrno);
+		//ShowError("make_listen_bind: bind failed (socket #%d, code %d)!\n", fd, sErrno);
 		exit(EXIT_FAILURE);
 	}
 
@@ -1151,36 +1087,10 @@ int32 makeBind_udp(uint32 ip, uint16 port)
 	return fd;
 }
 
-int socket_config_read(const char* cfgName)
-{
-	char line[1024], w1[1024], w2[1024];
-	FILE *fp;
-
-	fp = fopen(cfgName, "r");
-	if (fp == NULL) {
-		ShowError("File not found: %s\n", cfgName);
-		return 1;
-	}
-
-	while (fgets(line, sizeof(line), fp))
-	{
-		if (line[0] == '/' && line[1] == '/')
-			continue;
-		if (sscanf(line, "%[^:]: %[^\r\n]", w1, w2) != 2)
-			continue;
-		if (!strcmpi(w1, "debug"))
-			access_debug = config_switch(w2);
-	}
-	fclose(fp);
-	return 0;
-}
-
 void socket_init_udp(void)
 {
 	if (!_vsocket_init())
 		return;
-#define SOCKET_CONF_FILENAME  "./conf/packet_darkstar_udp.conf"
-	socket_config_read(SOCKET_CONF_FILENAME);
 }
 
 void do_close_udp(int32 fd)
@@ -1205,18 +1115,18 @@ int32 sendudp(int32 fd, void *buff, size_t nbytes, int32 flags, const struct soc
 
 bool socket_init(void)
 {
-#ifdef dsTCPSERV
+#ifdef TCPSERV
 	socket_init_tcp();
-#elif defined( dsUDPSERV )
+#elif defined( UDPSERV )
 	socket_init_udp();
 #endif
 	return true;
 }
 bool socket_final(void)
 {
-#ifdef dsTCPSERV
+#ifdef TCPSERV
 	socket_final_tcp();
-#elif defined( dsUDPSERV )
+#elif defined( UDPSERV )
 	socket_final_udp();
 #endif
 	return true;

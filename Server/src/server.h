@@ -9,6 +9,7 @@
 #include <map>
 
 #define RECV_BUFFER_SIZE 1000
+#define SERVER_PORT 31111
 
 struct session_data_t
 {

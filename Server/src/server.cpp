@@ -17,8 +17,8 @@ void server_init()
 	//load all static data from db
 
 	//bind socket
-	ShowStatus("Binding to port: %u", 54230);
-	fd = makeBind_udp(INADDR_ANY, 54230);
+	ShowStatus("Binding to port: %u", SERVER_PORT);
+	fd = makeBind_udp(INADDR_ANY, SERVER_PORT);
 	ShowMessage("\t - "CL_GREEN"OK"CL_RESET"\n");
 
 	CREATE(g_PBuff, int8, RECV_BUFFER_SIZE + 20);

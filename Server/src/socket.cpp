@@ -1,5 +1,6 @@
 #include "socket.h"
 #include "cbasetypes.h"
+#include "showmsg.h"
 
 /////////////////////////////////////////////////////////////////////
 #if defined(WIN32)
@@ -118,18 +119,18 @@ int32 makeConnection(uint32 ip, uint16 port, int32 type)
 	fd = sSocket(AF_INET, type, 0);
 
 	if (fd == -1) {
-		//ShowError("make_connection: socket creation failed (code %d)!\n", sErrno);
+		ShowError("make_connection: socket creation failed (code %d)!\n", sErrno);
 		return -1;
 	}
 	if (fd == 0)
 	{// reserved
-		//ShowError("make_connection: Socket #0 is reserved - Please report this!!!\n");
+		ShowError("make_connection: Socket #0 is reserved - Please report this!!!\n");
 		sClose(fd);
 		return -1;
 	}
 	if (fd >= FD_SETSIZE)
 	{// socket number too big
-		//ShowError("make_connection: New socket #%d is greater than can we handle! Increase the value of FD_SETSIZE (currently %d) for your OS to fix this!\n", fd, FD_SETSIZE);
+		ShowError("make_connection: New socket #%d is greater than can we handle! Increase the value of FD_SETSIZE (currently %d) for your OS to fix this!\n", fd, FD_SETSIZE);
 		sClose(fd);
 		return -1;
 	}
@@ -140,7 +141,7 @@ int32 makeConnection(uint32 ip, uint16 port, int32 type)
 	opt.l_linger = 0; // Do not care
 	if (sSetsockopt(fd, SOL_SOCKET, SO_LINGER, (char*)&opt, sizeof(opt)))
 	{
-		//ShowWarning("setsocketopts: Unable to set SO_LINGER mode for connection #%d!\n", fd);
+		ShowWarning("setsocketopts: Unable to set SO_LINGER mode for connection #%d!\n", fd);
 	}
 
 	remote_address.sin_family = AF_INET;
@@ -151,7 +152,7 @@ int32 makeConnection(uint32 ip, uint16 port, int32 type)
 
 	result = sConnect(fd, (struct sockaddr *)(&remote_address), sizeof(struct sockaddr_in));
 	if (result == SOCKET_ERROR) {
-		//ShowError("make_connection: connect failed (socket #%d, code %d)!\n", fd, sErrno);
+		ShowError("make_connection: connect failed (socket #%d, code %d)!\n", fd, sErrno);
 		do_close(fd);
 		return -1;
 	}
@@ -159,7 +160,7 @@ int32 makeConnection(uint32 ip, uint16 port, int32 type)
 	//set_nonblocking(fd, 1);
 	u_long yes = 1;
 	if (sIoctl(fd, FIONBIO, &yes) != 0)
-		//ShowError("set_nonblocking: Failed to set socket #%d to non-blocking mode (code %d) - Please report this!!!\n", fd, sErrno);
+		ShowError("set_nonblocking: Failed to set socket #%d to non-blocking mode (code %d) - Please report this!!!\n", fd, sErrno);
 
 	if (fd_max <= fd) fd_max = fd + 1;
 	sFD_SET(fd, &readfds);
@@ -167,7 +168,6 @@ int32 makeConnection(uint32 ip, uint16 port, int32 type)
 	return fd;
 }
 
-//функци€, закрывающа€ сокет
 void do_close(int32 fd)
 {
 	sFD_CLR(fd, &readfds);// this needs to be done before closing the socket
@@ -196,14 +196,14 @@ int socket_getips(uint32* ips, int max)
 		// this as T.B.D. [Meruru]
 		if (gethostname(fullhost, sizeof(fullhost)) == SOCKET_ERROR)
 		{
-			//ShowError("socket_getips: No hostname defined!\n");
+			ShowError("socket_getips: No hostname defined!\n");
 			return 0;
 		}
 		else
 		{
 			hent = gethostbyname(fullhost);
 			if (hent == NULL){
-				//ShowError("socket_getips: Cannot resolve our own hostname to an IP address\n");
+				ShowError("socket_getips: Cannot resolve our own hostname to an IP address\n");
 				return 0;
 			}
 			a = (u_long**)hent->h_addr_list;
@@ -265,7 +265,6 @@ int socket_getips(uint32* ips, int max)
 
 
 
-//»нициализаци€ основных настроек сокета 
 bool _vsocket_init(void)
 {
 #ifdef WIN32
@@ -274,12 +273,12 @@ bool _vsocket_init(void)
 		WORD wVersionRequested = MAKEWORD(2, 0);
 		if (WSAStartup(wVersionRequested, &wsaData) != 0)
 		{
-			//ShowError("socket_init: WinSock not available!\n");
+			ShowError("socket_init: WinSock not available!\n");
 			return false;
 		}
 		if (LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 0)
 		{
-			//ShowError("socket_init: WinSock version mismatch (2.0 or compatible required)!\n");
+			ShowError("socket_init: WinSock version mismatch (2.0 or compatible required)!\n");
 			return false;
 		}
 	}
@@ -321,7 +320,6 @@ bool _vsocket_init(void)
 	return true;
 }
 
-//завершение работы сокета
 bool _vsocket_final(void){
 	return true;
 }
@@ -966,7 +964,7 @@ void socket_final_tcp(void)
 	if (session[i])
 		do_close_tcp(i);
 
-	// session[0] ВћГ_Г~Б[ГfБ[Г^ВрНнПЬ
+	// session[0] 
 	aFree(session[0]->rdata);
 	aFree(session[0]->wdata);
 	aFree(session[0]);
@@ -1055,18 +1053,18 @@ int32 makeBind_udp(uint32 ip, uint16 port)
 
 	if (fd == -1)
 	{
-		//ShowError("make_listen_bind: socket creation failed (code %d)!\n", sErrno);
+		ShowError("make_listen_bind: socket creation failed (code %d)!\n", sErrno);
 		exit(EXIT_FAILURE);
 	}
 	if (fd == 0)
 	{// reserved
-		//ShowError("make_listen_bind: Socket #0 is reserved - Please report this!!!\n");
+		ShowError("make_listen_bind: Socket #0 is reserved - Please report this!!!\n");
 		sClose(fd);
 		return -1;
 	}
 	if (fd >= FD_SETSIZE)
 	{// socket number too big
-		//ShowError("make_listen_bind: New socket #%d is greater than can we handle! Increase the value of FD_SETSIZE (currently %d) for your OS to fix this!\n", fd, FD_SETSIZE);
+		ShowError("make_listen_bind: New socket #%d is greater than can we handle! Increase the value of FD_SETSIZE (currently %d) for your OS to fix this!\n", fd, FD_SETSIZE);
 		sClose(fd);
 		return -1;
 	}
@@ -1078,7 +1076,7 @@ int32 makeBind_udp(uint32 ip, uint16 port)
 	result = sBind(fd, (struct sockaddr*)&server_address, sizeof(server_address));
 	if (result == SOCKET_ERROR)
 	{
-		//ShowError("make_listen_bind: bind failed (socket #%d, code %d)!\n", fd, sErrno);
+		ShowError("make_listen_bind: bind failed (socket #%d, code %d)!\n", fd, sErrno);
 		exit(EXIT_FAILURE);
 	}
 

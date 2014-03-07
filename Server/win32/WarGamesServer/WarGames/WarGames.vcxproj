@@ -20,7 +20,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -82,13 +82,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\main.cpp" />
+    <ClCompile Include="..\..\..\src\malloc.cpp" />
     <ClCompile Include="..\..\..\src\server.cpp" />
+    <ClCompile Include="..\..\..\src\showmsg.cpp" />
     <ClCompile Include="..\..\..\src\socket.cpp" />
+    <ClCompile Include="..\..\..\src\strlib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cbasetypes.h" />
+    <ClInclude Include="..\..\..\src\malloc.h" />
     <ClInclude Include="..\..\..\src\server.h" />
+    <ClInclude Include="..\..\..\src\showmsg.h" />
     <ClInclude Include="..\..\..\src\socket.h" />
+    <ClInclude Include="..\..\..\src\strlib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

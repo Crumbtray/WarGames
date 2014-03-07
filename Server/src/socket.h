@@ -137,16 +137,12 @@ extern time_t stall_time;
 
 int32 makeConnection(uint32 ip, uint16 port, int32 type);
 
-//Интерфейс функции, обрабатывающей соединения
 int32 process_sockets(fd_set* rfd);
 
-//функция, закрывающая сокет
 void do_close(int32 fd);
 
-//Инициализация основных настроек сокета 
 bool socket_init(void);
 
-//завершение работы сокета
 bool socket_final(void);
 
 // hostname/ip conversion functions

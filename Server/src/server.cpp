@@ -1,20 +1,44 @@
 #include "server.h"
+#include "showmsg.h"
+#include "malloc.h"
 
 int8*  g_PBuff = NULL;
 int8*  PTempBuff = NULL;
 int32 fd;
 
+void server_init()
+{
+	ShowStatus("Initializing server...\n");
+
+	//init packet parse
+	//init sql handle
+
+	//load all static data from db
+
+	//bind socket
+	ShowStatus("Binding to port: %u", 31111);
+	fd = makeBind_udp(INADDR_ANY, 31111);
+	ShowMessage("\t - "CL_GREEN"OK"CL_RESET"\n");
+
+	CREATE(g_PBuff, int8, RECV_BUFFER_SIZE + 20);
+	CREATE(PTempBuff, int8, RECV_BUFFER_SIZE + 20);
+
+	ShowStatus(CL_GREEN"Game server initialized!"CL_RESET"\n");
+	ShowMessage("---------------------------------------\n");
+}
+
 int32 process_sockets(fd_set* rfd)
 {	
 	memcpy(rfd, &readfds, sizeof(*rfd));
 
-	int32 ret = sSelect(fd_max, rfd, NULL, NULL, 0);
+	int32 ret = sSelect(fd_max, rfd, NULL, NULL, NULL);
 
 	if (ret == SOCKET_ERROR)
 	{
 		if (sErrno != S_EINTR)
 		{
-			//print fatal error
+			ShowFatalError("do_sockets: select() failed, error code %d!\n", sErrno);
+			int sdfsdf = sErrno;
 			exit(EXIT_FAILURE);
 		}
 		return 0;

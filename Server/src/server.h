@@ -17,5 +17,7 @@ struct session_data_t
 
 extern int32 fd;
 
+void server_init();
+
 
 #endif

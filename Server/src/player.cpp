@@ -1,4 +1,5 @@
 #include "player.h"
+#include "packets\packet.h"
 
 CPlayer::CPlayer()
 {

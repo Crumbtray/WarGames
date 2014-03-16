@@ -1,6 +1,7 @@
 #include "server.h"
 #include "showmsg.h"
 #include "malloc.h"
+#include "packet_handler.h"
 
 #include "packets\packet.h"
 
@@ -13,7 +14,7 @@ void server_init()
 {
 	ShowStatus("Initializing server...\n");
 
-	//init packet parser
+	packethandler::init();
 	//init sql handle
 
 	//load all static data from db
@@ -80,17 +81,18 @@ int32 recv_parse(int8* buffer, size_t buffsize, sockaddr_in* from, session_data_
 		chunk_size = RBUFB(chunk_ptr, 1);
 		chunk_type = RBUFB(chunk_ptr, 0);
 
-		//if (PacketSizes[chunk_type] == chunk_size || PacketSizes[chunk_type] == 0)
-		//{
+		if (packethandler::PacketSizes[chunk_type] == chunk_size || packethandler::PacketSizes[chunk_type] == 0)
+		{
 		ShowInfo("parse: %02hX (size %02hX) from user %s\n", chunk_type, chunk_size, PPlayer->GetName());
 		//parse the incoming packet
-		//PacketParser[chunk_type](session, PPlayer, chunk_ptr);
-		//}
-		//else
-		//{
-		//	ShowWarning("Incorrect packet size %02hX for %02hX from user %s\n", chunk_size, chunk_type, PPlayer->GetName());
-		//}
+		packethandler::PacketParser[chunk_type](session, PPlayer, chunk_ptr);
+		}
+		else
+		{
+			ShowWarning("Incorrect packet size %02hX for %02hX from user %s\n", chunk_size, chunk_type, PPlayer->GetName());
+		}
 	}
+	return 0;
 }
 
 int32 send_parse(int8 *buff, size_t* buffsize, sockaddr_in* from, session_data_t* session)
@@ -106,6 +108,7 @@ int32 send_parse(int8 *buff, size_t* buffsize, sockaddr_in* from, session_data_t
 
 		delete PPacket;
 	}
+	return 0;
 }
 
 int32 process_sockets(fd_set* rfd)

@@ -83,6 +83,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\malloc.cpp" />
+    <ClCompile Include="..\..\..\src\packets\packet.cpp" />
+    <ClCompile Include="..\..\..\src\packet_handler.cpp" />
     <ClCompile Include="..\..\..\src\player.cpp" />
     <ClCompile Include="..\..\..\src\server.cpp" />
     <ClCompile Include="..\..\..\src\showmsg.cpp" />
@@ -92,6 +94,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cbasetypes.h" />
     <ClInclude Include="..\..\..\src\malloc.h" />
+    <ClInclude Include="..\..\..\src\packets\packet.h" />
+    <ClInclude Include="..\..\..\src\packet_handler.h" />
     <ClInclude Include="..\..\..\src\player.h" />
     <ClInclude Include="..\..\..\src\server.h" />
     <ClInclude Include="..\..\..\src\showmsg.h" />

@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\malloc.cpp" />
+    <ClCompile Include="..\..\..\src\player.cpp" />
     <ClCompile Include="..\..\..\src\server.cpp" />
     <ClCompile Include="..\..\..\src\showmsg.cpp" />
     <ClCompile Include="..\..\..\src\socket.cpp" />
@@ -91,6 +92,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cbasetypes.h" />
     <ClInclude Include="..\..\..\src\malloc.h" />
+    <ClInclude Include="..\..\..\src\player.h" />
     <ClInclude Include="..\..\..\src\server.h" />
     <ClInclude Include="..\..\..\src\showmsg.h" />
     <ClInclude Include="..\..\..\src\socket.h" />

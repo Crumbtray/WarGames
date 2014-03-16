@@ -2,6 +2,8 @@
 #include "showmsg.h"
 #include "malloc.h"
 
+#include "packets\packet.h"
+
 int8*  g_PBuff = NULL;
 int8*  PTempBuff = NULL;
 int32 fd;
@@ -62,6 +64,50 @@ session_data_t* create_session(uint32 ip, uint16 port)
 	return session_data;
 }
 
+
+int32 recv_parse(int8* buffer, size_t buffsize, sockaddr_in* from, session_data_t* session)
+{
+	int8* packet_begin = &buffer[0];
+	int8* packet_end = &buffer[buffsize];
+
+	CPlayer* PPlayer = session->PPlayer;
+
+	uint8 chunk_size = 0;
+	uint8 chunk_type = 0;
+
+	for (int8* chunk_ptr = packet_begin; chunk_ptr + RBUFB(chunk_ptr, 1) <= packet_end && RBUFB(chunk_ptr, 1); chunk_ptr = chunk_ptr + chunk_size)
+	{
+		chunk_size = RBUFB(chunk_ptr, 1);
+		chunk_type = RBUFB(chunk_ptr, 0);
+
+		//if (PacketSizes[chunk_type] == chunk_size || PacketSizes[chunk_type] == 0)
+		//{
+		ShowInfo("parse: %02hX (size %02hX) from user %s\n", chunk_type, chunk_size, PPlayer->GetName());
+		//parse the incoming packet
+		//PacketParser[chunk_type](session, PPlayer, chunk_ptr);
+		//}
+		//else
+		//{
+		//	ShowWarning("Incorrect packet size %02hX for %02hX from user %s\n", chunk_size, chunk_type, PPlayer->GetName());
+		//}
+	}
+}
+
+int32 send_parse(int8 *buff, size_t* buffsize, sockaddr_in* from, session_data_t* session)
+{
+	*buffsize = 0;
+	CPlayer* PPlayer = session->PPlayer;
+	while (!PPlayer->packetQueueEmpty())
+	{
+		CPacket* PPacket = PPlayer->popPacket();
+		memcpy(buff + *buffsize, PPacket, PPacket->getSize());
+
+		*buffsize += PPacket->getSize();
+
+		delete PPacket;
+	}
+}
+
 int32 process_sockets(fd_set* rfd)
 {	
 	memcpy(rfd, &readfds, sizeof(*rfd));
@@ -73,7 +119,6 @@ int32 process_sockets(fd_set* rfd)
 		if (sErrno != S_EINTR)
 		{
 			ShowFatalError("do_sockets: select() failed, error code %d!\n", sErrno);
-			int sdfsdf = sErrno;
 			exit(EXIT_FAILURE);
 		}
 		return 0;
@@ -109,8 +154,11 @@ int32 process_sockets(fd_set* rfd)
 				}
 			}
 
-			//parse packets
+			size_t size = ret;
 
+			//TODO: decide how to handle sending
+			//recv_parse(g_PBuff, size, &from, session);
+			//sendudp(fd, g_PBuff, size, 0, (const struct sockaddr*)&from, fromlen);
 		}
 	}
 	return 0;

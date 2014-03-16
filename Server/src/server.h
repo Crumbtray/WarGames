@@ -5,6 +5,7 @@
 
 #include "cbasetypes.h"
 #include "socket.h"
+#include "player.h"
 
 #include <map>
 
@@ -16,7 +17,7 @@ struct session_data_t
 	uint32		addr;		 //client IP address
 	uint16		port;		 //client port
 	time_t		last_update; //for detecting disconnection
-	//account/user object
+	CPlayer*	PPlayer;
 };
 
 typedef std::map<uint64, session_data_t*> session_list_t;

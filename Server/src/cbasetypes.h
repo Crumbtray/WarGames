@@ -1,6 +1,8 @@
 #ifndef _CBASETYPES_H_
 #define _CBASETYPES_H_
 
+#include <string>
+
 /*              +--------+-----------+--------+---------+
  *              | ILP32  |   LP64    |  ILP64 | (LL)P64 |
  * +------------+--------+-----------+--------+---------+
@@ -344,5 +346,7 @@ typedef char bool;
 		#define va_copy(dst, src) ((void) memcpy(&(dst), &(src), sizeof(va_list)))
 	#endif
 #endif
+
+typedef std::string string_t;
 
 #endif /* _CBASETYPES_H_ */

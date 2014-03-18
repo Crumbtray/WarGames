@@ -3,7 +3,7 @@
 #ifndef _PACKET_H
 #define _PACKET_H
 
-#include "../cbasetypes.h"
+#include "../lib/cbasetypes.h"
 
 class CPacket
 {

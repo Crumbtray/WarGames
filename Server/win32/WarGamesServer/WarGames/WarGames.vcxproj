@@ -41,7 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\..\</OutDir>
+    <OutDir>$(SolutionDir)\..\..\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -54,6 +54,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;UDPSERV;_CRT_SECURE_NO_WARNINGS;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\external;$(ProjectDir)..\..\..\external\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,26 +82,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\lib\malloc.cpp" />
+    <ClCompile Include="..\..\..\src\lib\showmsg.cpp" />
+    <ClCompile Include="..\..\..\src\lib\socket.cpp" />
+    <ClCompile Include="..\..\..\src\lib\sql.cpp" />
+    <ClCompile Include="..\..\..\src\lib\strlib.cpp" />
+    <ClCompile Include="..\..\..\src\lib\taskmgr.cpp" />
+    <ClCompile Include="..\..\..\src\lib\timer.cpp" />
+    <ClCompile Include="..\..\..\src\lib\utils.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
-    <ClCompile Include="..\..\..\src\malloc.cpp" />
     <ClCompile Include="..\..\..\src\packets\packet.cpp" />
     <ClCompile Include="..\..\..\src\packet_handler.cpp" />
     <ClCompile Include="..\..\..\src\player.cpp" />
     <ClCompile Include="..\..\..\src\server.cpp" />
-    <ClCompile Include="..\..\..\src\showmsg.cpp" />
-    <ClCompile Include="..\..\..\src\socket.cpp" />
-    <ClCompile Include="..\..\..\src\strlib.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\cbasetypes.h" />
-    <ClInclude Include="..\..\..\src\malloc.h" />
+    <ClInclude Include="..\..\..\src\lib\cbasetypes.h" />
+    <ClInclude Include="..\..\..\src\lib\malloc.h" />
+    <ClInclude Include="..\..\..\src\lib\showmsg.h" />
+    <ClInclude Include="..\..\..\src\lib\socket.h" />
+    <ClInclude Include="..\..\..\src\lib\sql.h" />
+    <ClInclude Include="..\..\..\src\lib\strlib.h" />
+    <ClInclude Include="..\..\..\src\lib\taskmgr.h" />
+    <ClInclude Include="..\..\..\src\lib\timer.h" />
+    <ClInclude Include="..\..\..\src\lib\utils.h" />
     <ClInclude Include="..\..\..\src\packets\packet.h" />
     <ClInclude Include="..\..\..\src\packet_handler.h" />
     <ClInclude Include="..\..\..\src\player.h" />
     <ClInclude Include="..\..\..\src\server.h" />
-    <ClInclude Include="..\..\..\src\showmsg.h" />
-    <ClInclude Include="..\..\..\src\socket.h" />
-    <ClInclude Include="..\..\..\src\strlib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

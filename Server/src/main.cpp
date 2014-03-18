@@ -1,6 +1,7 @@
-#include "socket.h"
+#include "lib/socket.h"
+#include "lib/showmsg.h"
+
 #include "server.h"
-#include "showmsg.h"
 
 int main(int argc, char **argv)
 {

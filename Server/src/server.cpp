@@ -1,12 +1,15 @@
 #include "server.h"
-#include "showmsg.h"
-#include "malloc.h"
 #include "packet_handler.h"
+
+#include "lib/showmsg.h"
+#include "lib/malloc.h"
+#include "lib/sql.h"
 
 #include "packets\packet.h"
 
 int8*  g_PBuff = NULL;
 int8*  PTempBuff = NULL;
+Sql_t* SqlHandle = NULL;
 int32 fd;
 session_list_t session_list;
 
@@ -22,10 +25,21 @@ void server_init()
 	//bind socket
 	ShowStatus("Binding to port: %u", SERVER_PORT);
 	fd = makeBind_udp(INADDR_ANY, SERVER_PORT);
-	ShowMessage("\t - "CL_GREEN"OK"CL_RESET"\n");
+	ShowMessage("\t\t - "CL_GREEN"OK"CL_RESET"\n");
 
 	CREATE(g_PBuff, int8, RECV_BUFFER_SIZE + 20);
 	CREATE(PTempBuff, int8, RECV_BUFFER_SIZE + 20);
+
+	ShowStatus("Initializing Sql handle");
+	SqlHandle = Sql_Malloc();
+
+	if (Sql_Connect(SqlHandle, "root", "ffxi", "127.0.0.1", 3306, "wargamesdb") == SQL_ERROR)
+	{
+		exit(EXIT_FAILURE);
+	}
+	Sql_Keepalive(SqlHandle);
+
+	ShowMessage("\t - "CL_GREEN"OK"CL_RESET"\n");
 
 	ShowStatus(CL_GREEN"Game server initialized!"CL_RESET"\n");
 	ShowMessage("---------------------------------------\n");

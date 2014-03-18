@@ -3,7 +3,7 @@
 #ifndef _PACKETHANDLER_H
 #define _PACKETHANDLER_H
 
-#include "cbasetypes.h"
+#include "lib/cbasetypes.h"
 
 class CPlayer;
 struct session_data_t;

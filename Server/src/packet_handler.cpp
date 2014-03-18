@@ -1,6 +1,7 @@
 #include "server.h"
 #include "packet_handler.h"
-#include "showmsg.h"
+
+#include "lib/showmsg.h"
 
 namespace packethandler
 {
@@ -14,7 +15,7 @@ namespace packethandler
 
 	void init()
 	{
-		for (uint8 i = 0; i < 256; ++i)
+		for (uint8 i = 0; i < 255; ++i)
 		{
 			PacketSizes[i] = 0;
 			PacketParser[i] = &EmptyHandler;

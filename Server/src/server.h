@@ -16,10 +16,12 @@
 
 struct session_data_t
 {
-	uint32		addr;		 //client IP address
-	uint16		port;		 //client port
-	time_t		last_update; //for detecting disconnection
-	CPlayer*	PPlayer;
+	uint32				addr;		 //client IP address
+	uint16				port;		 //client port
+	time_t				last_update; //for detecting disconnection
+	struct sockaddr_in	sock;
+	socklen_t			socklen;
+	CPlayer*			PPlayer;
 };
 
 typedef std::map<uint64, session_data_t*> session_list_t;

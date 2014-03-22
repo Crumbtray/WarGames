@@ -109,18 +109,24 @@ int32 recv_parse(int8* buffer, size_t buffsize, sockaddr_in* from, session_data_
 	return 0;
 }
 
-int32 send_parse(int8 *buff, size_t* buffsize, sockaddr_in* from, session_data_t* session)
+int32 send_parse(int32 fd, int8 *buff, size_t* buffsize)
 {
-	*buffsize = 0;
-	CPlayer* PPlayer = session->PPlayer;
-	while (!PPlayer->packetQueueEmpty())
+	session_list_t::iterator i = session_list.begin();
+	for (session_list_t::iterator i = session_list.begin(); i != session_list.end(); i++)
 	{
-		CPacket* PPacket = PPlayer->popPacket();
-		memcpy(buff + *buffsize, PPacket, PPacket->getSize());
+		session_data_t* session = (*i).second;
+		*buffsize = 0;
+		CPlayer* PPlayer = session->PPlayer;
+		while (!PPlayer->packetQueueEmpty())
+		{
+			CPacket* PPacket = PPlayer->popPacket();
+			memcpy(buff + *buffsize, PPacket, PPacket->getSize());
 
-		*buffsize += PPacket->getSize();
+			*buffsize += PPacket->getSize();
 
-		delete PPacket;
+			delete PPacket;
+		}
+		sendudp(fd, buff, *buffsize, 0, (const struct sockaddr*)&session->sock, session->socklen);
 	}
 	return 0;
 }
@@ -171,11 +177,12 @@ int32 process_sockets(fd_set* rfd)
 				}
 			}
 
+			session->sock = from;
+			session->socklen = fromlen;
 			size_t size = ret;
 
-			//TODO: decide how to handle sending
-			//recv_parse(g_PBuff, size, &from, session);
-			//sendudp(fd, g_PBuff, size, 0, (const struct sockaddr*)&from, fromlen);
+			recv_parse(g_PBuff, size, &from, session);
+			send_parse(fd, g_PBuff, &size);
 		}
 	}
 	return 0;

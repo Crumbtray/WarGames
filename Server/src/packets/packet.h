@@ -8,9 +8,15 @@
 class CPacket
 {
 protected:
-	uint8 type;
-	uint8 size;
-	uint8 data[256];
+	union{
+		struct {
+			uint8 type;
+			uint8 size;
+			uint8 data[254];
+		};
+		uint8 packet[256];
+	};
+
 public:
 	uint8 getSize();
 	uint8 getType();

@@ -22,6 +22,15 @@ struct session_data_t
 	struct sockaddr_in	sock;
 	socklen_t			socklen;
 	CPlayer*			PPlayer;
+
+	session_data_t()
+	{
+		PPlayer = new CPlayer(0);
+	}
+	~session_data_t()
+	{
+		delete PPlayer;
+	}
 };
 
 typedef std::map<uint64, session_data_t*> session_list_t;

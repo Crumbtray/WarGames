@@ -97,9 +97,12 @@ int32 recv_parse(int8* buffer, size_t buffsize, sockaddr_in* from, session_data_
 
 		if (packethandler::PacketSizes[chunk_type] == chunk_size || packethandler::PacketSizes[chunk_type] == 0)
 		{
-		ShowInfo("parse: %02hX (size %02hX) from user %s\n", chunk_type, chunk_size, PPlayer->GetName());
-		//parse the incoming packet
-		packethandler::PacketParser[chunk_type](session, PPlayer, chunk_ptr);
+			ShowInfo("parse: %02hX (size %02hX) from user %s\n", chunk_type, chunk_size, PPlayer->GetName());
+			//parse the incoming packet
+			if ((session->PPlayer->id == 0 && (chunk_type == 0x01 || chunk_type == 0x02)) || session->PPlayer->id != 0)
+			{
+				packethandler::PacketParser[chunk_type](session, PPlayer, chunk_ptr);
+			}
 		}
 		else
 		{

@@ -9,7 +9,7 @@ public class Map {
 	private int width;
 	public Hashtable<UnitType, Integer> unitCost;
 	
-	private Map(int width, int height)
+	public Map(int width, int height)
 	{
 		this.height = height;
 		this.width = width;
@@ -18,11 +18,15 @@ public class Map {
 		this.terrainMap = new Terrain[width][height];
 		this.unitCost = new Hashtable<UnitType, Integer>();
 	}
-	
-	public static Map createNewMap()
+
+	public int getWidth()
 	{
-		Map newMap = new Map(16,16);
-		return null;
+		return this.width;
+	}
+	
+	public int getHeight()
+	{
+		return this.height;
 	}
 	
 	public Unit getUnitAt(int width, int height)
@@ -35,43 +39,16 @@ public class Map {
 		return this.terrainMap[width][height];
 	}
 	
-	public void createTerrain(int width, int height, TerrainType terrainType)
+	public void addTerrain(int width, int height, Terrain terrain) throws MapException
 	{
 		if (this.getTerrainAt(width, height) == null)
 		{
-			Terrain newTerrain = null;
-			
-			switch(terrainType) {
-			case Plain:
-				newTerrain = Terrain.createPlainTerrain();
-				break;
-
-			case Mountain:
-				newTerrain = Terrain.createMountainTerrain();
-				break;
-
-			case Road:
-				newTerrain = Terrain.createRoadTerrain();
-				break;
-
-			case Wood:
-				newTerrain = Terrain.createWoodTerrain();
-				break;
-
-			case Sea:
-				newTerrain = Terrain.createSeaTerrain();
-				break;
-
-			default:
-				// We should never hit this case.
-				System.out.println("CreateTerrain: Hit the default terrain case.");
-				break;
-
-			}
-			
-			this.terrainMap[width][height] = newTerrain;
+			this.terrainMap[width][height] = terrain;
 		}
-		
+		else
+		{
+			throw new MapException("MapException: Terrain already exists.  Try again.");
+		}
 		
 	}
 }

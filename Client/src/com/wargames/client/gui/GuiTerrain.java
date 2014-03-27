@@ -1,5 +1,7 @@
 package com.wargames.client.gui;
 
-public class GuiTerrain {
+import com.wargames.client.model.Terrain;
 
+public class GuiTerrain {
+	private Terrain logicalTerrain;
 }

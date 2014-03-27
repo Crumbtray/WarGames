@@ -37,6 +37,25 @@ public class Unit {
 		return newUnit;
 	}
 	
+	/**
+	 * Creates a new Tank Unit for the given player.
+	 * @param owner
+	 * @return A Unit object containing the statistics for the tank.
+	 */
+	public static Unit createTank(Player owner)
+	{
+		Unit newUnit = new Unit(UnitType.TANK, 10, MoveType.TANK, 1, 6, "Tanks are heavy damage dealers.", owner);
+		newUnit.deactivate();
+		return newUnit;
+	}
+	
+	public static Unit createArtillery(Player owner)
+	{
+		Unit newUnit = new Unit(UnitType.ARTILLERY, 10, MoveType.TIRE, 1, 5, "Artillery are ranged attackers.", owner);
+		newUnit.deactivate();
+		return newUnit;
+	}
+	
 	public UnitType getUnitType() 
 	{
 		return this.unitType;
@@ -80,5 +99,11 @@ public class Unit {
 	public void deactivate()
 	{
 		this.isActive = false;
+	}
+	
+	public int damageUnit(int damage)
+	{
+		this.health = this.health - damage;
+		return this.health;
 	}
 }

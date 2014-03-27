@@ -2,10 +2,10 @@ package com.wargames.client.client;
 import com.wargames.client.model.*;
 
 public class GameClient {
-	public GameState gameState;
+	public Game gameState;
 	public Player thisPlayer;
 	
-	public GameClient(GameState gameState)
+	public GameClient(Game gameState)
 	{
 		this.gameState = gameState;
 	}

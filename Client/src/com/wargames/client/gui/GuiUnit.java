@@ -8,5 +8,5 @@ public class GuiUnit {
 	private Image img;
 	private int x;
 	private int y;
-	private Unit unit;
+	private Unit logicalUnit;
 }

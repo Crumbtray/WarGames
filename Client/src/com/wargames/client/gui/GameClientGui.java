@@ -3,7 +3,7 @@ package com.wargames.client.gui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.wargames.client.model.GameState;
+import com.wargames.client.model.Game;
 
 public class GameClientGui extends JPanel {
 
@@ -11,7 +11,7 @@ public class GameClientGui extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 7504649405406424171L;
-	private GameState gameState;
+	private Game gameState;
 	
 	public GameClientGui()
 	{

@@ -16,8 +16,8 @@ public class GameModelTests {
 	
 	@Before
 	public void setUp() throws Exception {
-		player1 = new Player(0, "Clinton", 1, 1);
-		player2 = new Player(1, "Jesus", 2, 2);
+		player1 = new Player(0, "Clinton", 1, 1, "red");
+		player2 = new Player(1, "Jesus", 2, 2, "blue");
 		gameMap = MapGenerator.generateMap01(player1, player2);
 		testGame = new Game(gameMap);
 		testGame.addPlayer(player1);

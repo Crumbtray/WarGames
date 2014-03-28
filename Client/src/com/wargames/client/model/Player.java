@@ -45,12 +45,13 @@ public class Player {
 	 * @param initialFunds The initial funds of the player.
 	 * @param name The name of the player.
 	 */
-	public Player(int ID, String name, int teamNumber, int playerNumber)
+	public Player(int ID, String name, int teamNumber, int playerNumber, String color)
 	{
 		this.ID = ID;
 		this.name = name;
 		this.teamNumber = teamNumber;
 		this.playerNumber = playerNumber;
 		this.funds = 0;
+		this.color = color;
 	}
 }

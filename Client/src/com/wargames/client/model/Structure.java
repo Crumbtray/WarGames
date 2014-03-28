@@ -5,13 +5,39 @@ public class Structure extends Terrain{
 	public int income;
 	public int captureStatus;
 	public Player owner;
+	public String color;
 	
-	private Structure(int defense, String description, TerrainType terrainType, int income, int captureStatus, Player owner)
+	/**
+	 * Private constructor to build a structure.
+	 * Defaults to Neutral (White)
+	 * @param defense
+	 * @param description
+	 * @param terrainType
+	 * @param income
+	 * @param captureStatus
+	 */
+	private Structure(int defense, String description, TerrainType terrainType, int income, int captureStatus)
 	{
 		super(defense, description, terrainType);
 		this.income = income;
 		this.captureStatus = captureStatus;
+		this.color = "white";
+	}
+	
+	/**
+	 * Private constructor to build a structure with an owner.
+	 * @param defense
+	 * @param description
+	 * @param terrainType
+	 * @param income
+	 * @param captureStatus
+	 * @param owner
+	 */
+	private Structure(int defense, String description, TerrainType terrainType, int income, int captureStatus, Player owner)
+	{
+		this(defense, description, terrainType, income, captureStatus);
 		this.owner = owner;
+		this.color = owner.color;
 	}
 
 	/**
@@ -36,7 +62,7 @@ public class Structure extends Terrain{
 	 */
 	public static Structure createCity()
 	{
-		Structure newCity = new Structure(2, "A populated city.  Once captured, cities provide funds.", TerrainType.City, 1000, 0, null);
+		Structure newCity = new Structure(2, "A populated city.  Once captured, cities provide funds.", TerrainType.City, 1000, 0);
 		for(MoveType moveType : MoveType.values())
 		{
 			newCity.moveCost.put(moveType, 1);
@@ -65,7 +91,7 @@ public class Structure extends Terrain{
 	 */
 	public static Structure createFactory()
 	{
-		Structure newFactory = new Structure(3, "Once captured, this can be used to produce ground units.", TerrainType.Factory, 1000, 0, null);
+		Structure newFactory = new Structure(3, "Once captured, this can be used to produce ground units.", TerrainType.Factory, 1000, 0);
 		for(MoveType moveType : MoveType.values())
 		{
 			newFactory.moveCost.put(moveType, 1);
@@ -105,5 +131,14 @@ public class Structure extends Terrain{
 		{
 			return false;
 		}
+	}
+	
+	/**
+	 * Gets the color of this building.
+	 * @return
+	 */
+	public String getColor()
+	{
+		return this.color;
 	}
 }

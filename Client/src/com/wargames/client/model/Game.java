@@ -18,22 +18,41 @@ public class Game {
 		this.players.add(player);
 	}
 	
+	/**
+	 * Moves a unit from its initial position to its final position.
+	 * @param xStart
+	 * @param yStart
+	 * @param xDest
+	 * @param yDest
+	 */
 	public void moveUnit(int xStart, int yStart, int xDest, int yDest)
 	{
-		
+		try{
+			gameMap.moveUnit(xStart, yStart, xDest, yDest);
+		}
+		catch(MapException e)
+		{
+			System.out.println("Game: Error in moving unit.  This should never happen.");
+			e.printStackTrace();
+		}
 	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param capturer
+	 * Uses the unit to capture a structure.
+	 * @param x The X coordinate of the structure.
+	 * @param y The Y coordinate of the structure.
+	 * @param capturer The Unit that is trying to capture.
 	 */
 	public void captureStructure(int x, int y, Unit capturer)
 	{
-		Structure capturableStructure = (Structure) gameMap.getTerrainAt(x, y);
-		// Gotta do some checking here.
-		// We shall see.
+		try {
+			this.gameMap.captureStructure(x, y, capturer);
+		}
+		catch(MapException e)
+		{
+			System.out.println("Game: Error in capturing structure.  This should never happen.");
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -86,5 +105,10 @@ public class Game {
 			System.out.println("Game: Error in creating new unit. This should never happen.");
 			e.printStackTrace();
 		}
+	}
+	
+	public void setTurn(Player player)
+	{
+		this.currentTurn = player;
 	}
 }

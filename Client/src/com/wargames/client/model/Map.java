@@ -41,6 +41,30 @@ public class Map {
 		return targetUnit;
 	}
 	
+	/**
+	 * Tries to move a unit on the map to the destination location.
+	 * @param startX
+	 * @param startY
+	 * @param destX
+	 * @param destY
+	 * @return The unit that moved.
+	 * @throws MapException
+	 */
+	public Unit moveUnit(int startX, int startY, int destX, int destY) throws MapException
+	{
+		if(unitMap[destX][destY] == null)
+		{
+			Unit targetUnit = unitMap[startX][startY];
+			unitMap[startX][startY] = null;
+			unitMap[destX][destY] = targetUnit;
+			return targetUnit;
+		}
+		else
+		{
+			throw new MapException("MapException: Destination location already has a unit.");
+		}
+	}
+	
 	public Terrain getTerrainAt(int width, int height)
 	{
 		return this.terrainMap[width][height];
@@ -77,9 +101,17 @@ public class Map {
 	{
 		if(this.unitMap[x][y] == null)
 		{
-			if(this.terrainMap[x][y].terrainType.equals(TerrainType.Factory))
+			Structure factoryStructure = (Structure) terrainMap[x][y];
+			if(factoryStructure.terrainType.equals(TerrainType.Factory))
 			{
-				this.unitMap[x][y] = unit;
+				if(factoryStructure.owner == unit.getOwner())
+				{
+					this.unitMap[x][y] = unit;
+				}
+				else
+				{
+					throw new MapException("MapException: Unit created is of a different owner than the owner of the factory.");
+				}
 			}
 			else
 			{
@@ -89,6 +121,35 @@ public class Map {
 		else
 		{
 			throw new MapException("MapException: There is already a unit in this location.");
+		}
+	}
+	
+	/**
+	 * Captures a structure.
+	 * @param x X coordinate of structure.
+	 * @param y Y coordinate of structure.
+	 * @param capturer Unit that is capturing the structure.
+	 * @return The Structure that is being captured (updated with new information)
+	 * @throws MapException if location isn't a Structure, or unit isn't capable of capturing.
+	 */
+	public Structure captureStructure(int x, int y, Unit capturer) throws MapException
+	{
+		if(capturer.getUnitType() != UnitType.SOLDIER)
+		{
+			throw new MapException("MapException: This unit is not capable of capturing.");
+		}
+		if(this.unitMap[x][y] != capturer)
+		{
+			throw new MapException("MapException: This unit is not on the structure location.");
+		}
+		try {
+			Structure targetStructure = (Structure) terrainMap[x][y];
+			targetStructure.capture(capturer);
+			return targetStructure;
+		}
+		catch(ClassCastException e)
+		{
+			throw new MapException("MapException: Location for capturing is not a structure.");
 		}
 	}
 }

@@ -57,6 +57,7 @@ public class GameClientGui extends JPanel {
 	{
 		// draw background
 		g.drawImage(this.imgBackground, 0, 0, null);
+		this.guiMap.draw(g);
 		
 	}
 	

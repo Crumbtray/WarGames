@@ -56,4 +56,9 @@ public class GuiTerrain {
 		this.img = new ImageIcon(urlTerrainImage).getImage();
 		
 	}
+	
+	public Image getImage()
+	{
+		return this.img;
+	}
 }

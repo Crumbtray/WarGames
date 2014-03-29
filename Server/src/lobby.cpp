@@ -2,6 +2,8 @@
 #include "lobby.h"
 #include "player.h"
 
+#include "packets\lobby_update.h"
+#include "packets\lobby_countdown.h"
 
 CLobby::CLobby(uint32 id)
 {
@@ -33,6 +35,11 @@ uint8 CLobby::getMapID()
 void CLobby::addPlayer(CPlayer* player)
 {
 	playerList.push_back(player);
+
+	for (auto player : playerList)
+	{
+		player->pushPacket(new CLobbyUpdatePacket(this));
+	}
 }
 
 void CLobby::removePlayer(CPlayer* player)
@@ -58,6 +65,38 @@ bool CLobby::hasPlayer(CPlayer* player)
 	return false;
 }
 
+LOBBYSTATUS CLobby::getStatus()
+{
+	return m_status;
+}
+
+void CLobby::startCountdown()
+{
+	m_status = LOBBY_STARTING;
+	m_lastCountdown = 5;
+
+	for (auto player : playerList)
+	{
+		player->pushPacket(new CLobbyCountdownPacket(5));
+	}
+}
+
+void CLobby::cancelCountdown()
+{
+	m_status = LOBBY_IDLE;
+	m_lastCountdown = 0;
+
+	for (auto player : playerList)
+	{
+		player->pushPacket(new CLobbyCountdownPacket(0));
+	}
+}
+
+uint8 CLobby::nextTick()
+{
+	return m_lastCountdown == 0 ? 0 : m_lastCountdown--;
+}
+
 namespace lobbies
 {
 	std::vector<CLobby*> lobbyList;
@@ -66,15 +105,28 @@ namespace lobbies
 	{
 		CLobby* lobby = new CLobby(newLobbyId());
 		lobbyList.push_back(lobby);
+		return lobby;
 	}
 
 	CLobby* getLobby(CPlayer* player)
 	{
-		for (uint32 i = 0; i < lobbyList.size(); i++)
+		for (auto lobby : lobbyList)
 		{
-			if (lobbyList.at(i)->hasPlayer(player))
+			if (lobby->hasPlayer(player))
 			{
-				return lobbyList.at(i);
+				return lobby;
+			}
+		}
+		return NULL;
+	}
+
+	CLobby* getLobby(uint32 id)
+	{
+		for (auto lobby : lobbyList)
+		{
+			if (lobby->id == id)
+			{
+				return lobby;
 			}
 		}
 		return NULL;
@@ -92,5 +144,28 @@ namespace lobbies
 			}
 		}
 		return lobbyId;
+	}
+
+	int32 lobby_timer(uint32 tick, CTaskMgr::CTask* PTask)
+	{
+		for (auto lobby : lobbyList)
+		{
+			if (lobby->getStatus() == LOBBY_STARTING)
+			{
+				uint8 tick = lobby->nextTick();
+				if (tick == 0)
+				{
+					//TODO: start game
+				}
+				else
+				{
+					for (auto player : lobby->playerList)
+					{
+						player->pushPacket(new CLobbyCountdownPacket(tick));
+					}
+				}
+			}
+		}
+		return 0;
 	}
 }

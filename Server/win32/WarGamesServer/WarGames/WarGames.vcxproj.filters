@@ -78,6 +78,18 @@
     <ClCompile Include="..\..\..\src\packets\lobby_update.cpp">
       <Filter>Source Files\packets</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\packets\lobby_chat.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\packets\lobby_countdown.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\packets\post_game.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\server.h">
@@ -129,6 +141,18 @@
       <Filter>Header Files\packets</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\lobby.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\packets\lobby_chat.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\packets\lobby_countdown.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\packets\post_game.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -137,7 +137,7 @@ extern time_t stall_time;
 
 int32 makeConnection(uint32 ip, uint16 port, int32 type);
 
-int32 process_sockets(fd_set* rfd);
+int32 process_sockets(fd_set* rfd, int32 next);
 
 void do_close(int32 fd);
 

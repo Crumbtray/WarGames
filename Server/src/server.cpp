@@ -1,9 +1,12 @@
 #include "server.h"
+#include "lobby.h"
 #include "packet_handler.h"
 
 #include "lib/showmsg.h"
 #include "lib/malloc.h"
 #include "lib/sql.h"
+#include "lib/taskmgr.h"
+#include "lib/timer.h"
 
 #include "packets\packet.h"
 
@@ -40,6 +43,8 @@ void server_init()
 	Sql_Keepalive(SqlHandle);
 
 	ShowMessage("\t - "CL_GREEN"OK"CL_RESET"\n");
+
+	CTaskMgr::getInstance()->AddTask("lobby_countdowns", gettick(), NULL, CTaskMgr::TASK_INTERVAL, lobbies::lobby_timer, 1000);
 
 	ShowStatus(CL_GREEN"Game server initialized!"CL_RESET"\n");
 	ShowMessage("---------------------------------------\n");
@@ -134,11 +139,16 @@ int32 send_parse(int32 fd, int8 *buff, size_t* buffsize)
 	return 0;
 }
 
-int32 process_sockets(fd_set* rfd)
+int32 process_sockets(fd_set* rfd, int32 next)
 {	
+	struct timeval timeout;
+
 	memcpy(rfd, &readfds, sizeof(*rfd));
 
-	int32 ret = sSelect(fd_max, rfd, NULL, NULL, NULL);
+	timeout.tv_sec = next / 1000;
+	timeout.tv_usec = next % 1000 * 1000;
+
+	int32 ret = sSelect(fd_max, rfd, NULL, NULL, &timeout);
 
 	if (ret == SOCKET_ERROR)
 	{

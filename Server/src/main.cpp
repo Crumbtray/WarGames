@@ -1,5 +1,7 @@
 #include "lib/socket.h"
 #include "lib/showmsg.h"
+#include "lib/taskmgr.h"
+#include "lib/timer.h"
 
 #include "server.h"
 
@@ -9,11 +11,15 @@ int main(int argc, char **argv)
 	//init sockets
 	socket_init();
 	server_init();
+	timer_init();
 	fd_set readfd;
 	{
+		int next;
+
 		while (true)
 		{
-			process_sockets(&readfd);
+			next = CTaskMgr::getInstance()->DoTimer(gettick_nocache());
+			process_sockets(&readfd, next);
 		}
 	}
 }

@@ -13,7 +13,7 @@ CLobbyUpdatePacket::CLobbyUpdatePacket(CLobby* lobby)
 	WBUFB(packet, 0x02) = lobby->getMaxSize();
 	WBUFB(packet, 0x03) = lobby->getMapID();
 
-	for (int i = 0; i < lobby->playerList.size(); i++)
+	for (uint8 i = 0; i < lobby->playerList.size(); i++)
 	{
 		WBUFL(packet, 0x04 + i * 0x10) = lobby->playerList.at(i)->id;
 		WBUFB(packet, 0x08 + i * 0x10) = lobby->playerList.at(i)->GetTeam();

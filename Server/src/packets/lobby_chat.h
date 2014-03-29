@@ -10,7 +10,7 @@ class CPlayer;
 class CLobbyChatPacket : public CPacket
 {
 public:
-	CLobbyChatPacket(CPlayer*, const char*);
+	CLobbyChatPacket(CPlayer*, const char*, int);
 };
 
 

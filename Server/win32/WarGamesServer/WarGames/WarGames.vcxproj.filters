@@ -66,6 +66,18 @@
     <ClCompile Include="..\..\..\src\lib\utils.cpp">
       <Filter>Source Files\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\packets\login.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\packets\account_creation.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lobby.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\packets\lobby_update.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\server.h">
@@ -106,6 +118,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\lib\utils.h">
       <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\packets\login.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\packets\account_creation.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\packets\lobby_update.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lobby.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

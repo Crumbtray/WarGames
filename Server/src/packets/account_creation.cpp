@@ -5,7 +5,7 @@
 
 CAccountCreatePacket::CAccountCreatePacket(ACCTCREATERESPONSE response)
 {
-	this->type = 0x01;
+	this->type = 0x02;
 	this->size = 0x03;
 
 	WBUFB(packet, 0x02) = response;

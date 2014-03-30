@@ -1,21 +1,14 @@
 package com.wargames.client.model;
-import java.util.ArrayList;
 
 
 public class Game {
 	public Map gameMap;
-	public ArrayList<Player> players;
 	public Player currentTurn;
 	
 	public Game(Map gameMap)
 	{
 		this.gameMap = gameMap;
-		this.players = new ArrayList<Player>();
-	}
-	
-	public void addPlayer(Player player)
-	{
-		this.players.add(player);
+		this.currentTurn = gameMap.players.get(0);
 	}
 	
 	/**

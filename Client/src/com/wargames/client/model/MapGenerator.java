@@ -15,6 +15,8 @@ public class MapGenerator {
 	 */
 	public static Map generateMap01(Player player1, Player player2){
 		Map newMap = new Map(16,16);
+		newMap.addPlayer(player1);
+		newMap.addPlayer(player2);
 		for (int i = 0; i < 16; i++)
 		{
 			for(int j = 0; j < 16; j++)
@@ -61,6 +63,16 @@ public class MapGenerator {
 				}
 			}
 		}
+		
+		// Add a unit for each player.
+		try {
+			newMap.createUnit(0, 0, Unit.createSoldier(player1));
+			newMap.createUnit(15, 15, Unit.createSoldier(player2));
+		} catch (MapException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
 		return newMap;
 	}
 }

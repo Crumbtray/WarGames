@@ -1,7 +1,9 @@
 
 #include "lobby.h"
 #include "player.h"
+#include "game.h"
 
+#include "packets\game_load.h"
 #include "packets\lobby_update.h"
 #include "packets\lobby_countdown.h"
 
@@ -188,14 +190,22 @@ namespace lobbies
 
 	int32 lobby_timer(uint32 tick, CTaskMgr::CTask* PTask)
 	{
-		for (auto lobby : lobbyList)
+		for (uint32 i = 0; i < lobbyList.size(); i++)
 		{
+			CLobby* lobby = lobbyList.at(i);
 			if (lobby->getStatus() == LOBBY_STARTING)
 			{
 				uint8 tick = lobby->nextTick();
 				if (tick == 0)
 				{
-					//TODO: start game
+					CGame* game = games::createGame(lobby->getMapID());
+					for (auto player : lobby->playerList)
+					{
+						game->addPlayer(player);
+						player->pushPacket(new CGameLoadPacket(lobby->getMapID()));
+					}
+					lobbyList.erase(lobbyList.begin() + i);
+					delete lobby;
 				}
 				else
 				{

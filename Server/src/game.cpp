@@ -2,16 +2,28 @@
 #include "game.h"
 #include "player.h"
 
-#include "packets/turn_change.h"
+#include "packets\turn_change.h"
+#include "packets\player_definition.h"
 
-CGame::CGame()
+CGame::CGame(uint8 map)
 {
-
+	m_mapID = map;
+	m_activePlayer = 0;
 }
 
 CGame::~CGame()
 {
 
+}
+
+void CGame::setMapID(uint8 map)
+{
+	m_mapID = map;
+}
+
+uint8 CGame::getMapID()
+{
+	return m_mapID;
 }
 
 void CGame::endTurn()
@@ -22,6 +34,26 @@ void CGame::endTurn()
 	{
 		player->pushPacket(new CTurnChangePacket(m_activePlayer));
 	}
+}
+
+void CGame::start()
+{
+	m_activePlayer = 0;
+	for (auto player : playerList)
+	{
+		for (auto player2 : playerList)
+		{
+			player->pushPacket(new CPlayerDefinitionPacket(player2));
+		}
+		player->pushPacket(new CTurnChangePacket(m_activePlayer));
+	}
+}
+
+void CGame::addPlayer(CPlayer* player)
+{
+	playerList.push_back(player);
+	player->SetMoney(0);
+	player->SetScore(0);
 }
 
 bool CGame::hasPlayer(CPlayer* player)
@@ -36,11 +68,6 @@ bool CGame::hasPlayer(CPlayer* player)
 	return false;
 }
 
-void CGame::addPlayer(CPlayer* player)
-{
-	playerList.push_back(player);
-}
-
 bool CGame::isActivePlayer(CPlayer* player)
 {
 	return player == playerList.at(m_activePlayer);
@@ -50,9 +77,9 @@ namespace games
 {
 	std::vector<CGame*> gameList;
 
-	CGame* createGame()
+	CGame* createGame(uint8 mapID)
 	{
-		CGame* game = new CGame();
+		CGame* game = new CGame(mapID);
 		gameList.push_back(game);
 		return game;
 	}

@@ -1,10 +1,14 @@
-#include "server.h"
 #include "packet_handler.h"
+#include "server.h"
+#include "lobby.h"
 
 #include "lib/showmsg.h"
 
 #include "packets\packet.h"
 #include "packets\account_creation.h"
+#include "packets\lobby_chat.h"
+#include "packets\lobby_countdown.h"
+#include "packets\lobby_update.h"
 #include "packets\login.h"
 
 namespace packethandler
@@ -101,10 +105,49 @@ namespace packethandler
 		}
 	}
 
+	void Packet0x03(session_data_t* session, CPlayer* player, int8* data)
+	{
+		uint32 lobbyID = WBUFW(data, 0x02);
+		CLobby* lobby = lobbies::getLobby(lobbyID);
+
+		if (lobby && lobby->playerList.size() < lobby->getMaxSize())
+		{
+			lobby->addPlayer(player);
+		}
+	}
+
 	void Packet0x04(session_data_t* session, CPlayer* player, int8* data)
 	{
 		int length = WBUFB(data, 0x02);
-		//TODO: push chat packet to other players in lobby/game
+		CLobby* lobby = lobbies::getLobby(player);
+		if (lobby)
+		{
+			for (auto p : lobby->playerList)
+			{
+				if (p != player)
+				{
+					p->pushPacket(new CLobbyChatPacket(player, data + 0x03, length));
+				}
+			}
+		}
+	}
+
+	void Packet0x05(session_data_t* session, CPlayer* player, int8* data)
+	{
+		int action = WBUFB(data, 0x02);
+		CLobby* lobby = lobbies::getLobby(player);
+
+		if (lobby)
+		{
+			if (action == 0x01 && lobby->getStatus() == LOBBY_IDLE)
+			{
+				lobby->startCountdown();
+			}
+			else if (action == 0x02 && lobby->getStatus() == LOBBY_STARTING)
+			{
+				lobby->cancelCountdown();
+			}
+		}
 	}
 
 	void init()
@@ -116,6 +159,7 @@ namespace packethandler
 		}
 		PacketSizes[0x01] = 0x1C; PacketParser[0x01] = &Packet0x01;
 		PacketSizes[0x02] = 0x1C; PacketParser[0x02] = &Packet0x02;
+		PacketSizes[0x03] = 0x04; PacketParser[0x03] = &Packet0x03;
 		PacketSizes[0x04] = 0x00; PacketParser[0x04] = &Packet0x04;
 	}
 }

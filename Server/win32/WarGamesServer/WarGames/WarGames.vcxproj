@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\game.cpp" />
     <ClCompile Include="..\..\..\src\lib\malloc.cpp" />
     <ClCompile Include="..\..\..\src\lib\showmsg.cpp" />
     <ClCompile Include="..\..\..\src\lib\socket.cpp" />
@@ -90,13 +91,21 @@
     <ClCompile Include="..\..\..\src\lib\taskmgr.cpp" />
     <ClCompile Include="..\..\..\src\lib\timer.cpp" />
     <ClCompile Include="..\..\..\src\lib\utils.cpp" />
+    <ClCompile Include="..\..\..\src\lobby.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
+    <ClCompile Include="..\..\..\src\packets\account_creation.cpp" />
+    <ClCompile Include="..\..\..\src\packets\lobby_chat.cpp" />
+    <ClCompile Include="..\..\..\src\packets\lobby_countdown.cpp" />
+    <ClCompile Include="..\..\..\src\packets\lobby_update.cpp" />
+    <ClCompile Include="..\..\..\src\packets\login.cpp" />
     <ClCompile Include="..\..\..\src\packets\packet.cpp" />
+    <ClCompile Include="..\..\..\src\packets\post_game.cpp" />
     <ClCompile Include="..\..\..\src\packet_handler.cpp" />
     <ClCompile Include="..\..\..\src\player.cpp" />
     <ClCompile Include="..\..\..\src\server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\game.h" />
     <ClInclude Include="..\..\..\src\lib\cbasetypes.h" />
     <ClInclude Include="..\..\..\src\lib\malloc.h" />
     <ClInclude Include="..\..\..\src\lib\showmsg.h" />
@@ -106,7 +115,14 @@
     <ClInclude Include="..\..\..\src\lib\taskmgr.h" />
     <ClInclude Include="..\..\..\src\lib\timer.h" />
     <ClInclude Include="..\..\..\src\lib\utils.h" />
+    <ClInclude Include="..\..\..\src\lobby.h" />
+    <ClInclude Include="..\..\..\src\packets\account_creation.h" />
+    <ClInclude Include="..\..\..\src\packets\lobby_chat.h" />
+    <ClInclude Include="..\..\..\src\packets\lobby_countdown.h" />
+    <ClInclude Include="..\..\..\src\packets\lobby_update.h" />
+    <ClInclude Include="..\..\..\src\packets\login.h" />
     <ClInclude Include="..\..\..\src\packets\packet.h" />
+    <ClInclude Include="..\..\..\src\packets\post_game.h" />
     <ClInclude Include="..\..\..\src\packet_handler.h" />
     <ClInclude Include="..\..\..\src\player.h" />
     <ClInclude Include="..\..\..\src\server.h" />

@@ -20,14 +20,11 @@ public class GameModelTests {
 		player2 = new Player(1, "Jesus", 2, 2, "blue");
 		gameMap = MapGenerator.generateMap01(player1, player2);
 		testGame = new Game(gameMap);
-		testGame.addPlayer(player1);
-		testGame.addPlayer(player2);
-		testGame.setTurn(player1);
 	}
 
 	@Test
 	public void ConstructorTests() {
-		assertEquals(testGame.players.size(), 2);
+		assertEquals(testGame.gameMap.players.size(), 2);
 		assertEquals(testGame.gameMap, gameMap);
 		assertEquals(testGame.currentTurn, player1);
 	}

@@ -54,11 +54,27 @@ public class GuiTerrain {
 		}
 		URL urlTerrainImage = getClass().getResource("/com/wargames/client/gui/img/" + filename);
 		this.img = new ImageIcon(urlTerrainImage).getImage();
-		
+		this.x = x;
+		this.y = y;
+	}
+	
+	public Terrain getLogicalTerrain()
+	{
+		return this.logicalTerrain;
 	}
 	
 	public Image getImage()
 	{
 		return this.img;
+	}
+	
+	public int getX()
+	{
+		return this.x;
+	}
+	
+	public int getY()
+	{
+		return this.y;
 	}
 }

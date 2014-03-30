@@ -1,5 +1,6 @@
 package com.wargames.client.model;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Map {
@@ -8,17 +9,23 @@ public class Map {
 	private int height;
 	private int width;
 	public Hashtable<UnitType, Integer> unitCost;
+	public ArrayList<Player> players;
 	
 	public Map(int width, int height)
 	{
 		this.height = height;
 		this.width = width;
-		
+		this.players = new ArrayList<Player>();
 		this.unitMap = new Unit[width][height];
 		this.terrainMap = new Terrain[width][height];
 		this.unitCost = new Hashtable<UnitType, Integer>();
 	}
 
+	public void addPlayer(Player player)
+	{
+		this.players.add(player);
+	}
+	
 	public int getWidth()
 	{
 		return this.width;

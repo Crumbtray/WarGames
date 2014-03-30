@@ -9,6 +9,6 @@ CPlayerUpdatePacket::CPlayerUpdatePacket(CPlayer* player)
 	this->type = 0x14;
 	this->size = 0x0A;
 
-	//WBUFL(packet, 0x02) = money
-	//WBUFL(packet, 0x16) = score
+	WBUFL(packet, 0x02) = player->GetMoney();
+	WBUFL(packet, 0x16) = player->GetScore();
 }

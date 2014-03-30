@@ -35,6 +35,7 @@ public:
 	void addPlayer(CPlayer*);
 	void removePlayer(CPlayer*);
 	bool hasPlayer(CPlayer*);
+	uint8 playerNumber(CPlayer*);
 	LOBBYSTATUS getStatus();
 	uint8 nextTick();
 

@@ -45,6 +45,9 @@ uint8 CLobby::getMapID()
 void CLobby::addPlayer(CPlayer* player)
 {
 	playerList.push_back(player);
+	uint8 number = playerNumber(player);
+	player->SetColor(number);
+	player->SetTeam(number);
 
 	for (auto p : playerList)
 	{
@@ -61,6 +64,16 @@ void CLobby::removePlayer(CPlayer* player)
 			playerList.erase(playerList.begin() + i);
 		}
 	}
+	for (auto p : playerList)
+	{
+		uint8 number = playerNumber(p);
+		p->SetColor(number);
+		p->SetTeam(number);
+	}
+	for (auto p : playerList)
+	{
+		p->pushPacket(new CLobbyUpdatePacket(this));
+	}
 }
 
 bool CLobby::hasPlayer(CPlayer* player)
@@ -73,6 +86,18 @@ bool CLobby::hasPlayer(CPlayer* player)
 		}
 	}
 	return false;
+}
+
+uint8 CLobby::playerNumber(CPlayer* player)
+{
+	for (uint8 i = 0; i < playerList.size(); i++)
+	{
+		if (playerList.at(i)->id == player->id)
+		{
+			return i;
+		}
+	}
+	return -1;
 }
 
 LOBBYSTATUS CLobby::getStatus()

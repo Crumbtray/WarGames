@@ -8,6 +8,8 @@ CPlayer::CPlayer(int id)
 	m_losses = 0;
 	m_team = 0;
 	m_color = 0;
+	m_money = 0;
+	m_score = 0;
 }
 
 CPlayer::~CPlayer()
@@ -46,6 +48,26 @@ void CPlayer::SetColor(uint8 color)
 	m_color = color;
 }
 
+void CPlayer::SetMoney(int32 money)
+{
+	m_money = money;
+}
+
+void CPlayer::AddMoney(int32 money)
+{
+	m_money += money;
+}
+
+void CPlayer::SetScore(int32 score)
+{
+	m_score = score;
+}
+
+void CPlayer::AddScore(int32 score)
+{
+	m_score += score;
+}
+
 uint32 CPlayer::GetWins()
 {
 	return m_wins;
@@ -64,6 +86,16 @@ uint8 CPlayer::GetTeam()
 uint8 CPlayer::GetColor()
 {
 	return m_color;
+}
+
+int32 CPlayer::GetMoney()
+{
+	return m_money;
+}
+
+int32 CPlayer::GetScore()
+{
+	return m_score;
 }
 
 bool CPlayer::packetQueueEmpty()

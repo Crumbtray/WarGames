@@ -2,13 +2,15 @@
 #include "game.h"
 #include "player.h"
 
-#include "packets\turn_change.h"
 #include "packets\player_definition.h"
+#include "packets\post_game.h"
+#include "packets\turn_change.h"
 
 CGame::CGame(uint8 map)
 {
 	m_mapID = map;
 	m_activePlayer = 0;
+	m_winner = NULL;
 }
 
 CGame::~CGame()
@@ -56,6 +58,16 @@ void CGame::addPlayer(CPlayer* player)
 	player->SetScore(0);
 }
 
+void CGame::end(CPlayer* winner)
+{
+	m_winner = winner;
+
+	for (auto p : playerList)
+	{
+		p->pushPacket(new CPostGamePacket(winner, this));
+	}
+}
+
 bool CGame::hasPlayer(CPlayer* player)
 {
 	for (auto p : playerList)
@@ -71,6 +83,11 @@ bool CGame::hasPlayer(CPlayer* player)
 bool CGame::isActivePlayer(CPlayer* player)
 {
 	return player == playerList.at(m_activePlayer);
+}
+
+bool CGame::isWinner(CPlayer* player)
+{
+	return player == m_winner;
 }
 
 namespace games

@@ -13,8 +13,8 @@ CPostGamePacket::CPostGamePacket(CPlayer* player, CGame* game)
 	WBUFL(packet, 0x02) = player->id;
 	WBUFB(packet, 0x06) = player->GetColor();
 	WBUFB(packet, 0x07) = player->GetTeam();
-	//WBUFB(packet, 0x08) = game->isWinner(player);
-	//WBUFL(packet, 0x09) = game->getScore(player);
+	WBUFB(packet, 0x08) = game->isWinner(player);
+	WBUFL(packet, 0x09) = player->GetScore();
 	WBUFB(packet, 0x0D) = player->GetWins();
 	WBUFB(packet, 0x0E) = player->GetLosses();
 }

@@ -11,6 +11,7 @@ class CGame
 private:
 	uint8 m_activePlayer;
 	uint8 m_mapID;
+	CPlayer* m_winner;
 public:
 	std::vector<CPlayer*> playerList;
 
@@ -20,9 +21,11 @@ public:
 	void addPlayer(CPlayer*);
 	bool hasPlayer(CPlayer*);
 	bool isActivePlayer(CPlayer*);
+	bool isWinner(CPlayer*);
 
 	void endTurn();
 	void start();
+	void end(CPlayer* winner);
 
 	CGame(uint8 mapID);
 	~CGame();

@@ -5,8 +5,6 @@
 
 #include "packet.h"
 
-class CPlayer;
-
 class CLobbyCountdownPacket : public CPacket
 {
 public:

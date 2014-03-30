@@ -66,6 +66,7 @@ session_data_t* create_session(uint32 ip, uint16 port)
 {
 	session_data_t* session_data = new session_data_t;
 	memset(session_data, 0, sizeof session_data_t);
+	session_data->PPlayer = new CPlayer(0);
 
 	// might need this later for checking order of packets
 	//CREATE(session_data->server_packet_data, int8, RECV_BUFFER_SIZE + 20);

@@ -1,5 +1,6 @@
 #include "packet_handler.h"
 #include "server.h"
+#include "game.h"
 #include "lobby.h"
 
 #include "lib/showmsg.h"
@@ -25,9 +26,11 @@ namespace packethandler
 	{
 		char* query = "SELECT id, handle FROM accounts WHERE handle = '%s' AND password = PASSWORD('%s');";
 
-		char handle[10];
+		char handle[11];
+		memset(handle, 0, sizeof handle);
 		memcpy(handle, data + 0x02, 10);
-		char pass[16];
+		char pass[17];
+		memset(pass, 0, sizeof pass);
 		memcpy(pass, data + 0x0C, 16);
 
 		char escapedHandle[(sizeof handle) * 2 + 1];
@@ -47,6 +50,7 @@ namespace packethandler
 				session->PPlayer = new CPlayer(Sql_GetUIntData(SqlHandle, 0));
 				session->PPlayer->SetName(handle);
 				session->PPlayer->pushPacket(new CLoginPacket(session->PPlayer, LOGIN_SUCCESS));
+				ShowDebug("Player %s has logged in\n", session->PPlayer->GetName());
 			}
 			else
 			{
@@ -63,9 +67,11 @@ namespace packethandler
 	{
 		char* query = "SELECT id, handle FROM accounts WHERE handle LIKE '%s';";
 
-		char handle[10];
+		char handle[11];
+		memset(handle, 0, sizeof handle);
 		memcpy(handle, data + 0x02, 10);
-		char pass[16];
+		char pass[17];
+		memset(pass, 0, sizeof pass);
 		memcpy(pass, data + 0x0C, 16);
 
 		char escapedHandle[(sizeof handle) * 2 + 1];
@@ -81,13 +87,14 @@ namespace packethandler
 		{
 			if (Sql_NumRows(SqlHandle) == 0)
 			{
-				query = "INSERT INTO accounts id = (SELECT max(id) from accounts), handle = '%s', password = PASSWORD('%s');";
+				query = "INSERT INTO accounts (handle, password) VALUES('%s', PASSWORD('%s'));";
 
 				ret = Sql_Query(SqlHandle, query, escapedHandle, escapedPass);
 
 				if (ret != SQL_ERROR && Sql_AffectedRows(SqlHandle) == 1)
 				{
 					session->PPlayer->pushPacket(new CAccountCreatePacket(CREATE_SUCCESS));
+					ShowDebug("Account %s has been created\n", handle);
 				}
 				else
 				{
@@ -110,7 +117,11 @@ namespace packethandler
 		uint32 lobbyID = WBUFW(data, 0x02);
 		CLobby* lobby = lobbies::getLobby(lobbyID);
 
-		if (lobby && lobby->playerList.size() < lobby->getMaxSize())
+		if (!lobby)
+		{
+			lobby = lobbies::createLobby();
+		}
+		if (lobby->playerList.size() < lobby->getMaxSize())
 		{
 			lobby->addPlayer(player);
 		}
@@ -150,6 +161,29 @@ namespace packethandler
 		}
 	}
 
+	void Packet0x13(session_data_t* session, CPlayer* player, int8* data)
+	{
+		CGame* game = games::getGame(player);
+
+		if (game && game->isActivePlayer(player))
+		{
+			game->endTurn();
+		}
+	}
+
+	void Packet0x15(session_data_t* session, CPlayer* player, int8* data)
+	{
+		CGame* game = games::getGame(player);
+
+		uint16 unitID = WBUFW(data, 0x02);
+		uint8 xpos = WBUFB(data, 0x03);
+		uint8 ypos = WBUFB(data, 0x04);
+		uint8 action = WBUFB(data, 0x05);
+		uint16 targetID = WBUFW(data, 0x07);
+
+		//TODO
+	}
+
 	void init()
 	{
 		for (uint8 i = 0; i < 255; ++i)
@@ -161,5 +195,8 @@ namespace packethandler
 		PacketSizes[0x02] = 0x1C; PacketParser[0x02] = &Packet0x02;
 		PacketSizes[0x03] = 0x04; PacketParser[0x03] = &Packet0x03;
 		PacketSizes[0x04] = 0x00; PacketParser[0x04] = &Packet0x04;
+		PacketSizes[0x05] = 0x03; PacketParser[0x05] = &Packet0x05;
+		PacketSizes[0x13] = 0x02; PacketParser[0x13] = &Packet0x13;
+		PacketSizes[0x15] = 0x09; PacketParser[0x15] = &Packet0x15;
 	}
 }

@@ -36,9 +36,9 @@ void CLobby::addPlayer(CPlayer* player)
 {
 	playerList.push_back(player);
 
-	for (auto player : playerList)
+	for (auto p : playerList)
 	{
-		player->pushPacket(new CLobbyUpdatePacket(this));
+		p->pushPacket(new CLobbyUpdatePacket(this));
 	}
 }
 
@@ -55,9 +55,9 @@ void CLobby::removePlayer(CPlayer* player)
 
 bool CLobby::hasPlayer(CPlayer* player)
 {
-	for (uint8 i = 0; i < playerList.size(); i++)
+	for (auto p : playerList)
 	{
-		if (playerList.at(i)->id == player->id)
+		if (p->id == player->id)
 		{
 			return true;
 		}

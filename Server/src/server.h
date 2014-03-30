@@ -23,10 +23,6 @@ struct session_data_t
 	socklen_t			socklen;
 	CPlayer*			PPlayer;
 
-	session_data_t()
-	{
-		PPlayer = new CPlayer(0);
-	}
 	~session_data_t()
 	{
 		delete PPlayer;

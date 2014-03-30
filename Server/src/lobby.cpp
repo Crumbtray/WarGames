@@ -27,6 +27,16 @@ void CLobby::setMapID(uint8 map)
 	m_mapID = map;
 }
 
+void CLobby::setHost(CPlayer* host)
+{
+	m_Host = host;
+}
+
+CPlayer* CLobby::getHost()
+{
+	return m_Host;
+}
+
 uint8 CLobby::getMapID()
 {
 	return m_mapID;
@@ -100,6 +110,11 @@ uint8 CLobby::nextTick()
 namespace lobbies
 {
 	std::vector<CLobby*> lobbyList;
+
+	std::vector<CLobby*> getLobbies()
+	{
+		return lobbyList;
+	}
 
 	CLobby* createLobby()
 	{

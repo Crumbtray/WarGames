@@ -111,6 +111,9 @@
     <ClCompile Include="..\..\..\src\packets\game_over.cpp">
       <Filter>Source Files\packets</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\packets\lobby_list.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\server.h">
@@ -195,6 +198,9 @@
       <Filter>Header Files\packets</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\packets\game_over.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\packets\lobby_list.h">
       <Filter>Header Files\packets</Filter>
     </ClInclude>
   </ItemGroup>

@@ -99,6 +99,7 @@
     <ClCompile Include="..\..\..\src\packets\game_over.cpp" />
     <ClCompile Include="..\..\..\src\packets\lobby_chat.cpp" />
     <ClCompile Include="..\..\..\src\packets\lobby_countdown.cpp" />
+    <ClCompile Include="..\..\..\src\packets\lobby_list.cpp" />
     <ClCompile Include="..\..\..\src\packets\lobby_update.cpp" />
     <ClCompile Include="..\..\..\src\packets\login.cpp" />
     <ClCompile Include="..\..\..\src\packets\packet.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="..\..\..\src\packets\game_over.h" />
     <ClInclude Include="..\..\..\src\packets\lobby_chat.h" />
     <ClInclude Include="..\..\..\src\packets\lobby_countdown.h" />
+    <ClInclude Include="..\..\..\src\packets\lobby_list.h" />
     <ClInclude Include="..\..\..\src\packets\lobby_update.h" />
     <ClInclude Include="..\..\..\src\packets\login.h" />
     <ClInclude Include="..\..\..\src\packets\packet.h" />

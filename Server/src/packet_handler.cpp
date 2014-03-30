@@ -117,11 +117,13 @@ namespace packethandler
 		uint32 lobbyID = WBUFW(data, 0x02);
 		CLobby* lobby = lobbies::getLobby(lobbyID);
 
-		if (!lobby)
+		if (lobbyID == 0 || !lobby)
 		{
 			lobby = lobbies::createLobby();
+			lobby->addPlayer(player);
+			lobby->setHost(player);
 		}
-		if (lobby->playerList.size() < lobby->getMaxSize())
+		else if (lobby && lobby->playerList.size() < lobby->getMaxSize())
 		{
 			lobby->addPlayer(player);
 		}
@@ -148,7 +150,7 @@ namespace packethandler
 		int action = WBUFB(data, 0x02);
 		CLobby* lobby = lobbies::getLobby(player);
 
-		if (lobby)
+		if (lobby && lobby->getHost() == player)
 		{
 			if (action == 0x01 && lobby->getStatus() == LOBBY_IDLE)
 			{

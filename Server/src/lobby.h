@@ -19,6 +19,7 @@ private:
 	uint8 m_maxSize;
 	uint8 m_mapID;
 	uint8 m_lastCountdown;
+	CPlayer* m_Host;
 
 	LOBBYSTATUS m_status;
 public:
@@ -29,6 +30,8 @@ public:
 	uint8 getMaxSize();
 	void setMapID(uint8);
 	uint8 getMapID();
+	void setHost(CPlayer*);
+	CPlayer* getHost();
 	void addPlayer(CPlayer*);
 	void removePlayer(CPlayer*);
 	bool hasPlayer(CPlayer*);
@@ -44,6 +47,7 @@ public:
 
 namespace lobbies
 {
+	std::vector<CLobby*> getLobbies();
 	CLobby* createLobby();
 	CLobby* getLobby(CPlayer*);
 	CLobby* getLobby(uint32);

@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,7 +41,8 @@ public class GameClientGui extends JPanel {
 	
 	private JTextArea lblSelectedTerrain;
 	private JTextArea lblSelectedUnit;
-	private JLabel lblTurnOwner;
+	private JTextArea lblGameState;
+	private JButton endTurnButton;
 	
 	public GameClientGui()
 	{
@@ -49,8 +51,8 @@ public class GameClientGui extends JPanel {
 		this.imgBackground = new ImageIcon(urlBackgroundImg).getImage();
 		
 		// Initialize the game.
-		player1 = new Player(0, "Clinton", 1, 1, "red");
-		player2 = new Player(1, "Jesus", 2, 2, "blue");
+		player1 = new Player(0, "Clinton", 1, 0, "red");
+		player2 = new Player(1, "Jesus", 2, 1, "blue");
 		
 		game = new Game(MapGenerator.generateMap01(player1, player2));
 		
@@ -59,7 +61,7 @@ public class GameClientGui extends JPanel {
 		
 		
 		// label to display game state
-		this.lblSelectedTerrain = new JTextArea(5, 12);
+		this.lblSelectedTerrain = new JTextArea(5, 10);
 		this.lblSelectedTerrain.setLineWrap( true );
 		this.lblSelectedTerrain.setBackground(Color.GRAY);
 		this.lblSelectedTerrain.setForeground(Color.WHITE);
@@ -70,7 +72,7 @@ public class GameClientGui extends JPanel {
 		this.lblSelectedTerrain.setWrapStyleWord( true );
 		this.add(lblSelectedTerrain);
 		
-		this.lblSelectedUnit = new JTextArea(5, 12);
+		this.lblSelectedUnit = new JTextArea(5, 10);
 		this.lblSelectedUnit.setLineWrap( true );
 		this.lblSelectedUnit.setBackground(Color.GRAY);
 		this.lblSelectedUnit.setForeground(Color.WHITE);
@@ -80,14 +82,27 @@ public class GameClientGui extends JPanel {
 		this.lblSelectedUnit.setWrapStyleWord( true );
 		this.add(lblSelectedUnit);
 		
-		this.lblTurnOwner = new JLabel(this.game.currentTurn.color);
-		this.lblTurnOwner.setFont(font);
-		this.lblTurnOwner.setForeground(Color.white);
-		this.add(lblTurnOwner);
+		this.lblGameState = new JTextArea(5, 10);
+		this.lblGameState.setLineWrap( true );
+		this.lblGameState.setBackground(Color.GRAY);
+		this.lblGameState.setForeground(Color.WHITE);
+		this.lblGameState.setFont(font);
+		this.lblGameState.getCaret().setVisible(false);
+		this.lblGameState.getCaret().setSelectionVisible(false);
+		this.lblGameState.setWrapStyleWord( true );
+		this.add(lblGameState);
+		
+		// End Turn button
+		this.endTurnButton = new JButton("End Turn");
+		this.endTurnButton.setFont(font);
+		this.add(endTurnButton);
+		
 		
 		// Add listeners
 		GameMouseListener mouseListener = new GameMouseListener(this);
 		this.addMouseListener(mouseListener);
+		EndTurnListener endTurnListener = new EndTurnListener(this);
+		this.endTurnButton.addActionListener(endTurnListener);
 		
 		// create application frame and set visible
 		//
@@ -97,7 +112,7 @@ public class GameClientGui extends JPanel {
 		f.setResizable(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.add(this);
-		f.setSize(816, 638);
+		f.setSize(800, 624);
 	}
 
 	
@@ -112,8 +127,10 @@ public class GameClientGui extends JPanel {
 		this.lblSelectedTerrain.setLocation(600,44);
 		this.lblSelectedUnit.setText(this.getSelectedUnit());
 		this.lblSelectedUnit.setLocation(600,150);
-		this.lblTurnOwner.setLocation(602, 536);
-		this.lblTurnOwner.setText("Current Turn: " + this.game.currentTurn.color);
+		this.lblGameState.setLocation(600, 400);
+		this.lblGameState.setText(getStateText());
+		this.endTurnButton.setLocation(602, 520);
+		
 		
 		drawSelectedTerrain(g);
 		
@@ -190,6 +207,16 @@ public class GameClientGui extends JPanel {
 		{
 			g.drawImage(selectorImage, this.selectedTerrain.getX(), this.selectedTerrain.getY(), null);
 		}
+	}
+	
+	public String getStateText()
+	{
+		String returnString = "Current Turn: " + this.game.currentTurn.color;
+		for(Player player : game.gameMap.players)
+		{
+			returnString = returnString.concat("\n" + player.color + " funds: " + player.funds);
+		}
+		return returnString;
 	}
 	
 	public static void main(String[] args)

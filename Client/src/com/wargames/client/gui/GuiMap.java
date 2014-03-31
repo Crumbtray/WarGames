@@ -69,8 +69,6 @@ public class GuiMap {
 		
 		int realX = (x - MapOffsetX) / TILEWIDTH;
 		int realY = (y - MapOffsetY) / TILEHEIGHT;
-		
-		System.out.println("Trying to get terrain at (" + realX + "," + realY + ")");
 		return graphicalTerrain[realX][realY];
 	}
 	
@@ -83,8 +81,6 @@ public class GuiMap {
 		
 		int realX = (x - MapOffsetX) / TILEWIDTH;
 		int realY = (y - MapOffsetY) / TILEHEIGHT;
-		
-		System.out.println("Trying to get unit at (" + realX + "," + realY + ")");
 		return graphicalUnits[realX][realY];
 	}
 	

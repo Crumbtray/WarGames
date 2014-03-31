@@ -159,4 +159,21 @@ public class Map {
 			throw new MapException("MapException: Location for capturing is not a structure.");
 		}
 	}
+	
+	/**
+	 * Activates all units on the map.
+	 */
+	public void activateAllUnits()
+	{
+		for(int i = 0; i < width; i++)
+		{
+			for(int j = 0; j < height; j++)
+			{
+				if(this.unitMap[i][j] != null)
+				{
+					this.unitMap[i][j].activate();
+				}
+			}
+		}
+	}
 }

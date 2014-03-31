@@ -85,12 +85,17 @@ public class GameMouseListener implements MouseListener{
 		int logicalPositionX = (mouseXPosition - 44) / 32;
 		int logicalPositionY = (mouseYPosition - 44) / 32;
 		Coordinate mouseCoordinate = new Coordinate(logicalPositionX, logicalPositionY);
-		if(validLocations.contains(mouseCoordinate))
+		if(validLocations.contains(mouseCoordinate) && (this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.game.currentTurn))
 		{
-			
+			System.out.println("MY UNIT CONTROLLABLE.");
+			// Open the action window here.
+			ActionWindow actionWindow = new ActionWindow();
+			this.client.add(actionWindow);
+			this.client.repaint();
 		}
 		else
 		{
+			// Otherwise, close the selection, treat it as if nothing happened.
 			this.mouseState = MouseState.NothingSelected;
 			handleOnNothingSelected(e);
 		}

@@ -2,11 +2,13 @@
 #include "server.h"
 #include "game.h"
 #include "lobby.h"
+#include "Unit.h"
 
 #include "lib/showmsg.h"
 
 #include "packets\packet.h"
 #include "packets\account_creation.h"
+#include "packets\action.h"
 #include "packets\lobby_chat.h"
 #include "packets\lobby_countdown.h"
 #include "packets\lobby_update.h"
@@ -183,7 +185,26 @@ namespace packethandler
 		uint8 action = WBUFB(data, 0x05);
 		uint16 targetID = WBUFW(data, 0x07);
 
-		//TODO
+		Unit* initiator = game->getUnit(unitID);
+		Unit* target = game->getUnit(unitID);
+
+		switch (action)
+		{
+		case ACTION_MOVE:
+			initiator->move(xpos, ypos);
+			break;
+		case ACTION_ATTACK:
+			initiator->attack(xpos, ypos, target);
+			break;
+		case ACTION_CAPTURE:
+			initiator->capture(xpos, ypos);
+			break;
+		case ACTION_PRODUCE:
+			//probably a map function
+			break;
+		default:
+			break;
+		}
 	}
 
 	void init()

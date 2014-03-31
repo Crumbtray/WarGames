@@ -5,18 +5,20 @@
 #include <vector>
 
 class CPlayer;
+class Map;
+class Unit;
 
 class CGame
 {
 private:
 	uint8 m_activePlayer;
-	uint8 m_mapID;
+	Map* m_map;
 	CPlayer* m_winner;
 public:
 	std::vector<CPlayer*> playerList;
 
 	uint8 getMapID();
-	void setMapID(uint8);
+	Unit* getUnit(uint16);
 
 	void addPlayer(CPlayer*);
 	bool hasPlayer(CPlayer*);

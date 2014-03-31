@@ -1,5 +1,6 @@
 
 #include "game.h"
+#include "Map.h"
 #include "player.h"
 
 #include "packets\player_definition.h"
@@ -8,24 +9,24 @@
 
 CGame::CGame(uint8 map)
 {
-	m_mapID = map; //probably temp, real way would be map->getID once map class is in
+	m_map = new Map(map);
 	m_activePlayer = 0;
 	m_winner = NULL;
 }
 
 CGame::~CGame()
 {
-	//delete map object
-}
-
-void CGame::setMapID(uint8 map)
-{
-	m_mapID = map;
+	delete m_map;
 }
 
 uint8 CGame::getMapID()
 {
-	return m_mapID;
+	return m_map->getMapID();
+}
+
+Unit* CGame::getUnit(uint16 id)
+{
+	return m_map->getUnit(id);
 }
 
 void CGame::endTurn()

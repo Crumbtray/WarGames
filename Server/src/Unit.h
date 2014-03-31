@@ -28,7 +28,7 @@ public:
 	~Unit();
 
 	bool move(int x, int y);
-	bool attack(int x, int y);
+	bool attack(int x, int y, Unit* target);
 	int capture(int x, int y);
 	void updateIncome(int amount);
 };

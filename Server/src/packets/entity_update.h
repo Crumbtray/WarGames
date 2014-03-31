@@ -4,13 +4,14 @@
 #define _ENTITYUPDATEPACKET_H
 
 #include "packet.h"
+#include <utility>
 
-class CPlayer;
+class Unit;
 
 class CEntityUpdatePacket : public CPacket
 {
 public:
-	CEntityUpdatePacket();
+	CEntityUpdatePacket(Unit*, std::pair<uint8, uint8>);
 };
 
 

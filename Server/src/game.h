@@ -17,7 +17,7 @@ private:
 public:
 	std::vector<CPlayer*> playerList;
 
-	uint8 getMapID();
+	Map* getMap();
 	Unit* getUnit(uint16);
 
 	void addPlayer(CPlayer*);

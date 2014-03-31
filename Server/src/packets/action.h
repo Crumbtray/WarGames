@@ -4,6 +4,7 @@
 #define _ACTIONPACKET_H
 
 #include "packet.h"
+#include <utility>
 
 enum ACTION
 {
@@ -18,7 +19,7 @@ class Unit;
 class CActionPacket : public CPacket
 {
 public:
-	CActionPacket(Unit* initiator, Unit* target, ACTION, int8 dmginit, int8 dmgtarget);
+	CActionPacket(Unit* initiator, Unit* target, ACTION, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos);
 };
 
 

@@ -3,6 +3,7 @@
 #include "game.h"
 #include "lobby.h"
 #include "Unit.h"
+#include "Map.h"
 
 #include "lib/showmsg.h"
 
@@ -200,7 +201,7 @@ namespace packethandler
 			initiator->capture(xpos, ypos);
 			break;
 		case ACTION_PRODUCE:
-			//probably a map function
+			game->getMap()->produceUnit(xpos, ypos, (UnitType)unitID);
 			break;
 		default:
 			break;

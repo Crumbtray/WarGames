@@ -19,9 +19,9 @@ CGame::~CGame()
 	delete m_map;
 }
 
-uint8 CGame::getMapID()
+Map* CGame::getMap()
 {
-	return m_map->getMapID();
+	return m_map;
 }
 
 Unit* CGame::getUnit(uint16 id)

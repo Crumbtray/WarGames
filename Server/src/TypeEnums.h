@@ -10,6 +10,6 @@ enum MobilityType {
 };
 
 enum TerrainType {
-	Plains, Road, Woods, Mountain, Water, 
-	Reef, Port, Base, HQ, City, Airport
+	Plain, Mountain, Road, Sea, Wood,
+	HQ, Factory, City, Airport
 };

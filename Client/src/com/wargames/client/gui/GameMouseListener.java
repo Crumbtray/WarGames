@@ -2,15 +2,20 @@ package com.wargames.client.gui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
+import com.wargames.client.helpers.Coordinate;
+import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.model.MapException;
 
 public class GameMouseListener implements MouseListener{
 
+	private MouseState mouseState;
 	private GameClientGui client;
 	
 	public GameMouseListener(GameClientGui client)
 	{
+		this.mouseState = MouseState.NothingSelected;
 		this.client = client;
 	}
 	
@@ -25,22 +30,28 @@ public class GameMouseListener implements MouseListener{
 		// TODO Auto-generated method stub
 		int mouseXPosition = e.getX();
 		int mouseYPosition = e.getY();
-		
-		System.out.println("Mouse at (" + mouseXPosition + "," + mouseYPosition + ")");
-		
+			
 		if(mouseXPosition >= 44 && mouseXPosition < 556)
 		{
 			if(mouseYPosition >= 44 && mouseYPosition < 556)
 			{
-				try {
-					this.client.selectedTerrain = this.client.guiMap.getTerrainAt(mouseXPosition, mouseYPosition);
-					this.client.selectedUnit = this.client.guiMap.getUnitAt(mouseXPosition, mouseYPosition);
-					this.client.repaint();
-				} catch (MapException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("THIS SHOULD NEVER HAPPEN.");
-					e1.printStackTrace();
+				// We're manipulating the map!
+				switch(this.mouseState)
+				{
+					case NothingSelected:
+						handleOnNothingSelected(e);
+						break;
+					case UnitSelected:
+						handleOnUnitSelected(e);
+						break;
+					case FactorySelected:
+						handleOnFactorySelected(e);
+						break;
+					case UnitActionSelection:
+						handleOnUnitActionSelection(e);
+						break;
 				}
+				
 			}
 		}		
 	}
@@ -63,4 +74,56 @@ public class GameMouseListener implements MouseListener{
 		
 	}
 
+	private void handleOnUnitSelected(MouseEvent e)
+	{
+		int mouseXPosition = e.getX();
+		int mouseYPosition = e.getY();
+		Coordinate unitCoordinate = this.client.guiMap.getCoordinateOfUnit(this.client.selectedUnit);
+		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.game.gameMap);
+
+		// If we click anywhere outside the valid locations, we go back to nothing selected state.
+		int logicalPositionX = (mouseXPosition - 44) / 32;
+		int logicalPositionY = (mouseYPosition - 44) / 32;
+		Coordinate mouseCoordinate = new Coordinate(logicalPositionX, logicalPositionY);
+		if(validLocations.contains(mouseCoordinate))
+		{
+			
+		}
+		else
+		{
+			this.mouseState = MouseState.NothingSelected;
+			handleOnNothingSelected(e);
+		}
+		
+	}
+	
+	private void handleOnFactorySelected(MouseEvent e)
+	{
+		
+	}
+	
+	private void handleOnUnitActionSelection(MouseEvent e)
+	{
+		
+	}
+	
+	private void handleOnNothingSelected(MouseEvent e)
+	{
+		int mouseXPosition = e.getX();
+		int mouseYPosition = e.getY();
+		try {
+			this.client.selectedTerrain = this.client.guiMap.getTerrainAt(mouseXPosition, mouseYPosition);
+			this.client.selectedUnit = this.client.guiMap.getUnitAt(mouseXPosition, mouseYPosition);
+			if(this.client.selectedUnit != null && this.client.selectedUnit.getLogicalUnit().isActive())
+			{
+				this.mouseState = MouseState.UnitSelected;
+			}
+			this.client.repaint();
+		} catch (MapException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("THIS SHOULD NEVER HAPPEN.");
+			e1.printStackTrace();
+		}
+	}
+	
 }

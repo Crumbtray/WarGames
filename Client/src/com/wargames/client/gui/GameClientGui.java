@@ -27,7 +27,7 @@ public class GameClientGui extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 7504649405406424171L;
-	private Game game;
+	public Game game;
 	private Player player1;
 	private Player player2;
 	
@@ -118,7 +118,7 @@ public class GameClientGui extends JPanel {
 		drawSelectedTerrain(g);
 		
 		// If we have a unit selected, highlight the valid locations.
-		if(this.selectedUnit != null)
+		if(this.selectedUnit != null && this.selectedUnit.getLogicalUnit().isActive())
 		{
 			Coordinate unitCoordinate = guiMap.getCoordinateOfUnit(selectedUnit);
 			ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, selectedUnit.getLogicalUnit(), this.game.gameMap);
@@ -163,8 +163,19 @@ public class GameClientGui extends JPanel {
 		{
 			logicalUnit = this.selectedUnit.getLogicalUnit();
 		}
+		String activeString;
+		if(logicalUnit.isActive())
+		{
+			activeString = "Active";
+		}
+		else
+		{
+			activeString = "Inactive";
+		}
 		
-		return logicalUnit.getUnitType().toString() + "\n" + logicalUnit.getDescription() + "\n\nHealth: " + logicalUnit.health + "\nRange: " + logicalUnit.getRange() + "\nMobility: " + logicalUnit.getMobility(); 
+		
+		
+		return logicalUnit.getUnitType().toString() + "\n" + logicalUnit.getDescription() + "\n\nHealth: " + logicalUnit.health + "\nRange: " + logicalUnit.getRange() + "\nMobility: " + logicalUnit.getMobility() + "\nActive: " + activeString; 
 	}
 	
 	public void drawSelectedTerrain(Graphics g)

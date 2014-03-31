@@ -23,6 +23,7 @@ public:
 	void addPlayer(CPlayer*);
 	bool hasPlayer(CPlayer*);
 	bool isActivePlayer(CPlayer*);
+	uint8 getActivePlayer();
 	bool isWinner(CPlayer*);
 
 	void endTurn();

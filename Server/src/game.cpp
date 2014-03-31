@@ -86,6 +86,11 @@ bool CGame::isActivePlayer(CPlayer* player)
 	return player == playerList.at(m_activePlayer);
 }
 
+uint8 CGame::getActivePlayer()
+{
+	return m_activePlayer;
+}
+
 bool CGame::isWinner(CPlayer* player)
 {
 	return player == m_winner;

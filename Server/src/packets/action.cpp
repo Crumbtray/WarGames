@@ -1,0 +1,20 @@
+
+#include "action.h"
+
+#include "../lib/socket.h"
+#include "../player.h"
+#include "../Unit.h"
+
+CActionPacket::CActionPacket(Unit* initiator, Unit* target, ACTION action, int8 dmginit, int8 dmgtarget)
+{
+	this->type = 0x15;
+	this->size = 0x0B;
+
+	WBUFW(packet, 0x02) = initiator->id;
+	//WBUFB(packet, 0x04) = initiator->xpos;  //TODO: from map? or from unit (probably map)
+	//WBUFB(packet, 0x05) = initiator->ypos;
+	WBUFB(packet, 0x06) = action;
+	WBUFW(packet, 0x07) = target->id;
+	WBUFB(packet, 0x09) = dmginit;
+	WBUFB(packet, 0x0A) = dmgtarget;
+}

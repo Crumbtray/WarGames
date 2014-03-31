@@ -21,6 +21,8 @@ private:
 	
 
 public:
+	uint16 id;
+
 	Unit(UnitType type);
 	Unit(int owner, MobilityType mType, int mobility, int cost, int range, int vision);
 	~Unit();

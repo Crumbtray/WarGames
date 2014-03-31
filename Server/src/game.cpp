@@ -8,14 +8,14 @@
 
 CGame::CGame(uint8 map)
 {
-	m_mapID = map;
+	m_mapID = map; //probably temp, real way would be map->getID once map class is in
 	m_activePlayer = 0;
 	m_winner = NULL;
 }
 
 CGame::~CGame()
 {
-
+	//delete map object
 }
 
 void CGame::setMapID(uint8 map)

@@ -94,6 +94,7 @@
     <ClCompile Include="..\..\..\src\lobby.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\packets\account_creation.cpp" />
+    <ClCompile Include="..\..\..\src\packets\action.cpp" />
     <ClCompile Include="..\..\..\src\packets\entity_update.cpp" />
     <ClCompile Include="..\..\..\src\packets\game_load.cpp" />
     <ClCompile Include="..\..\..\src\packets\game_over.cpp" />
@@ -124,7 +125,9 @@
     <ClInclude Include="..\..\..\src\lib\timer.h" />
     <ClInclude Include="..\..\..\src\lib\utils.h" />
     <ClInclude Include="..\..\..\src\lobby.h" />
+    <ClInclude Include="..\..\..\src\Map.h" />
     <ClInclude Include="..\..\..\src\packets\account_creation.h" />
+    <ClInclude Include="..\..\..\src\packets\action.h" />
     <ClInclude Include="..\..\..\src\packets\entity_update.h" />
     <ClInclude Include="..\..\..\src\packets\game_load.h" />
     <ClInclude Include="..\..\..\src\packets\game_over.h" />
@@ -142,6 +145,10 @@
     <ClInclude Include="..\..\..\src\packet_handler.h" />
     <ClInclude Include="..\..\..\src\player.h" />
     <ClInclude Include="..\..\..\src\server.h" />
+    <ClInclude Include="..\..\..\src\Tile.h" />
+    <ClInclude Include="..\..\..\src\TypeEnums.h" />
+    <ClInclude Include="..\..\..\src\Unit.h" />
+    <ClInclude Include="..\..\..\src\UnitBuilder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

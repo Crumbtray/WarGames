@@ -114,6 +114,9 @@
     <ClCompile Include="..\..\..\src\packets\lobby_list.cpp">
       <Filter>Source Files\packets</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\packets\action.cpp">
+      <Filter>Source Files\packets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\server.h">
@@ -202,6 +205,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\packets\lobby_list.h">
       <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\packets\action.h">
+      <Filter>Header Files\packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\TypeEnums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Unit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\UnitBuilder.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

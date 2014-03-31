@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -12,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.wargames.client.helpers.Coordinate;
+import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.model.Game;
 import com.wargames.client.model.MapGenerator;
 import com.wargames.client.model.Player;
@@ -113,6 +116,25 @@ public class GameClientGui extends JPanel {
 		this.lblTurnOwner.setText("Current Turn: " + this.game.currentTurn.color);
 		
 		drawSelectedTerrain(g);
+		
+		// If we have a unit selected, highlight the valid locations.
+		if(this.selectedUnit != null)
+		{
+			Coordinate unitCoordinate = guiMap.getCoordinateOfUnit(selectedUnit);
+			ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, selectedUnit.getLogicalUnit(), this.game.gameMap);
+			for(Coordinate validLocation : validLocations)
+			{
+				int highlightX = validLocation.x * 32 + 44;
+				int highlightY = validLocation.y * 32 + 44;
+				
+				// draw a black drop shadow by drawing a black rectangle with an offset of 1 pixel
+				g.setColor(Color.BLACK);
+				g.drawRoundRect( highlightX, highlightY, 32, 32, 10, 10);
+				// draw the highlight
+				g.setColor(Color.GREEN);
+				g.drawRoundRect( highlightX, highlightY, 32, 32, 10, 10);
+			}
+		}
 	}
 	
 	public String getSelectedTerrain()

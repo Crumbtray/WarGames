@@ -86,4 +86,21 @@ public class Terrain {
 			return true;
 		}
 	}
+	
+	/**
+	 * Gets the move cost for a given unit.
+	 * @param unit
+	 * @return
+	 */
+	public int getMoveCost(Unit unit)
+	{
+		if(!this.moveCost.containsKey(unit.getMoveType()))
+		{
+			return 0;
+		}
+		else
+		{
+			return this.moveCost.get(unit.getMoveType());
+		}
+	}
 }

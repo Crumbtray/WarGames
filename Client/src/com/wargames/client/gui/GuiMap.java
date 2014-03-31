@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
+import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.model.Map;
 import com.wargames.client.model.MapException;
 
@@ -85,5 +86,17 @@ public class GuiMap {
 		
 		System.out.println("Trying to get unit at (" + realX + "," + realY + ")");
 		return graphicalUnits[realX][realY];
+	}
+	
+	public Coordinate getCoordinateOfUnit(GuiUnit unit)
+	{
+		int graphicalX = unit.getX();
+		int graphicalY = unit.getY();
+		
+		int logicalX = (graphicalX - MapOffsetX) / TILEWIDTH;
+		int logicalY = (graphicalY - MapOffsetY) / TILEHEIGHT;
+		
+		Coordinate coordinate = new Coordinate(logicalX, logicalY);
+		return coordinate;
 	}
 }

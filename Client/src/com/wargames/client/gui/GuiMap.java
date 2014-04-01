@@ -9,7 +9,7 @@ import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.model.*;
 
 public class GuiMap {
-	private Game logicalGame;
+	public Game logicalGame;
 	private GuiUnit[][] graphicalUnits;
 	private GuiTerrain[][] graphicalTerrain;
 	
@@ -137,5 +137,19 @@ public class GuiMap {
 	{
 		moveSelectedUnit(selectedUnit, moveCoordinate);
 		this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 1);
+	}
+	
+	/**
+	 * Attack without moving.
+	 * @param selectedUnit
+	 * @param victimCoordinate
+	 */
+	public void AttackUnit(GuiUnit selectedUnit, Coordinate victimCoordinate)
+	{
+		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 10);
+		if(isDead)
+		{
+			this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
+		}
 	}
 }

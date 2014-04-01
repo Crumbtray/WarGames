@@ -93,8 +93,9 @@ public class GameMouseListener implements MouseListener{
 		{
 			if(attackableUnits.contains(mouseCoordinate))
 			{
-				// Basic attack
-				System.out.println("Basic attack on (" + mouseCoordinate.x + "," + mouseCoordinate.y + ")");
+				// Simple attack
+				stationaryAttack(mouseCoordinate);
+				
 			}
 			if(validLocations.contains(mouseCoordinate))
 			{
@@ -137,18 +138,36 @@ public class GameMouseListener implements MouseListener{
 		
 	}
 	
+	/**
+	 * We reach this point when the mouse clicks on anything after the "Attack" button is selected.
+	 * @param e
+	 */
 	private void handleOnUnitAttackSelection(MouseEvent e)
 	{
 		Coordinate victimCoordinate = this.client.guiMap.getCoordinate(e.getX(), e.getY());
-		System.out.println("From (" + lastClick.x + "," + lastClick.y + ")");
-		System.out.println("Attacking unit at (" + victimCoordinate.x + "," + victimCoordinate.y + ")" );
-		Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
-		
-		//Attack code here!
-		this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
-		
-		this.mouseState = MouseState.NothingSelected;
-		this.client.repaint();
+		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(lastClick.x, lastClick.y, client.selectedUnit.getLogicalUnit(), client.guiMap.logicalGame.gameMap);
+		// Check if the spot that we clicked on is a unit we can attack		
+		if(attackableUnits.contains(victimCoordinate))
+		{
+			// We can attack this unit.
+			System.out.println("Attacking unit at (" + victimCoordinate.x + "," + victimCoordinate.y + ")" );
+			Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
+			if(moveCoordinate.equals(victimCoordinate))
+			{
+				System.out.println("Victim equals last click!");
+			}
+			
+			//Attack code here!
+			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
+			this.mouseState = MouseState.NothingSelected;
+			this.client.repaint();
+		}
+		else
+		{
+			// If we get here, we simply cancel everything.		
+			this.mouseState = MouseState.NothingSelected;
+			this.client.repaint();
+		}
 	}
 	
 	private void handleOnNothingSelected(MouseEvent e)
@@ -168,5 +187,12 @@ public class GameMouseListener implements MouseListener{
 			System.out.println("THIS SHOULD NEVER HAPPEN.");
 			e1.printStackTrace();
 		}
+	}
+	
+	private void stationaryAttack(Coordinate victimCoordinate)
+	{
+		this.client.guiMap.AttackUnit(this.client.selectedUnit, victimCoordinate);
+		this.client.revalidate();
+		this.client.repaint();
 	}
 }

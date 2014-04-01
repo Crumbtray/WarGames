@@ -54,16 +54,18 @@ public class Game {
 	 * @param y
 	 * @param damageAmount
 	 */
-	public void damageUnit(int x, int y, int damageAmount)
+	public boolean damageUnit(int x, int y, int damageAmount)
 	{
 		Unit targetUnit = gameMap.getUnitAt(x, y);
-		if(damageAmount > targetUnit.health)
+		if(damageAmount >= targetUnit.health)
 		{
 			this.gameMap.deleteUnitAt(x, y);
+			return true;
 		}
 		else
 		{
 			targetUnit.damageUnit(damageAmount);
+			return false;
 		}
 	}
 	

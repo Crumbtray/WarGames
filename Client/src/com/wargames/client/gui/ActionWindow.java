@@ -42,7 +42,7 @@ public class ActionWindow extends JDialog implements ActionListener {
 		this.listener = listener;
 		myPanel = new JPanel();
 		getContentPane().add(myPanel);
-		myPanel.setLayout(new GridLayout(actions.size(), 1));
+		myPanel.setLayout(new GridLayout(actions.size() + 1, 1));
 		
 		for(UnitActionType actionType : actions)
 		{

@@ -9,7 +9,7 @@
 #include "Terrain.h"
 #include "Unit.h"
 
-
+class CPlayer;
 class Map
 {
 private:
@@ -32,6 +32,7 @@ public:
 	uint8 getHeight();
 
 	Terrain* getTerrainAt(uint8 x, uint8 y);
+	Terrain* getTerrainUnderUnit(uint16 id);
 	uint8 addTerrain(uint8 x, uint8 y, Terrain terrain);
 	TerrainType getTerrainTypeAt(uint8 x, uint8 y);
 
@@ -39,10 +40,10 @@ public:
 	Unit *getUnit(uint16 id);
 	Unit *getUnitAt(uint8 x, uint8 y);
 
-	Unit *produceUnit(uint8 x, uint8 y, UnitType type);
+	Unit *produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type);
 	bool moveUnit(Unit* unit, uint8 new_x, uint8 new_y);
+	bool attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target);
 	bool deleteUnit(uint8 x, uint8 y);
 	bool captureStructure(uint8 x, uint8 y);
-
 };
 

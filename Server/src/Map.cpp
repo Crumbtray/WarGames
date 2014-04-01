@@ -3,6 +3,8 @@
 #include "Map.h"
 #include "Terrain.h"
 #include "TerrainBuilder.h"
+#include "UnitBuilder.h"
+#include "player.h"
 
 Map::Map(uint8 width, uint8 height, uint8 mapID)
 {
@@ -24,6 +26,20 @@ Map::Map(uint8 mapID)
 Map::~Map()
 {
 
+}
+
+uint16 Map::newUnitId()
+{
+	uint32 unitId = 1;
+	for (uint32 i = 0; i < m_unitList.size(); i++)
+	{
+		if (m_unitList.at(i)->getID() == unitId)
+		{
+			unitId++;
+			i = 0;
+		}
+	}
+	return unitId;
 }
 
 void Map::initializeTerrain()
@@ -62,6 +78,21 @@ Terrain* Map::getTerrainAt(uint8 x, uint8 y)
 	return m_terrain[x][y];
 }
 
+Terrain* Map::getTerrainUnderUnit(uint16 id)
+{
+	for (int i = 0; i < m_WIDTH; i++)
+	{
+		for (int j = 0; j < m_HEIGHT; j++)
+		{
+			if (m_terrain[i][j]->getUnit() && m_terrain[i][j]->getUnit()->getID() == id)
+			{
+				return m_terrain[i][j];
+			}
+		}
+	}
+	return NULL;
+}
+
 std::pair<uint8, uint8> Map::getUnitPos(uint16 id)
 {
 	for (int i = 0; i < m_WIDTH; i++)
@@ -87,22 +118,58 @@ Unit* Map::getUnitAt(uint8 x, uint8 y)
 	return m_terrain[x][y]->getUnit();
 }
 
-Unit* produceUnit(uint8 x, uint8 y, UnitType type)
+Unit* Map::produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type)
 {
-
+	Terrain* pos = getTerrainAt(x, y);
+	if (pos->getUnit() == NULL)
+	{
+		UnitBuilder builder(type, owner, newUnitId());
+		return builder.getResult();
+	}
+	return NULL;
 }
 
-bool moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
+bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 {
-
+	Terrain* newPos = getTerrainAt(new_x, new_y);
+	if (newPos->getUnit() == unit)
+	{
+		return true;
+	}
+	else if (newPos->getUnit() == NULL)
+	{
+		Terrain* oldPos = getTerrainUnderUnit(unit->getID());
+		oldPos->setUnit(NULL);
+		newPos->setUnit(unit);
+		//todo: reduce fuel
+		return true;
+	}
+	return false;
 }
 
-bool deleteUnit(uint8 x, uint8 y)
+bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target)
 {
-
+	if (moveUnit(unit, new_x, new_y))
+	{
+		//TODO: ammo check, range check
+		unit->attack(target);
+	}
 }
 
-bool captureStructure(uint8 x, uint8 y)
+bool Map::deleteUnit(uint8 x, uint8 y)
 {
+	Terrain* pos = getTerrainAt(x, y);
+	Unit* unit = pos->getUnit();
+	if (unit)
+	{
+		m_unitList.erase(unit->getID());
+		pos->setUnit(NULL);
+		return true;
+	}
+	return false;
+}
 
+bool Map::captureStructure(uint8 x, uint8 y)
+{
+	return false;
 }

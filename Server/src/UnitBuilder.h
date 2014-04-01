@@ -13,11 +13,14 @@
  *  of UnitBuilder, and call getResult() to get a new 
  *  fully initialized unit.
  */
+
+class CPlayer;
+
 class UnitBuilder
 {
 private:
 	UnitType m_unitType;
-	uint8 m_owner;
+	CPlayer* m_owner;
 	MobilityType m_mobilityType;
 	int m_mobility;
 	int m_cost;
@@ -28,11 +31,11 @@ private:
 public:
 	Unit *getResult();
 
-	UnitBuilder(UnitType type, uint8 owner, uint16 id);
+	UnitBuilder(UnitType type, CPlayer* owner, uint16 id);
 	~UnitBuilder();
 
 private:
-	uint8 setOwner();
+	void setOwner();
 	void buildInfantry();
 	void buildTank();
 	void buildArtillery();

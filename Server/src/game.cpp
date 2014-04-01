@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "player.h"
 
+#include "packets\entity_update.h"
 #include "packets\player_definition.h"
 #include "packets\post_game.h"
 #include "packets\turn_change.h"
@@ -103,6 +104,14 @@ uint8 CGame::getActivePlayer()
 bool CGame::isWinner(CPlayer* player)
 {
 	return player == m_winner;
+}
+
+void CGame::updateEntity(Unit* unit)
+{
+	for (auto p : playerList)
+	{
+		p->pushPacket(new CEntityUpdatePacket(unit, m_map->getUnitPos(unit->getID())));
+	}
 }
 
 namespace games

@@ -30,6 +30,8 @@ public:
 	void start();
 	void end(CPlayer* winner);
 
+	void updateEntity(Unit*);
+
 	CGame(uint8 mapID);
 	~CGame();
 };

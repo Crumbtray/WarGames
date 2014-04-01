@@ -183,6 +183,7 @@ namespace packethandler
 	void Packet0x15(session_data_t* session, CPlayer* player, int8* data)
 	{
 		CGame* game = games::getGame(player);
+		Map* map = game->getMap();
 
 		uint16 unitID = WBUFW(data, 0x02);
 		uint8 xpos = WBUFB(data, 0x03);
@@ -196,16 +197,20 @@ namespace packethandler
 		switch (action)
 		{
 		case ACTION_MOVE:
-			initiator->move(xpos, ypos);
+			map->moveUnit(initiator, xpos, ypos);
+			game->updateEntity(initiator);
 			break;
 		case ACTION_ATTACK:
-			initiator->attack(xpos, ypos, target);
+			map->attackUnit(initiator, xpos, ypos, target);
+			game->updateEntity(initiator);
+			game->updateEntity(target);
 			break;
 		case ACTION_CAPTURE:
 			initiator->capture(xpos, ypos);
 			break;
 		case ACTION_PRODUCE:
-			game->getMap()->produceUnit(xpos, ypos, (UnitType)unitID);
+			initiator = game->getMap()->produceUnit(xpos, ypos, player, (UnitType)unitID);
+			game->updateEntity(initiator);
 			break;
 		default:
 			break;

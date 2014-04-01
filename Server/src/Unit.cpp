@@ -2,7 +2,7 @@
 #include "UnitBuilder.h"
 
 
-Unit::Unit(UnitType type, uint8 owner, MobilityType mType, int mobility, int cost, int range, int vision, int id):
+Unit::Unit(UnitType type, CPlayer* owner, MobilityType mType, int mobility, int cost, int range, int vision, int id):
 m_UNIT_TYPE(type),
 m_OWNER(owner),
 m_MOBILITY_TYPE(mType),
@@ -33,7 +33,7 @@ UnitType Unit::getUnitType(){
 	return this->m_UNIT_TYPE;
 }	
 
-uint8 Unit::getOwner(){
+CPlayer* Unit::getOwner(){
 	return this->m_OWNER;
 }
 
@@ -145,15 +145,14 @@ int Unit::getArmor(){
 }
 
 //I might refactor these into the map class
-bool Unit::move(int x, int y){
+bool Unit::attack(Unit* target){
 	return false;
 }
-bool Unit::attack(int x, int y, Unit* target){
-	return false;
-}
+
 int Unit::capture(int x, int y){
 	return 0;
 }
+
 void Unit::updateIncome(int amount){
 	// TODO: update m_owner's income
 }

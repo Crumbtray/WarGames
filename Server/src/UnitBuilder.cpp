@@ -1,4 +1,5 @@
 #include "UnitBuilder.h"
+#include "player.h"
 
 /*  UnitBuilder is a helper function to set the const
 *  variables in the Unit class. The corresponding
@@ -17,7 +18,7 @@ Unit *UnitBuilder::getResult(){
 	return NULL;
 }
 
-UnitBuilder::UnitBuilder(UnitType type, uint8 owner, uint16 id){
+UnitBuilder::UnitBuilder(UnitType type, CPlayer* owner, uint16 id){
 	m_id = id;
 	m_owner = owner;
 	switch (type){
@@ -84,14 +85,12 @@ UnitBuilder::~UnitBuilder(){
 
 }
 
-uint8 UnitBuilder::setOwner(){
+void UnitBuilder::setOwner(){
 	// TODO: get current player # from game and return it
-	return 0;
 }
 
 void UnitBuilder::buildInfantry(){
 	this->m_unitType = UnitType::Infantry;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Foot;
 	this->m_mobility = 3;
 	this->m_cost = 1500;
@@ -101,7 +100,6 @@ void UnitBuilder::buildInfantry(){
 
 void UnitBuilder::buildTank(){
 	this->m_unitType = UnitType::Tank;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Tread;
 	this->m_mobility = 6;
 	this->m_cost = 7000;
@@ -111,7 +109,6 @@ void UnitBuilder::buildTank(){
 
 void UnitBuilder::buildArtillery(){
 	this->m_unitType = UnitType::Artillery;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Tread;
 	this->m_mobility = 5;
 	this->m_cost = 6000;
@@ -121,7 +118,6 @@ void UnitBuilder::buildArtillery(){
 
 void UnitBuilder::buildRecon(){
 	this->m_unitType = UnitType::Recon;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Tire;
 	this->m_mobility = 8;
 	this->m_cost = 4000;
@@ -131,7 +127,6 @@ void UnitBuilder::buildRecon(){
 
 void UnitBuilder::buildBike(){
 	this->m_unitType = UnitType::Bike;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Tire;
 	this->m_mobility = 5;
 	this->m_cost = 2500;
@@ -141,7 +136,6 @@ void UnitBuilder::buildBike(){
 
 void UnitBuilder::buildRockets(){
 	this->m_unitType = UnitType::Rockets;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Tire;
 	this->m_mobility = 5;
 	this->m_cost = 15000;
@@ -151,7 +145,6 @@ void UnitBuilder::buildRockets(){
 
 void UnitBuilder::buildMech(){
 	this->m_unitType = UnitType::Mech;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Foot;
 	this->m_mobility = 2;
 	this->m_cost = 2500;
@@ -161,7 +154,6 @@ void UnitBuilder::buildMech(){
 
 void UnitBuilder::buildFighter(){
 	this->m_unitType = UnitType::Fighter;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Air;
 	this->m_mobility = 9;
 	this->m_cost = 20000;
@@ -171,7 +163,6 @@ void UnitBuilder::buildFighter(){
 
 void UnitBuilder::buildDuster(){
 	this->m_unitType = UnitType::Duster;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Air;
 	this->m_mobility = 8;
 	this->m_cost = 13000;
@@ -181,7 +172,6 @@ void UnitBuilder::buildDuster(){
 
 void UnitBuilder::buildBomber(){
 	this->m_unitType = UnitType::Bomber;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Air;
 	this->m_mobility = 7;
 	this->m_cost = 20000;
@@ -191,7 +181,6 @@ void UnitBuilder::buildBomber(){
 
 void UnitBuilder::buildTransportCopter(){
 	this->m_unitType = UnitType::Transport_Copter;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Air;
 	this->m_mobility = 6;
 	this->m_cost = 5000;
@@ -201,7 +190,6 @@ void UnitBuilder::buildTransportCopter(){
 
 void UnitBuilder::buildBattleship(){
 	this->m_unitType = UnitType::Battleship;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Boat;
 	this->m_mobility = 5;
 	this->m_cost = 25000;
@@ -211,7 +199,6 @@ void UnitBuilder::buildBattleship(){
 
 void UnitBuilder::buildCruiser(){
 	this->m_unitType = UnitType::Cruiser;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Boat;
 	this->m_mobility = 6;
 	this->m_cost = 16000;
@@ -221,7 +208,6 @@ void UnitBuilder::buildCruiser(){
 
 void UnitBuilder::buildSubmarine(){
 	this->m_unitType = UnitType::Submarine;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Boat;
 	this->m_mobility = 6;
 	this->m_cost = 20000;
@@ -231,7 +217,6 @@ void UnitBuilder::buildSubmarine(){
 
 void UnitBuilder::buildLander(){
 	this->m_unitType = UnitType::Lander;
-	this->m_owner = setOwner();
 	this->m_mobilityType = MobilityType::Boat;
 	this->m_mobility = 6;
 	this->m_cost = 10000;

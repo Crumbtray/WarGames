@@ -6,12 +6,13 @@
 #define MAX_AMMO 20
 #define MAX_FUEL 100
 
+class CPlayer;
 class Unit
 {
 private:
 	const uint16 m_id;
 	const UnitType m_UNIT_TYPE;
-	const uint8 m_OWNER;
+	CPlayer* m_OWNER;
 	const MobilityType m_MOBILITY_TYPE;
 	const int m_MOBILITY;
 	const int m_COST;
@@ -26,17 +27,16 @@ private:
 	bool m_capturing;
 
 public:
-	bool move(int x, int y);
-	bool attack(int x, int y, Unit* target);
+	bool attack(Unit* target);
 	int capture(int x, int y);
 	void updateIncome(int amount);
 
-	Unit(UnitType type, uint8 owner, MobilityType mType, int mobility, int cost, int range, int vision, int id);
+	Unit(UnitType type, CPlayer* owner, MobilityType mType, int mobility, int cost, int range, int vision, int id);
 	~Unit();
 
 	uint16 getID();
 	UnitType getUnitType();
-	uint8 getOwner();
+	CPlayer* getOwner();
 	MobilityType getMobilityType();
 	int getMobility();
 	int getCost();

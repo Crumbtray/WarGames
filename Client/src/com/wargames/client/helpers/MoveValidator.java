@@ -1,7 +1,6 @@
 package com.wargames.client.helpers;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import com.wargames.client.model.*;
 
@@ -25,7 +24,7 @@ public class MoveValidator {
 			ArrayList<Coordinate> neighbours = new ArrayList<Coordinate>();
 			for(Coordinate validCoord : validLocations)
 			{
-				ArrayList<Coordinate> potentialNeighbours = getNeighbours(validCoord.x, validCoord.y);
+				ArrayList<Coordinate> potentialNeighbours = getNeighbours(validCoord.x, validCoord.y, unit, gameMap);
 				for(Coordinate potentialNeighbour : potentialNeighbours)
 				{
 					if(!validLocations.contains(potentialNeighbour))
@@ -45,8 +44,14 @@ public class MoveValidator {
 						int moveCost = associatedTerrain.getMoveCost(unit);
 						if(remainingMobility >= moveCost)
 						{
-							// Unit can move onto this square.  Add it to the list.
-							validLocations.add(neighbourCoord);
+							// Unit can move onto this square.
+							// Check if it's occupied.
+							if(gameMap.getUnitAt(neighbourCoord.x, neighbourCoord.y) == null)
+							{
+								// Unoccupied. Add it to the list.
+								validLocations.add(neighbourCoord);
+							}
+							
 						}
 					}
 				}
@@ -65,7 +70,7 @@ public class MoveValidator {
 	 * @param startY
 	 * @return
 	 */
-	public static ArrayList<Coordinate> getNeighbours(int startX, int startY)
+	public static ArrayList<Coordinate> getNeighbours(int startX, int startY, Unit playerUnit, Map gameMap)
 	{
 		ArrayList<Coordinate> neighbours = new ArrayList<Coordinate>();
 		ArrayList<Coordinate> potentialNeighbours = new ArrayList<Coordinate>();
@@ -82,10 +87,108 @@ public class MoveValidator {
 		{
 			if(coordinate.x <= 15 && coordinate.x >= 0 && coordinate.y <= 15 && coordinate.y >= 0)
 			{
-				neighbours.add(coordinate);
+				// Check if neighbour has enemy on it.
+				if(gameMap.getUnitAt(coordinate.x, coordinate.y) != null)
+				{
+					// Someone's here!
+					Unit unit = gameMap.getUnitAt(coordinate.x, coordinate.y);
+					if(unit.getOwner() == playerUnit.getOwner())
+					{
+						// Friendly
+						neighbours.add(coordinate);
+					}
+				}
+				else
+				{
+					neighbours.add(coordinate);
+				}			
 			}
 		}
 				
 		return neighbours;
+	}
+	
+	public static ArrayList<Coordinate> getAttackableCoordinates(int startX, int startY, Unit playerUnit, Map gameMap)
+	{
+		ArrayList<Coordinate> attackableCoords = new ArrayList<Coordinate>();
+		if(playerUnit.canMoveAndAttack())
+		{
+			ArrayList<Coordinate> moveableSpots = validLocations(startX, startY, playerUnit, gameMap);
+			for(Coordinate moveable : moveableSpots)
+			{
+				for(Coordinate attackableCoordinate : getAttackableNeighbours(moveable, playerUnit, gameMap))
+				{
+					if(!attackableCoords.contains(attackableCoordinate))
+					{
+						attackableCoords.add(attackableCoordinate);
+					}
+				}
+			}
+		}
+		else
+		{
+			
+		}
+		return attackableCoords;
+	}
+	
+	private static ArrayList<Coordinate> getAttackableNeighbours(Coordinate startingPosition, Unit playerUnit, Map gameMap)
+	{
+		ArrayList<Coordinate> validAttacks = new ArrayList<Coordinate>();
+		int northernY = startingPosition.y - 1;
+		int southernY = startingPosition.y + 1;
+		int westernX = startingPosition.x - 1;
+		int easternX = startingPosition.x + 1;
+		
+		// Check North
+		if(northernY >= 0)
+		{
+			if(gameMap.getUnitAt(startingPosition.x, northernY) != null)
+			{
+				Unit potentialEnemyUnit = gameMap.getUnitAt(startingPosition.x, northernY);
+				if(potentialEnemyUnit.getOwner() != playerUnit.getOwner())
+				{
+					validAttacks.add(new Coordinate(startingPosition.x, northernY));
+				}
+			}
+		}
+		// Check South
+		if(southernY <= 15)
+		{
+			if(gameMap.getUnitAt(startingPosition.x, southernY) != null)
+			{
+				Unit potentialEnemyUnit = gameMap.getUnitAt(startingPosition.x, southernY);
+				if(potentialEnemyUnit.getOwner() != playerUnit.getOwner())
+				{
+					validAttacks.add(new Coordinate(startingPosition.x, southernY));
+				}
+			}
+		}
+		//Check West
+		if(westernX >= 0)
+		{
+			if(gameMap.getUnitAt(westernX, startingPosition.y) != null)
+			{
+				Unit potentialEnemyUnit = gameMap.getUnitAt(westernX, startingPosition.y);
+				if(potentialEnemyUnit.getOwner() != playerUnit.getOwner())
+				{
+					validAttacks.add(new Coordinate(westernX, startingPosition.y));
+				}
+			}
+		}
+		// Check East
+		if(easternX <= 15)
+		{
+			if(gameMap.getUnitAt(easternX, startingPosition.y) != null)
+			{
+				Unit potentialEnemyUnit = gameMap.getUnitAt(easternX, startingPosition.y);
+				if(potentialEnemyUnit.getOwner() != playerUnit.getOwner())
+				{
+					validAttacks.add(new Coordinate(easternX, startingPosition.y));
+				}
+			}
+		}
+
+		return validAttacks;
 	}
 }

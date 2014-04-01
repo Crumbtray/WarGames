@@ -1,16 +1,13 @@
 package com.wargames.client.gui;
 
-import java.awt.Font;
 import java.awt.Graphics;
 
-import javax.swing.JLabel;
-
 import com.wargames.client.helpers.Coordinate;
-import com.wargames.client.model.Map;
-import com.wargames.client.model.MapException;
+import com.wargames.client.model.Game;
+import com.wargames.client.model.*;
 
 public class GuiMap {
-	private Map logicalMap;
+	private Game logicalGame;
 	private GuiUnit[][] graphicalUnits;
 	private GuiTerrain[][] graphicalTerrain;
 	
@@ -21,11 +18,11 @@ public class GuiMap {
 	private int mapWidth;
 	private int mapHeight;
 	
-	public GuiMap(Map gameMap)
+	public GuiMap(Game logicalGame)
 	{
-		this.logicalMap = gameMap;
-		mapWidth = gameMap.getWidth();
-		mapHeight = gameMap.getHeight();
+		this.logicalGame = logicalGame;
+		mapWidth = logicalGame.gameMap.getWidth();
+		mapHeight = logicalGame.gameMap.getHeight();
 		this.graphicalUnits = new GuiUnit[mapWidth][mapHeight];
 		this.graphicalTerrain = new GuiTerrain[mapWidth][mapHeight];
 		
@@ -33,11 +30,11 @@ public class GuiMap {
 		{
 			for(int j = 0; j < mapHeight; j++)
 			{
-				GuiTerrain newGuiTerrain = new GuiTerrain(gameMap.getTerrainAt(i, j), i * TILEWIDTH + MapOffsetX, j * TILEHEIGHT + MapOffsetY);
+				GuiTerrain newGuiTerrain = new GuiTerrain(logicalGame.gameMap.getTerrainAt(i, j), i * TILEWIDTH + MapOffsetX, j * TILEHEIGHT + MapOffsetY);
 				this.graphicalTerrain[i][j] = newGuiTerrain;
-				if(gameMap.getUnitAt(i, j) != null)
+				if(logicalGame.gameMap.getUnitAt(i, j) != null)
 				{
-					this.graphicalUnits[i][j] = new GuiUnit(gameMap.getUnitAt(i,j), i * TILEWIDTH + MapOffsetX, j * TILEHEIGHT + MapOffsetY);
+					this.graphicalUnits[i][j] = new GuiUnit(logicalGame.gameMap.getUnitAt(i,j), i * TILEWIDTH + MapOffsetX, j * TILEHEIGHT + MapOffsetY);
 				}
 			}
 		}
@@ -54,7 +51,8 @@ public class GuiMap {
 				if(graphicalUnits[i][j] != null)
 				{
 					GuiUnit unit = graphicalUnits[i][j];
-					g.drawImage(unit.getImage(), unit.getX(), unit.getY(), null);		
+					g.drawImage(unit.getImage(), unit.getX(), unit.getY(), null);
+					g.drawImage(unit.getHealthImage(), unit.getX(), unit.getY(), null);
 				}
 			}
 		}
@@ -94,5 +92,31 @@ public class GuiMap {
 		
 		Coordinate coordinate = new Coordinate(logicalX, logicalY);
 		return coordinate;
+	}
+	
+	public Coordinate getCoordinate(int x, int y)
+	{
+		int translatedX = (x - MapOffsetX) / TILEWIDTH;
+		int translatedY = (y - MapOffsetY) / TILEHEIGHT;
+		Coordinate coordinate = new Coordinate(translatedX, translatedY);
+		return coordinate;
+	}
+	
+	/**
+	 * Used when you want to move the currently selected unit on the field.
+	 * @param selectedUnit
+	 * @param destinationCoordinate
+	 */
+	public void moveSelectedUnit(GuiUnit selectedUnit, Coordinate destinationCoordinate)
+	{
+		Coordinate selectedUnitCoordinates = getCoordinateOfUnit(selectedUnit);
+		this.logicalGame.moveUnit(selectedUnitCoordinates.x, selectedUnitCoordinates.y, destinationCoordinate.x, destinationCoordinate.y);
+		// If everything is OK, we update the unit's position
+		selectedUnit.setX(destinationCoordinate.x * TILEWIDTH + MapOffsetX);
+		selectedUnit.setY(destinationCoordinate.y * TILEHEIGHT + MapOffsetY);
+		
+		graphicalUnits[destinationCoordinate.x][destinationCoordinate.y] = selectedUnit;
+		graphicalUnits[selectedUnitCoordinates.x][selectedUnitCoordinates.y] = null;
+		System.out.println(graphicalUnits[destinationCoordinate.x][destinationCoordinate.y].getClass());
 	}
 }

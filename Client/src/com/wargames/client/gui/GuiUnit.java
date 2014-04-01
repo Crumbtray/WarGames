@@ -44,9 +44,26 @@ public class GuiUnit {
 		return this.logicalUnit;
 	}
 	
+	public Image getHealthImage()
+	{
+		String filename = this.logicalUnit.health + ".png";
+		URL urlUnitImage = getClass().getResource("/com/wargames/client/gui/img/" + filename);
+		return new ImageIcon(urlUnitImage).getImage();
+	}
+	
 	public int getX()
 	{
 		return this.x;
+	}
+	
+	public void setX(int x)
+	{
+		this.x = x;
+	}
+	
+	public void setY(int y)
+	{
+		this.y = y;
 	}
 	
 	public int getY()

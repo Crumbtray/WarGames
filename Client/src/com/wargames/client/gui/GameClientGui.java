@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -43,6 +42,7 @@ public class GameClientGui extends JPanel {
 	private JTextArea lblSelectedUnit;
 	private JTextArea lblGameState;
 	private JButton endTurnButton;
+	public JFrame f;
 	
 	public GameClientGui()
 	{
@@ -57,7 +57,7 @@ public class GameClientGui extends JPanel {
 		game = new Game(MapGenerator.generateMap01(player1, player2));
 		
 		// Wrap our Map around the game Map
-		guiMap = new GuiMap(game.gameMap);
+		guiMap = new GuiMap(game);
 		
 		
 		// label to display game state
@@ -106,7 +106,7 @@ public class GameClientGui extends JPanel {
 		
 		// create application frame and set visible
 		//
-		JFrame f = new JFrame();
+		f = new JFrame();
 		f.setSize(100, 100);
 		f.setVisible(true);
 		f.setResizable(true);
@@ -144,12 +144,19 @@ public class GameClientGui extends JPanel {
 				int highlightX = validLocation.x * 32 + 44;
 				int highlightY = validLocation.y * 32 + 44;
 				
-				// draw a black drop shadow by drawing a black rectangle with an offset of 1 pixel
-				g.setColor(Color.BLACK);
-				g.drawRoundRect( highlightX, highlightY, 32, 32, 10, 10);
 				// draw the highlight
-				g.setColor(Color.GREEN);
-				g.drawRoundRect( highlightX, highlightY, 32, 32, 10, 10);
+				g.setColor(new Color(0, 255, 0, 100));
+				g.fillRoundRect( highlightX, highlightY, 32, 32, 10, 10);
+			}
+			ArrayList<Coordinate> attackables = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, selectedUnit.getLogicalUnit(), this.game.gameMap);
+			for(Coordinate attackable : attackables)
+			{
+				int highlightX = attackable.x * 32 + 44;
+				int highlightY = attackable.y * 32 + 44;
+				
+				// draw the highlight
+				g.setColor(new Color(255, 0, 0, 100));
+				g.fillRoundRect( highlightX, highlightY, 32, 32, 10, 10);
 			}
 		}
 	}
@@ -189,9 +196,6 @@ public class GameClientGui extends JPanel {
 		{
 			activeString = "Inactive";
 		}
-		
-		
-		
 		return logicalUnit.getUnitType().toString() + "\n" + logicalUnit.getDescription() + "\n\nHealth: " + logicalUnit.health + "\nRange: " + logicalUnit.getRange() + "\nMobility: " + logicalUnit.getMobility() + "\nActive: " + activeString; 
 	}
 	
@@ -218,6 +222,7 @@ public class GameClientGui extends JPanel {
 		}
 		return returnString;
 	}
+
 	
 	public static void main(String[] args)
 	{

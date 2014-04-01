@@ -14,8 +14,9 @@ public class Unit {
 	private String description;
 	private Player owner;
 	private boolean isActive;
+	private boolean canMoveAndAttack;
 	
-	private Unit(UnitType unitType, int health, MoveType moveType, int range, int mobility, String description, Player owner)
+	private Unit(UnitType unitType, int health, MoveType moveType, int range, int mobility, String description, Player owner, boolean canMoveAndAttack)
 	{
 		this.unitType = unitType;
 		this.health = health;
@@ -24,6 +25,7 @@ public class Unit {
 		this.mobility = mobility;
 		this.description = description;
 		this.owner = owner;
+		this.canMoveAndAttack = canMoveAndAttack;
 	}
 	
 	/**
@@ -32,7 +34,7 @@ public class Unit {
 	 */
 	public static Unit createSoldier(Player owner) 
 	{
-		Unit newUnit = new Unit(UnitType.SOLDIER, 10, MoveType.FOOT, 1, 3, "The cheapest unit.  They can capture bases.", owner);
+		Unit newUnit = new Unit(UnitType.SOLDIER, 10, MoveType.FOOT, 1, 3, "The cheapest unit.  They can capture bases.", owner, true);
 		newUnit.deactivate();
 		return newUnit;
 	}
@@ -44,14 +46,14 @@ public class Unit {
 	 */
 	public static Unit createTank(Player owner)
 	{
-		Unit newUnit = new Unit(UnitType.TANK, 10, MoveType.TANK, 1, 6, "Tanks are heavy damage dealers.", owner);
+		Unit newUnit = new Unit(UnitType.TANK, 10, MoveType.TANK, 1, 6, "Tanks are heavy damage dealers.", owner, true);
 		newUnit.deactivate();
 		return newUnit;
 	}
 	
 	public static Unit createArtillery(Player owner)
 	{
-		Unit newUnit = new Unit(UnitType.ARTILLERY, 10, MoveType.TIRE, 1, 5, "Artillery are ranged attackers.", owner);
+		Unit newUnit = new Unit(UnitType.ARTILLERY, 10, MoveType.TIRE, 1, 5, "Artillery are ranged attackers.", owner, false);
 		newUnit.deactivate();
 		return newUnit;
 	}
@@ -105,5 +107,10 @@ public class Unit {
 	{
 		this.health = this.health - damage;
 		return this.health;
+	}
+	
+	public boolean canMoveAndAttack()
+	{
+		return this.canMoveAndAttack;
 	}
 }

@@ -116,12 +116,10 @@ public class Game {
 		{
 			// Change the currentTurn to the other player.
 			int nextPlayerNumber = player.playerNumber + 1;
-			System.out.println("Players size: " + gameMap.players.size());
 			if(nextPlayerNumber >= gameMap.players.size())
 			{
 				nextPlayerNumber = 0;
 			}
-			System.out.println("Next player index is: " + nextPlayerNumber);
 			Player nextPlayer = gameMap.players.get(nextPlayerNumber);
 			setTurn(nextPlayer);
 			

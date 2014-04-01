@@ -89,9 +89,12 @@ public class GameMouseListener implements MouseListener{
 		{
 			System.out.println("MY UNIT CONTROLLABLE.");
 			// Open the action window here.
-			ActionWindow actionWindow = new ActionWindow();
-			this.client.add(actionWindow);
-			this.client.repaint();
+			// Get all possible actions
+			ArrayList<UnitActionType> possibleActions = new ArrayList<UnitActionType>();
+			possibleActions.add(UnitActionType.Move);
+			possibleActions.add(UnitActionType.Attack);
+			ActionWindow actionWindow = new ActionWindow(client, e, possibleActions);
+			this.mouseState = MouseState.NothingSelected;
 		}
 		else
 		{

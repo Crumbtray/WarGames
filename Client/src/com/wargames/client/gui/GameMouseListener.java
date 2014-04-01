@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.model.MapException;
+import com.wargames.client.model.TerrainType;
 import com.wargames.client.model.Unit;
 
 public class GameMouseListener implements MouseListener{
@@ -49,9 +50,6 @@ public class GameMouseListener implements MouseListener{
 					case FactorySelected:
 						handleOnFactorySelected(e);
 						break;
-					case UnitActionSelection:
-						handleOnUnitActionSelection(e);
-						break;
 					case FindingAttackTarget:
 						handleOnUnitAttackSelection(e);
 						break;
@@ -84,18 +82,19 @@ public class GameMouseListener implements MouseListener{
 		int mouseXPosition = e.getX();
 		int mouseYPosition = e.getY();
 		Coordinate unitCoordinate = this.client.guiMap.getCoordinateOfUnit(this.client.selectedUnit);
-		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.game.gameMap);
-		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.game.gameMap);
+		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.guiMap.logicalGame.gameMap);
+		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.guiMap.logicalGame.gameMap);
 		
 		// If we click anywhere outside the valid locations, we go back to nothing selected state.
 		Coordinate mouseCoordinate = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
-		if(this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.game.currentTurn)
+		if(this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.guiMap.logicalGame.currentTurn)
 		{
 			if(attackableUnits.contains(mouseCoordinate))
 			{
 				// Simple attack
 				stationaryAttack(mouseCoordinate);
-				
+				this.mouseState = MouseState.NothingSelected;
+				this.client.repaint();
 			}
 			if(validLocations.contains(mouseCoordinate))
 			{
@@ -130,12 +129,8 @@ public class GameMouseListener implements MouseListener{
 	
 	private void handleOnFactorySelected(MouseEvent e)
 	{
-		
-	}
-	
-	private void handleOnUnitActionSelection(MouseEvent e)
-	{
-		
+		System.out.println("Create a unit!");
+		this.mouseState = MouseState.NothingSelected;
 	}
 	
 	/**
@@ -152,10 +147,6 @@ public class GameMouseListener implements MouseListener{
 			// We can attack this unit.
 			System.out.println("Attacking unit at (" + victimCoordinate.x + "," + victimCoordinate.y + ")" );
 			Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
-			if(moveCoordinate.equals(victimCoordinate))
-			{
-				System.out.println("Victim equals last click!");
-			}
 			
 			//Attack code here!
 			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
@@ -177,9 +168,20 @@ public class GameMouseListener implements MouseListener{
 		try {
 			this.client.selectedTerrain = this.client.guiMap.getTerrainAt(mouseXPosition, mouseYPosition);
 			this.client.selectedUnit = this.client.guiMap.getUnitAt(mouseXPosition, mouseYPosition);
-			if(this.client.selectedUnit != null && this.client.selectedUnit.getLogicalUnit().isActive())
+			if(this.client.selectedUnit != null)
 			{
-				this.mouseState = MouseState.UnitSelected;
+				if(this.client.selectedUnit.getLogicalUnit().isActive())
+				{
+					this.mouseState = MouseState.UnitSelected;
+				}				
+			}	
+			else if(this.client.selectedTerrain.getLogicalTerrain().terrainType.equals(TerrainType.Factory))
+			{
+				this.mouseState = MouseState.FactorySelected;
+				// We open the Build Unit Window.
+				Coordinate factoryLocation = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
+				FactoryWindow factoryWindow = new FactoryWindow(this.client, factoryLocation);
+				System.out.println("Factory Selected!");
 			}
 			this.client.repaint();
 		} catch (MapException e1) {

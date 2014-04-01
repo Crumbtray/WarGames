@@ -125,6 +125,7 @@ public class GuiMap {
 		
 		graphicalUnits[destinationCoordinate.x][destinationCoordinate.y] = selectedUnit;
 		graphicalUnits[selectedUnitCoordinates.x][selectedUnitCoordinates.y] = null;
+		selectedUnit.getLogicalUnit().deactivate();
 	}
 	
 	/**
@@ -136,7 +137,12 @@ public class GuiMap {
 	public void moveAttackUnit(GuiUnit selectedUnit, Coordinate moveCoordinate, Coordinate victimCoordinate)
 	{
 		moveSelectedUnit(selectedUnit, moveCoordinate);
-		this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 1);
+		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 1);
+		if(isDead)
+		{
+			this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
+		}
+		selectedUnit.getLogicalUnit().deactivate();
 	}
 	
 	/**
@@ -146,10 +152,11 @@ public class GuiMap {
 	 */
 	public void AttackUnit(GuiUnit selectedUnit, Coordinate victimCoordinate)
 	{
-		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 10);
+		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 1);
 		if(isDead)
 		{
 			this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
 		}
+		selectedUnit.getLogicalUnit().deactivate();
 	}
 }

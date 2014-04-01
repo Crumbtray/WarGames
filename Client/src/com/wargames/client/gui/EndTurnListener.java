@@ -20,8 +20,7 @@ public class EndTurnListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("Trying to end turn...");
-		this.client.game.endTurn(this.client.game.currentTurn);
+		this.client.guiMap.logicalGame.endTurn(this.client.guiMap.logicalGame.currentTurn);
 		this.client.repaint();
 	}
 

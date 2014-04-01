@@ -191,21 +191,22 @@ namespace packethandler
 		uint16 targetID = WBUFW(data, 0x07);
 
 		Unit* initiator = game->getUnit(unitID);
-		Unit* target = game->getUnit(unitID);
+		Unit* target = game->getUnit(targetID);
+		uint8 currentPlayer = game->getActivePlayer();
 
 		switch (action)
 		{
 		case ACTION_MOVE:
-			initiator->move(xpos, ypos);
+			game->getMap()->moveUnit(initiator, xpos, ypos);
 			break;
 		case ACTION_ATTACK:
-			initiator->attack(xpos, ypos, target);
+			game->getMap()->attackUnit(initiator, xpos, ypos, target);
 			break;
 		case ACTION_CAPTURE:
-			initiator->capture(xpos, ypos);
+			game->getMap()->captureStructure(xpos, ypos, currentPlayer);
 			break;
 		case ACTION_PRODUCE:
-			game->getMap()->produceUnit(xpos, ypos, (UnitType)unitID);
+			game->getMap()->produceUnit(xpos, ypos, (UnitType)unitID, currentPlayer);
 			break;
 		default:
 			break;

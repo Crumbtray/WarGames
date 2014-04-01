@@ -99,7 +99,8 @@ void Unit::damageUnit(int damage){
 	this->m_health -= damage;
 }
 
-//returns true if unit has captured the current position
+// returns true if unit has captured the current position,
+// and false if the unit just started capturing
 bool Unit::capture(){
 	if (this->m_capturing == false){
 		//unit has started capturing this position
@@ -144,7 +145,7 @@ int Unit::getArmor(){
 	return this->m_armor;
 }
 
-//I might refactor these into the map class
+/*I might refactor these into the map class
 bool Unit::move(int x, int y){
 	return false;
 }
@@ -156,4 +157,4 @@ int Unit::capture(int x, int y){
 }
 void Unit::updateIncome(int amount){
 	// TODO: update m_owner's income
-}
+}*/

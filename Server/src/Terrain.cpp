@@ -20,6 +20,10 @@ Unit *Terrain::getUnit(){
 	return this->m_unit;
 }
 
+TerrainType Terrain::getType(){
+	return this->m_TYPE;
+}
+
 Unit *Terrain::setUnit(Unit *unit){
 	this->m_unit = unit;
 	return this->m_unit;

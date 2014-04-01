@@ -25,11 +25,11 @@ private:
 	int m_fuel;
 	bool m_capturing;
 
-public:
+public:/*
 	bool move(int x, int y);
 	bool attack(int x, int y, Unit* target);
 	int capture(int x, int y);
-	void updateIncome(int amount);
+	void updateIncome(int amount);*/
 
 	Unit(UnitType type, uint8 owner, MobilityType mType, int mobility, int cost, int range, int vision, int id);
 	~Unit();

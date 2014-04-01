@@ -108,6 +108,14 @@ public class MoveValidator {
 		return neighbours;
 	}
 	
+	/**
+	 * Gets the squares where there is an enemy unit that the playerUnit can attack.
+	 * @param startX
+	 * @param startY
+	 * @param playerUnit
+	 * @param gameMap
+	 * @return
+	 */
 	public static ArrayList<Coordinate> getAttackableCoordinates(int startX, int startY, Unit playerUnit, Map gameMap)
 	{
 		ArrayList<Coordinate> attackableCoords = new ArrayList<Coordinate>();
@@ -190,5 +198,27 @@ public class MoveValidator {
 		}
 
 		return validAttacks;
+	}
+	
+	/**
+	 * Checks if the two coordinates are adjacent to each other.
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static boolean isNeighbour(Coordinate a, Coordinate b)
+	{
+		if(Math.abs(a.x - b.x) == 1 && (a.y == b.y))
+		{
+			return true;
+		}
+		else if(Math.abs(a.y - b.y) == 1 && (a.x == b.x))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.model.MapException;
+import com.wargames.client.model.Unit;
 
 public class GameMouseListener implements MouseListener{
 
-	private MouseState mouseState;
+	public MouseState mouseState;
 	private GameClientGui client;
+	public Coordinate lastClick;
 	
 	public GameMouseListener(GameClientGui client)
 	{
@@ -50,6 +52,9 @@ public class GameMouseListener implements MouseListener{
 					case UnitActionSelection:
 						handleOnUnitActionSelection(e);
 						break;
+					case FindingAttackTarget:
+						handleOnUnitAttackSelection(e);
+						break;
 				}
 				
 			}
@@ -80,21 +85,39 @@ public class GameMouseListener implements MouseListener{
 		int mouseYPosition = e.getY();
 		Coordinate unitCoordinate = this.client.guiMap.getCoordinateOfUnit(this.client.selectedUnit);
 		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.game.gameMap);
-
+		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.game.gameMap);
+		
 		// If we click anywhere outside the valid locations, we go back to nothing selected state.
-		int logicalPositionX = (mouseXPosition - 44) / 32;
-		int logicalPositionY = (mouseYPosition - 44) / 32;
-		Coordinate mouseCoordinate = new Coordinate(logicalPositionX, logicalPositionY);
-		if(validLocations.contains(mouseCoordinate) && (this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.game.currentTurn))
+		Coordinate mouseCoordinate = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
+		if(this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.game.currentTurn)
 		{
-			System.out.println("MY UNIT CONTROLLABLE.");
-			// Open the action window here.
-			// Get all possible actions
-			ArrayList<UnitActionType> possibleActions = new ArrayList<UnitActionType>();
-			possibleActions.add(UnitActionType.Move);
-			possibleActions.add(UnitActionType.Attack);
-			ActionWindow actionWindow = new ActionWindow(client, e, possibleActions);
-			this.mouseState = MouseState.NothingSelected;
+			if(attackableUnits.contains(mouseCoordinate))
+			{
+				// Basic attack
+				System.out.println("Basic attack on (" + mouseCoordinate.x + "," + mouseCoordinate.y + ")");
+			}
+			if(validLocations.contains(mouseCoordinate))
+			{
+				ArrayList<UnitActionType> possibleActions = new ArrayList<UnitActionType>();
+				// If it's a square adjacent to an attackable unit, valid actions are Move and Attack
+				for(Coordinate attackableUnit : attackableUnits)
+				{
+					if(MoveValidator.isNeighbour(mouseCoordinate, attackableUnit))
+					{
+						if(client.selectedUnit.getLogicalUnit().canMoveAndAttack())
+						{
+							possibleActions.add(UnitActionType.Attack);
+						}
+					}
+				}
+				
+				// Open the action window here.
+				// Get all possible actions
+
+				possibleActions.add(UnitActionType.Move);
+				
+				ActionWindow actionWindow = new ActionWindow(client, e, possibleActions, this);
+			}
 		}
 		else
 		{
@@ -102,7 +125,6 @@ public class GameMouseListener implements MouseListener{
 			this.mouseState = MouseState.NothingSelected;
 			handleOnNothingSelected(e);
 		}
-		
 	}
 	
 	private void handleOnFactorySelected(MouseEvent e)
@@ -113,6 +135,20 @@ public class GameMouseListener implements MouseListener{
 	private void handleOnUnitActionSelection(MouseEvent e)
 	{
 		
+	}
+	
+	private void handleOnUnitAttackSelection(MouseEvent e)
+	{
+		Coordinate victimCoordinate = this.client.guiMap.getCoordinate(e.getX(), e.getY());
+		System.out.println("From (" + lastClick.x + "," + lastClick.y + ")");
+		System.out.println("Attacking unit at (" + victimCoordinate.x + "," + victimCoordinate.y + ")" );
+		Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
+		
+		//Attack code here!
+		this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
+		
+		this.mouseState = MouseState.NothingSelected;
+		this.client.repaint();
 	}
 	
 	private void handleOnNothingSelected(MouseEvent e)
@@ -133,5 +169,4 @@ public class GameMouseListener implements MouseListener{
 			e1.printStackTrace();
 		}
 	}
-	
 }

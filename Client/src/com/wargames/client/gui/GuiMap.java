@@ -1,9 +1,11 @@
 package com.wargames.client.gui;
 
 import java.awt.Graphics;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
 
 import com.wargames.client.helpers.Coordinate;
-import com.wargames.client.model.Game;
 import com.wargames.client.model.*;
 
 public class GuiMap {
@@ -53,6 +55,11 @@ public class GuiMap {
 					GuiUnit unit = graphicalUnits[i][j];
 					g.drawImage(unit.getImage(), unit.getX(), unit.getY(), null);
 					g.drawImage(unit.getHealthImage(), unit.getX(), unit.getY(), null);
+					if(!unit.getLogicalUnit().isActive())
+					{
+						URL urlUnitImage = getClass().getResource("/com/wargames/client/gui/img/disabled.png");
+						g.drawImage(new ImageIcon(urlUnitImage).getImage(), unit.getX(), unit.getY(), null);
+					}
 				}
 			}
 		}
@@ -111,12 +118,24 @@ public class GuiMap {
 	{
 		Coordinate selectedUnitCoordinates = getCoordinateOfUnit(selectedUnit);
 		this.logicalGame.moveUnit(selectedUnitCoordinates.x, selectedUnitCoordinates.y, destinationCoordinate.x, destinationCoordinate.y);
+		
 		// If everything is OK, we update the unit's position
 		selectedUnit.setX(destinationCoordinate.x * TILEWIDTH + MapOffsetX);
 		selectedUnit.setY(destinationCoordinate.y * TILEHEIGHT + MapOffsetY);
 		
 		graphicalUnits[destinationCoordinate.x][destinationCoordinate.y] = selectedUnit;
 		graphicalUnits[selectedUnitCoordinates.x][selectedUnitCoordinates.y] = null;
-		System.out.println(graphicalUnits[destinationCoordinate.x][destinationCoordinate.y].getClass());
+	}
+	
+	/**
+	 * SelectedUnit attacks the unit at victimCoordinate, by moving to moveCoordinate.
+	 * @param selectedUnit
+	 * @param moveCoordinate
+	 * @param victimCoordinate
+	 */
+	public void moveAttackUnit(GuiUnit selectedUnit, Coordinate moveCoordinate, Coordinate victimCoordinate)
+	{
+		moveSelectedUnit(selectedUnit, moveCoordinate);
+		this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 1);
 	}
 }

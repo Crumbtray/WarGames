@@ -31,16 +31,18 @@ public class ActionWindow extends JDialog implements ActionListener {
 	private static final long serialVersionUID = -777333000945971309L;
 	private JPanel myPanel = null;
 	private GameClientGui client;
+	private GameMouseListener listener;
 	
 	private int mouseClickX;
 	private int mouseClickY;
 
-	public ActionWindow(GameClientGui client, MouseEvent e, ArrayList<UnitActionType> actions) {
+	public ActionWindow(GameClientGui client, MouseEvent e, ArrayList<UnitActionType> actions, GameMouseListener listener) {
 		super(client.f, true);
 		this.client = client;
+		this.listener = listener;
 		myPanel = new JPanel();
 		getContentPane().add(myPanel);
-		myPanel.setLayout(new GridLayout(3, 1));
+		myPanel.setLayout(new GridLayout(actions.size(), 1));
 		
 		for(UnitActionType actionType : actions)
 		{
@@ -69,14 +71,19 @@ public class ActionWindow extends JDialog implements ActionListener {
 		{
 		case "Attack":
 			System.out.println("Attacking!");
+			listener.mouseState = MouseState.FindingAttackTarget;
+			listener.lastClick = client.guiMap.getCoordinate(mouseClickX, mouseClickY);
 			break;
 		case "Move":
 			System.out.println("Moved!");
 			client.guiMap.moveSelectedUnit(client.selectedUnit, client.guiMap.getCoordinate(mouseClickX, mouseClickY));
+			listener.mouseState = MouseState.NothingSelected;
 			break;
 		case "Capture":
 			System.out.println("Capturing!");
 			break;
+		default:
+			listener.mouseState = MouseState.NothingSelected;
 		}
 		client.repaint();
 		this.dispose();

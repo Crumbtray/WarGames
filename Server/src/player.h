@@ -24,6 +24,8 @@ public:
 	void SetName(const char*);
 	void SetWins(uint32);
 	void SetLosses(uint32);
+	void AddWin();
+	void AddLoss();
 	void SetTeam(uint8);
 	void SetColor(uint8);
 	void SetMoney(int32);

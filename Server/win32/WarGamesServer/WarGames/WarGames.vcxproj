@@ -112,6 +112,9 @@
     <ClCompile Include="..\..\..\src\packet_handler.cpp" />
     <ClCompile Include="..\..\..\src\player.cpp" />
     <ClCompile Include="..\..\..\src\server.cpp" />
+    <ClCompile Include="..\..\..\src\TerrainBuilder.cpp" />
+    <ClCompile Include="..\..\..\src\Unit.cpp" />
+    <ClCompile Include="..\..\..\src\UnitBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\game.h" />

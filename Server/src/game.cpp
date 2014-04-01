@@ -66,6 +66,15 @@ void CGame::end(CPlayer* winner)
 	for (auto p : playerList)
 	{
 		p->pushPacket(new CPostGamePacket(winner, this));
+
+		if (p == m_winner)
+		{
+			p->AddWin();
+		}
+		else
+		{
+			p->AddLoss();
+		}
 	}
 }
 

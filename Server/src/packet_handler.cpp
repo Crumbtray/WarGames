@@ -12,6 +12,7 @@
 #include "packets\action.h"
 #include "packets\lobby_chat.h"
 #include "packets\lobby_countdown.h"
+#include "packets\lobby_list.h"
 #include "packets\lobby_update.h"
 #include "packets\login.h"
 
@@ -27,7 +28,7 @@ namespace packethandler
 
 	void Packet0x01(session_data_t* session, CPlayer* player, int8* data)
 	{
-		char* query = "SELECT id, handle FROM accounts WHERE handle = '%s' AND password = PASSWORD('%s');";
+		char* query = "SELECT id, handle, wins, losses FROM accounts WHERE handle = '%s' AND password = PASSWORD('%s');";
 
 		char handle[11];
 		memset(handle, 0, sizeof handle);
@@ -52,7 +53,10 @@ namespace packethandler
 				delete session->PPlayer;
 				session->PPlayer = new CPlayer(Sql_GetUIntData(SqlHandle, 0));
 				session->PPlayer->SetName(handle);
+				session->PPlayer->SetWins(Sql_GetUIntData(SqlHandle, 2));
+				session->PPlayer->SetLosses(Sql_GetUIntData(SqlHandle, 3));
 				session->PPlayer->pushPacket(new CLoginPacket(session->PPlayer, LOGIN_SUCCESS));
+				session->PPlayer->pushPacket(new CLobbyListPacket());
 				ShowDebug("Player %s has logged in\n", session->PPlayer->GetName());
 			}
 			else

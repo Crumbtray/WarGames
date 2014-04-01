@@ -1,4 +1,5 @@
 #include "player.h"
+#include "server.h"
 #include "packets\packet.h"
 
 CPlayer::CPlayer(int id)
@@ -36,6 +37,24 @@ void CPlayer::SetWins(uint32 wins)
 void CPlayer::SetLosses(uint32 losses)
 {
 	m_losses = losses;
+}
+
+void CPlayer::AddWin()
+{
+	m_wins++;
+
+	char* query = "UPDATE accounts SET wins = %d WHERE id = %d;";
+
+	Sql_Query(SqlHandle, query, m_wins, id);
+}
+
+void CPlayer::AddLoss()
+{
+	m_losses++;
+
+	char* query = "UPDATE accounts SET losses = %d WHERE id = %d;";
+
+	Sql_Query(SqlHandle, query, m_losses, id);
 }
 
 void CPlayer::SetTeam(uint8 team)

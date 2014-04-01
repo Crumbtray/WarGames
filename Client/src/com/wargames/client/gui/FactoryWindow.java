@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.wargames.client.helpers.Coordinate;
+
 public class FactoryWindow extends JDialog implements ActionListener{
 
 	/**
@@ -21,10 +23,12 @@ public class FactoryWindow extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -8977575045322893189L;
 	private GameClientGui client;
 	private JPanel myPanel;
+	private Coordinate factoryLocation;
 	
-	public FactoryWindow(GameClientGui client)
+	public FactoryWindow(GameClientGui client, Coordinate factoryLocation)
 	{
 		this.client = client;
+		this.factoryLocation = factoryLocation;
 		String color = this.client.guiMap.logicalGame.currentTurn.color;
 		myPanel = new JPanel();
 		getContentPane().add(myPanel);
@@ -64,6 +68,10 @@ public class FactoryWindow extends JDialog implements ActionListener{
 		System.out.println(selectedButton.getText());
 		switch(selectedButton.getText())
 		{
+			case "Create Soldier":
+				break;
+			case "Create Tank:":
+				break;
 			default:
 				
 		}

@@ -50,9 +50,6 @@ public class GameMouseListener implements MouseListener{
 					case FactorySelected:
 						handleOnFactorySelected(e);
 						break;
-					case UnitActionSelection:
-						handleOnUnitActionSelection(e);
-						break;
 					case FindingAttackTarget:
 						handleOnUnitAttackSelection(e);
 						break;
@@ -85,18 +82,19 @@ public class GameMouseListener implements MouseListener{
 		int mouseXPosition = e.getX();
 		int mouseYPosition = e.getY();
 		Coordinate unitCoordinate = this.client.guiMap.getCoordinateOfUnit(this.client.selectedUnit);
-		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.game.gameMap);
-		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.game.gameMap);
+		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.guiMap.logicalGame.gameMap);
+		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.guiMap.logicalGame.gameMap);
 		
 		// If we click anywhere outside the valid locations, we go back to nothing selected state.
 		Coordinate mouseCoordinate = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
-		if(this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.game.currentTurn)
+		if(this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.guiMap.logicalGame.currentTurn)
 		{
 			if(attackableUnits.contains(mouseCoordinate))
 			{
 				// Simple attack
 				stationaryAttack(mouseCoordinate);
-				
+				this.mouseState = MouseState.NothingSelected;
+				this.client.repaint();
 			}
 			if(validLocations.contains(mouseCoordinate))
 			{
@@ -135,11 +133,6 @@ public class GameMouseListener implements MouseListener{
 		this.mouseState = MouseState.NothingSelected;
 	}
 	
-	private void handleOnUnitActionSelection(MouseEvent e)
-	{
-		
-	}
-	
 	/**
 	 * We reach this point when the mouse clicks on anything after the "Attack" button is selected.
 	 * @param e
@@ -154,10 +147,6 @@ public class GameMouseListener implements MouseListener{
 			// We can attack this unit.
 			System.out.println("Attacking unit at (" + victimCoordinate.x + "," + victimCoordinate.y + ")" );
 			Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
-			if(moveCoordinate.equals(victimCoordinate))
-			{
-				System.out.println("Victim equals last click!");
-			}
 			
 			//Attack code here!
 			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
@@ -190,7 +179,8 @@ public class GameMouseListener implements MouseListener{
 			{
 				this.mouseState = MouseState.FactorySelected;
 				// We open the Build Unit Window.
-				FactoryWindow factoryWindow = new FactoryWindow(this.client);
+				Coordinate factoryLocation = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
+				FactoryWindow factoryWindow = new FactoryWindow(this.client, factoryLocation);
 				System.out.println("Factory Selected!");
 			}
 			this.client.repaint();

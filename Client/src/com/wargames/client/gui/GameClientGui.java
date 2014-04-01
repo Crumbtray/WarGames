@@ -222,10 +222,4 @@ public class GameClientGui extends JPanel {
 		}
 		return returnString;
 	}
-
-	
-	public static void main(String[] args)
-	{
-		new GameClientGui();
-	}
 }

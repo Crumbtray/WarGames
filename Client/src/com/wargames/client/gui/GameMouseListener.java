@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.model.MapException;
+import com.wargames.client.model.TerrainType;
 import com.wargames.client.model.Unit;
 
 public class GameMouseListener implements MouseListener{
@@ -130,7 +131,8 @@ public class GameMouseListener implements MouseListener{
 	
 	private void handleOnFactorySelected(MouseEvent e)
 	{
-		
+		System.out.println("Create a unit!");
+		this.mouseState = MouseState.NothingSelected;
 	}
 	
 	private void handleOnUnitActionSelection(MouseEvent e)
@@ -177,9 +179,19 @@ public class GameMouseListener implements MouseListener{
 		try {
 			this.client.selectedTerrain = this.client.guiMap.getTerrainAt(mouseXPosition, mouseYPosition);
 			this.client.selectedUnit = this.client.guiMap.getUnitAt(mouseXPosition, mouseYPosition);
-			if(this.client.selectedUnit != null && this.client.selectedUnit.getLogicalUnit().isActive())
+			if(this.client.selectedUnit != null)
 			{
-				this.mouseState = MouseState.UnitSelected;
+				if(this.client.selectedUnit.getLogicalUnit().isActive())
+				{
+					this.mouseState = MouseState.UnitSelected;
+				}				
+			}	
+			else if(this.client.selectedTerrain.getLogicalTerrain().terrainType.equals(TerrainType.Factory))
+			{
+				this.mouseState = MouseState.FactorySelected;
+				// We open the Build Unit Window.
+				FactoryWindow factoryWindow = new FactoryWindow(this.client);
+				System.out.println("Factory Selected!");
 			}
 			this.client.repaint();
 		} catch (MapException e1) {

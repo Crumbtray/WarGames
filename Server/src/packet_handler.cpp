@@ -12,6 +12,7 @@
 #include "packets\action.h"
 #include "packets\lobby_chat.h"
 #include "packets\lobby_countdown.h"
+#include "packets\lobby_list.h"
 #include "packets\lobby_update.h"
 #include "packets\login.h"
 
@@ -53,6 +54,7 @@ namespace packethandler
 				session->PPlayer = new CPlayer(Sql_GetUIntData(SqlHandle, 0));
 				session->PPlayer->SetName(handle);
 				session->PPlayer->pushPacket(new CLoginPacket(session->PPlayer, LOGIN_SUCCESS));
+				session->PPlayer->pushPacket(new CLobbyListPacket());
 				ShowDebug("Player %s has logged in\n", session->PPlayer->GetName());
 			}
 			else

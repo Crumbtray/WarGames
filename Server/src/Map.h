@@ -4,6 +4,7 @@
 #define DEFAULT_HEIGHT 16
 
 #include <utility>
+#include <vector>
 #include "TypeEnums.h"
 #include "Terrain.h"
 #include "Unit.h"
@@ -12,10 +13,11 @@
 class Map
 {
 private:
-	const uint8 m_WIDTH;
-	const uint8 m_HEIGHT;
-	const uint16 m_mapID;
-	Terrain **m_terrain;
+	uint8 m_WIDTH;
+	uint8 m_HEIGHT;
+	uint8 m_mapID;
+	std::vector< std::vector<Terrain*> > m_terrain;
+	std::map<uint16, Unit*> m_unitList;
 
 	uint16 newUnitId(); //same as lobby's newLobbyId()
 	void initializeTerrain();
@@ -29,7 +31,7 @@ public:
 	uint8 getWidth();
 	uint8 getHeight();
 
-	Terrain getTerrainAt(uint8 x, uint8 y);
+	Terrain* getTerrainAt(uint8 x, uint8 y);
 	uint8 addTerrain(uint8 x, uint8 y, Terrain terrain);
 	TerrainType getTerrainTypeAt(uint8 x, uint8 y);
 
@@ -38,7 +40,7 @@ public:
 	Unit *getUnitAt(uint8 x, uint8 y);
 
 	Unit *produceUnit(uint8 x, uint8 y, UnitType type);
-	bool moveUnit(uint8 old_x, uint8 old_y, uint8 new_x, uint8 new_y);
+	bool moveUnit(Unit* unit, uint8 new_x, uint8 new_y);
 	bool deleteUnit(uint8 x, uint8 y);
 	bool captureStructure(uint8 x, uint8 y);
 

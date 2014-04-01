@@ -132,14 +132,14 @@
     <ClCompile Include="..\..\..\src\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\test\test.cpp">
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\test\testUnit.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Map.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

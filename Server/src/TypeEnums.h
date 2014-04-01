@@ -45,7 +45,7 @@ enum TerrainType : int {
 };
 
 enum DamageType : int {
-	None,
+	NoDamage,
 	Bullet,
 	Concussive
 };

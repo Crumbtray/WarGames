@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "player.h"
 
+#include "packets\action.h"
 #include "packets\entity_update.h"
 #include "packets\player_definition.h"
 #include "packets\post_game.h"
@@ -133,6 +134,14 @@ void CGame::checkVictoryCondition()
 				end(p);
 			}
 		}
+	}
+}
+
+void CGame::sendAction(Unit* initiator, Unit* target, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos)
+{
+	for (auto p : playerList)
+	{
+		p->pushPacket(new CActionPacket(initiator, target, action, dmginit, dmgtarget, pos));
 	}
 }
 

@@ -147,12 +147,12 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 	return false;
 }
 
-bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target)
+bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetdamage, int* returndamage)
 {
 	if (moveUnit(unit, new_x, new_y))
 	{
 		//TODO: ammo check, range check
-		unit->attack(target);
+		unit->attack(target, targetdamage, returndamage);
 		if (target->getHealth() == 0)
 		{
 			deleteUnit(target);
@@ -163,7 +163,9 @@ bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target)
 			deleteUnit(unit);
 			delete unit;
 		}
+		return true;
 	}
+	return false;
 }
 
 bool Map::deleteUnit(Unit* unit)

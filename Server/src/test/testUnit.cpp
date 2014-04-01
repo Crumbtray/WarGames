@@ -79,7 +79,6 @@ bool TestUnit::run()
 bool TestUnit::testGeneralUnit(Unit *testUnit){
 	assert(testUnit->getHealth() == MAX_HEALTH);
 	assert(testUnit->isActive());
-	assert(testUnit->isVisible());
 	assert(testUnit->getAmmo() == MAX_AMMO);
 	assert(testUnit->getArmor() == 0);
 	assert(testUnit->getFuel() == MAX_FUEL);

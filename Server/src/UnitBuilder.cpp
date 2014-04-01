@@ -219,7 +219,7 @@ void UnitBuilder::buildTransportCopter(){
 	this->m_range = 0;
 	this->m_vision = 1;
 	this->m_damage = 0;
-	this->m_damageType = DamageType::None;
+	this->m_damageType = DamageType::NoDamage;
 	this->m_armor = 0;
 }
 
@@ -267,6 +267,6 @@ void UnitBuilder::buildLander(){
 	this->m_range = 0;
 	this->m_vision = 1;
 	this->m_damage = 0;
-	this->m_damageType = DamageType::None;
+	this->m_damageType = DamageType::NoDamage;
 	this->m_armor = 0;
 }

@@ -28,7 +28,7 @@ private:
 	bool m_capturing;
 	
 public:
-	void attack(Unit* target);
+	void attack(Unit* target,int* targetdamage, int* returndamage);
 	int capture(int x, int y);
 	void updateIncome(int amount);
 
@@ -63,7 +63,6 @@ public:
 	void setDamageType(DamageType type);
 	DamageType getDamageType();
 	void setArmor(int armor);
-	int getArmor();
 	int delHP(int damage);
 	int calculateDamage(Unit* target);
 };

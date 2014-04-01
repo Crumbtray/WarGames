@@ -149,14 +149,14 @@ int Unit::calculateDamage(Unit* target)
 }
 
 //I might refactor these into the map class
-void Unit::attack(Unit* target){
-	int damage = calculateDamage(target);
-	int targethp = target->delHP(damage);
+void Unit::attack(Unit* target, int* targetdamage, int* returndamage){
+	*targetdamage = calculateDamage(target);
+	int targethp = target->delHP(*targetdamage);
 	if (targethp != 0)
 	{
-		int returndamage = target->calculateDamage(this);
+		*returndamage = target->calculateDamage(this);
 
-		delHP(returndamage);
+		delHP(*returndamage);
 	}
 }
 
@@ -187,10 +187,6 @@ DamageType Unit::getDamageType()
 void Unit::setArmor(int armor)
 {
 	m_armor = armor;
-}
-int Unit::getArmor()
-{
-	return m_armor;
 }
 int Unit::delHP(int damage)
 {

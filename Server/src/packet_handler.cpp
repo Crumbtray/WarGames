@@ -197,14 +197,21 @@ namespace packethandler
 		switch (action)
 		{
 		case ACTION_MOVE:
-			map->moveUnit(initiator, xpos, ypos);
-			game->updateEntity(initiator);
+			if (map->moveUnit(initiator, xpos, ypos))
+			{
+				game->sendAction(initiator, target, ACTION_MOVE, 0, 0, std::pair<uint8, uint8>(xpos, ypos));
+				game->updateEntity(initiator);
+			}
 			break;
 		case ACTION_ATTACK:
-			map->attackUnit(initiator, xpos, ypos, target);
-			game->updateEntity(initiator);
-			game->updateEntity(target);
-			game->checkVictoryCondition();
+			int targetdamage = 0, unitdamage = 0;
+			if (map->attackUnit(initiator, xpos, ypos, target, &targetdamage, &unitdamage))
+			{
+				game->sendAction(initiator, target, ACTION_ATTACK, targetdamage, unitdamage, std::pair<uint8, uint8>(xpos, ypos));
+				game->updateEntity(initiator);
+				game->updateEntity(target);
+				game->checkVictoryCondition();
+			}
 			break;
 		case ACTION_CAPTURE:
 			initiator->capture(xpos, ypos);

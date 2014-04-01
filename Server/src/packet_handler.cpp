@@ -204,6 +204,7 @@ namespace packethandler
 			map->attackUnit(initiator, xpos, ypos, target);
 			game->updateEntity(initiator);
 			game->updateEntity(target);
+			game->checkVictoryCondition();
 			break;
 		case ACTION_CAPTURE:
 			initiator->capture(xpos, ypos);

@@ -13,7 +13,6 @@ m_VISION(vision),
 m_id(id)
 {
 	m_active = true;
-	m_visible = true;
 	m_health = MAX_HEALTH;
 	m_ammo = MAX_AMMO;
 	m_armor = 0;
@@ -83,14 +82,6 @@ bool Unit::deactivate(){
 	return this->m_active = false;
 }
 
-bool Unit::isVisible(){
-	return this->m_visible;
-}
-
-void Unit::setVisible(bool visible){
-	this->m_visible = visible;
-}
-
 int Unit::getHealth(){
 	return this->m_health;
 }
@@ -144,9 +135,29 @@ int Unit::getArmor(){
 	return this->m_armor;
 }
 
+int Unit::calculateDamage(Unit* target)
+{
+	if (m_damageType == DamageType::Bullet)
+	{
+		return (m_damage * 2 * m_health) / (10 * target->getArmor() + 1);
+	}
+	else if (m_damageType == DamageType::Concussive)
+	{
+		return (m_damage * 2 * m_health) / (10 * 3 - target->getArmor());
+	}
+	return 0;
+}
+
 //I might refactor these into the map class
-bool Unit::attack(Unit* target){
-	return false;
+void Unit::attack(Unit* target){
+	int damage = calculateDamage(target);
+	int targethp = target->delHP(damage);
+	if (targethp != 0)
+	{
+		int returndamage = target->calculateDamage(this);
+
+		delHP(returndamage);
+	}
 }
 
 int Unit::capture(int x, int y){
@@ -155,4 +166,41 @@ int Unit::capture(int x, int y){
 
 void Unit::updateIncome(int amount){
 	// TODO: update m_owner's income
+}
+
+void Unit::setDamage(int damage)
+{
+	m_damage = damage;
+}
+int Unit::getDamage()
+{
+	return m_damage;
+}
+void Unit::setDamageType(DamageType type)
+{
+	m_damageType = type;
+}
+DamageType Unit::getDamageType()
+{
+	return m_damageType;
+}
+void Unit::setArmor(int armor)
+{
+	m_armor = armor;
+}
+int Unit::getArmor()
+{
+	return m_armor;
+}
+int Unit::delHP(int damage)
+{
+	if (damage >= m_health)
+	{
+		m_health = 0;
+	}
+	else
+	{
+		m_health -= damage;
+	}
+	return m_health;
 }

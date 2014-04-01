@@ -153,23 +153,41 @@ bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target)
 	{
 		//TODO: ammo check, range check
 		unit->attack(target);
+		if (target->getHealth() == 0)
+		{
+			deleteUnit(target);
+			delete target;
+		}
+		if (unit->getHealth() == 0)
+		{
+			deleteUnit(unit);
+			delete unit;
+		}
 	}
 }
 
-bool Map::deleteUnit(uint8 x, uint8 y)
+bool Map::deleteUnit(Unit* unit)
 {
-	Terrain* pos = getTerrainAt(x, y);
-	Unit* unit = pos->getUnit();
-	if (unit)
-	{
-		m_unitList.erase(unit->getID());
-		pos->setUnit(NULL);
-		return true;
-	}
-	return false;
+	Terrain* pos = getTerrainUnderUnit(unit->getID());
+
+	m_unitList.erase(unit->getID());
+	pos->setUnit(NULL);
+	return true;
 }
 
 bool Map::captureStructure(uint8 x, uint8 y)
 {
+	return false;
+}
+
+bool Map::unitsRemain(CPlayer* player)
+{
+	for (auto u : m_unitList)
+	{
+		if (u.second->getOwner() == player)
+		{
+			return true;
+		}
+	}
 	return false;
 }

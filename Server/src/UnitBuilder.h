@@ -26,6 +26,9 @@ private:
 	int m_cost;
 	int m_range;
 	int m_vision;
+	int m_damage;
+	DamageType m_damageType;
+	int m_armor;
 	uint16 m_id;
 
 public:
@@ -35,7 +38,6 @@ public:
 	~UnitBuilder();
 
 private:
-	void setOwner();
 	void buildInfantry();
 	void buildTank();
 	void buildArtillery();

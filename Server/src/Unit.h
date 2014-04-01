@@ -19,15 +19,16 @@ private:
 	const int m_RANGE;
 	const int m_VISION;
 	bool m_active;
-	bool m_visible;
 	int m_health;
 	int m_ammo;
 	int m_armor;
 	int m_fuel;
+	int m_damage;
+	DamageType m_damageType;
 	bool m_capturing;
-
+	
 public:
-	bool attack(Unit* target);
+	void attack(Unit* target);
 	int capture(int x, int y);
 	void updateIncome(int amount);
 
@@ -46,8 +47,6 @@ public:
 	bool isActive();
 	bool activate();
 	bool deactivate();
-	bool isVisible();
-	void setVisible(bool visible);
 	int getHealth();
 	void damageUnit(int damage);
 	bool capture();
@@ -59,5 +58,13 @@ public:
 	void decreaseFuel();
 	void increaseFuel(int ammo);
 	int getFuel();
+	void setDamage(int damage);
+	int getDamage();
+	void setDamageType(DamageType type);
+	DamageType getDamageType();
+	void setArmor(int armor);
+	int getArmor();
+	int delHP(int damage);
+	int calculateDamage(Unit* target);
 };
 

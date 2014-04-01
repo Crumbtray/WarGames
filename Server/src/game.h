@@ -31,6 +31,7 @@ public:
 	void end(CPlayer* winner);
 
 	void updateEntity(Unit*);
+	void checkVictoryCondition();
 
 	CGame(uint8 mapID);
 	~CGame();

@@ -27,6 +27,8 @@ public:
 	Map(uint8 mapID);
 	~Map();
 
+	bool unitsRemain(CPlayer*);
+
 	uint8 getMapID();
 	uint8 getWidth();
 	uint8 getHeight();
@@ -43,7 +45,7 @@ public:
 	Unit *produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type);
 	bool moveUnit(Unit* unit, uint8 new_x, uint8 new_y);
 	bool attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target);
-	bool deleteUnit(uint8 x, uint8 y);
+	bool deleteUnit(Unit* unit);
 	bool captureStructure(uint8 x, uint8 y);
 };
 

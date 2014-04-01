@@ -114,6 +114,28 @@ void CGame::updateEntity(Unit* unit)
 	}
 }
 
+void CGame::checkVictoryCondition()
+{
+	int losers = 0;
+	for (auto p : playerList)
+	{
+		if (!m_map->unitsRemain(p))
+		{
+			losers++;
+		}
+	}
+	if (losers == playerList.size() - 1)
+	{
+		for (auto p : playerList)
+		{
+			if (m_map->unitsRemain(p))
+			{
+				end(p);
+			}
+		}
+	}
+}
+
 namespace games
 {
 	std::vector<CGame*> gameList;

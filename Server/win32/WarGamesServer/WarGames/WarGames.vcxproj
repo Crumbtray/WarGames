@@ -93,6 +93,7 @@
     <ClCompile Include="..\..\..\src\lib\utils.cpp" />
     <ClCompile Include="..\..\..\src\lobby.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
+    <ClCompile Include="..\..\..\src\Map.cpp" />
     <ClCompile Include="..\..\..\src\packets\account_creation.cpp" />
     <ClCompile Include="..\..\..\src\packets\action.cpp" />
     <ClCompile Include="..\..\..\src\packets\entity_update.cpp" />
@@ -112,7 +113,10 @@
     <ClCompile Include="..\..\..\src\packet_handler.cpp" />
     <ClCompile Include="..\..\..\src\player.cpp" />
     <ClCompile Include="..\..\..\src\server.cpp" />
+    <ClCompile Include="..\..\..\src\Terrain.cpp" />
     <ClCompile Include="..\..\..\src\TerrainBuilder.cpp" />
+    <ClCompile Include="..\..\..\src\test\test.cpp" />
+    <ClCompile Include="..\..\..\src\test\testUnit.cpp" />
     <ClCompile Include="..\..\..\src\Unit.cpp" />
     <ClCompile Include="..\..\..\src\UnitBuilder.cpp" />
   </ItemGroup>
@@ -148,7 +152,9 @@
     <ClInclude Include="..\..\..\src\packet_handler.h" />
     <ClInclude Include="..\..\..\src\player.h" />
     <ClInclude Include="..\..\..\src\server.h" />
-    <ClInclude Include="..\..\..\src\Tile.h" />
+    <ClInclude Include="..\..\..\src\Terrain.h" />
+    <ClInclude Include="..\..\..\src\TerrainBuilder.h" />
+    <ClInclude Include="..\..\..\src\test\test.h" />
     <ClInclude Include="..\..\..\src\TypeEnums.h" />
     <ClInclude Include="..\..\..\src\Unit.h" />
     <ClInclude Include="..\..\..\src\UnitBuilder.h" />

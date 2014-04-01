@@ -36,6 +36,7 @@ public:
 	std::pair<uint8, uint8> getUnitPos(uint16 id);
 	Unit *getUnit(uint16 id);
 	Unit *getUnitAt(uint8 x, uint8 y);
+
 	Unit *produceUnit(uint8 x, uint8 y, UnitType type);
 	bool moveUnit(uint8 old_x, uint8 old_y, uint8 new_x, uint8 new_y);
 	bool deleteUnit(uint8 x, uint8 y);

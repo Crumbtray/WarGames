@@ -4,9 +4,17 @@
 #include "lib/timer.h"
 
 #include "server.h"
+#include "test\test.h"
 
 int main(int argc, char **argv)
 {
+	if (argc > 1)
+		for (int i = 0; i < argc; i++)
+			if (strncmp(argv[i], "test", 4)==0){
+				Test *test = new Test();
+				test->run();
+			}
+				
 	ShowInfo(CL_MAGENTA"WarGames Server"CL_RESET"\n");
 	//init sockets
 	socket_init();

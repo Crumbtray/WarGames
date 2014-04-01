@@ -25,6 +25,9 @@
     <Filter Include="Source Files\lib">
       <UniqueIdentifier>{32807baf-00c5-42fb-abb4-98a9107c36ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{abca0be1-3599-45ed-88e9-0bfde9550f9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\main.cpp">
@@ -126,6 +129,18 @@
     <ClCompile Include="..\..\..\src\UnitBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\test\test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\test\testUnit.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\server.h">
@@ -221,9 +236,6 @@
     <ClInclude Include="..\..\..\src\Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Tile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\TypeEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -232,6 +244,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\UnitBuilder.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Terrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\TerrainBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\test\test.h">
+      <Filter>test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

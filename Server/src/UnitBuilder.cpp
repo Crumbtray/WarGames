@@ -4,10 +4,11 @@
 *  variables in the Unit class. The corresponding
 *  .cpp file essentially contains Unit definitions as
 *  outlined in Static Data.
-*  To create a new unit, pass the UnitType to the constructor
+*  To create a new unit, pass the UnitType, player 
+*  number, and unique identifier to the constructor
 *  of UnitBuilder, and call getResult() to get a new
 *  fully initialized unit.
-*      ie: UnitBuilder *builder = new UnitBuilder(type);
+*      ie: UnitBuilder *builder = new UnitBuilder(type, owner, id);
 *          Unit *newUnit = UnitBuilder.getResult();
 */
 Unit *UnitBuilder::getResult(){
@@ -16,8 +17,9 @@ Unit *UnitBuilder::getResult(){
 	return NULL;
 }
 
-UnitBuilder::UnitBuilder(UnitType type, uint16 id){
+UnitBuilder::UnitBuilder(UnitType type, uint8 owner, uint16 id){
 	m_id = id;
+	m_owner = owner;
 	switch (type){
 	case UnitType::Infantry:
 		buildInfantry();

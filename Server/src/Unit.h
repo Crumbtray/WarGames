@@ -38,6 +38,7 @@ public:
 	UnitType getUnitType();
 	uint8 getOwner();
 	MobilityType getMobilityType();
+	int getMobility();
 	int getCost();
 	int getMaxRange();
 	int getMinRange();
@@ -47,6 +48,7 @@ public:
 	bool deactivate();
 	bool isVisible();
 	void setVisible(bool visible);
+	int getHealth();
 	void damageUnit(int damage);
 	bool capture();
 	bool isCapturing();

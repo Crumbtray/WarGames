@@ -28,7 +28,7 @@ private:
 public:
 	Unit *getResult();
 
-	UnitBuilder(UnitType type, uint16 id);
+	UnitBuilder(UnitType type, uint8 owner, uint16 id);
 	~UnitBuilder();
 
 private:

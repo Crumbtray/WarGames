@@ -1,3 +1,5 @@
+#pragma once
+
 #include "lib/cbasetypes.h"
 #include <deque>
 

@@ -41,6 +41,9 @@ MobilityType Unit::getMobilityType(){
 	return this->m_MOBILITY_TYPE;
 }
 
+int Unit::getMobility(){
+	return this->m_MOBILITY;
+}
 int Unit::getCost(){
 	return this->m_COST;
 }
@@ -86,6 +89,10 @@ bool Unit::isVisible(){
 
 void Unit::setVisible(bool visible){
 	this->m_visible = visible;
+}
+
+int Unit::getHealth(){
+	return this->m_health;
 }
 
 void Unit::damageUnit(int damage){
@@ -148,5 +155,5 @@ int Unit::capture(int x, int y){
 	return 0;
 }
 void Unit::updateIncome(int amount){
-	
+	// TODO: update m_owner's income
 }

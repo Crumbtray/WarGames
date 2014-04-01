@@ -4,32 +4,31 @@
 #include "Unit.h"
 
 typedef std::map<MobilityType, int> MoveCost;
+
 class Terrain
 {
 	
 private:
 	const TerrainType m_TYPE;
 	const int m_INCOME;
+	const int m_defense;
+	const MoveCost m_moveCost;
 	uint8 m_owner;
-	int m_defense;
 	Unit *m_unit;
-	MoveCost m_moveCost;
 
 
 public:
-	Terrain(TerrainType type, int income);
+	Terrain(TerrainType type, int income, int defense, MoveCost cost);
 	~Terrain();
-	Terrain **init();
+
 	TerrainType getType();
 	int getIncome();
 
-	Unit getUnit();
-	Unit setUnit(Unit unit);
+	Unit *getUnit();
+	Unit *setUnit(Unit *unit);
 	uint8 getOwner();
-	void setOwner(uint8);
+	void setOwner(uint8 owner);
 	int getMoveCost(MobilityType type);
-	int setMoveCost(MobilityType type);
 	int getDefense();
-	void setDefense(int defense);
 };
 

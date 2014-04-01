@@ -45,6 +45,11 @@ TerrainBuilder::~TerrainBuilder()
 {
 }
 
+
+Terrain *TerrainBuilder::getResult(){
+	return new Terrain(m_type, m_income, m_defense, m_moveCost);
+}
+
 uint8 setOwner(){
 	// TODO: get current player # from game and return it
 	return 0;

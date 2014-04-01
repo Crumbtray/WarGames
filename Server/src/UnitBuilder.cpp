@@ -16,8 +16,8 @@ Unit *UnitBuilder::getResult(){
 	return NULL;
 }
 
-UnitBuilder::UnitBuilder(UnitType type){
-	m_id = generateID();
+UnitBuilder::UnitBuilder(UnitType type, uint16 id){
+	m_id = id;
 	switch (type){
 	case UnitType::Infantry:
 		buildInfantry();
@@ -73,7 +73,7 @@ UnitBuilder::UnitBuilder(UnitType type){
 		this->m_cost = NULL;
 		this->m_range = NULL;
 		this->m_vision = NULL;
-		this->m_id = NULL;
+		this->m_id = id;
 		break;
 	}
 }
@@ -84,11 +84,6 @@ UnitBuilder::~UnitBuilder(){
 
 uint8 UnitBuilder::setOwner(){
 	// TODO: get current player # from game and return it
-	return 0;
-}
-
-uint16 UnitBuilder::generateID(){
-	// TODO: generate unique unit id
 	return 0;
 }
 

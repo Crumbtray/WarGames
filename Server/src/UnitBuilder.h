@@ -28,11 +28,10 @@ private:
 public:
 	Unit *getResult();
 
-	UnitBuilder(UnitType type);
+	UnitBuilder(UnitType type, uint16 id);
 	~UnitBuilder();
 
 private:
-	uint16 generateID();
 	uint8 setOwner();
 	void buildInfantry();
 	void buildTank();

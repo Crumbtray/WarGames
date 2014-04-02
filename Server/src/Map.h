@@ -23,11 +23,11 @@ private:
 	UnitList m_unitList;
 
 	uint16 newUnitId(); //same as lobby's newLobbyId()
-	void initializeTerrain(uint8 mapID);
+	void initializeTerrain(uint8 mapID,	std::vector<CPlayer*> playerList);
 
 public:
-	Map(uint8 width, uint8 height, uint8 mapID);
-	Map(uint8 mapID);
+	Map(uint8 width, uint8 height, uint8 mapID, std::vector<CPlayer*> playerList);
+	Map(uint8 mapID, std::vector<CPlayer*> playerList);
 	~Map();
 
 	bool unitsRemain(CPlayer*);
@@ -49,7 +49,7 @@ public:
 	bool moveUnit(Unit* unit, uint8 new_x, uint8 new_y);
 	bool attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetdamage, int* returndamage);
 	bool deleteUnit(Unit* unit);
-	bool captureStructure(uint8 x, uint8 y, uint8 owner); 
+	bool captureStructure(uint8 x, uint8 y); 
 
 };
 

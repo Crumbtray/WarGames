@@ -5,21 +5,21 @@
 #include "UnitBuilder.h"
 #include "player.h"
 
-Map::Map(uint8 width, uint8 height, uint8 mapID):
+Map::Map(uint8 width, uint8 height, uint8 mapID, std::vector<CPlayer*> playerList) :
 m_mapID(mapID),
 m_HEIGHT(height),
 m_WIDTH(width)
 {
-	initializeTerrain(mapID);
+	initializeTerrain(mapID, playerList);
 }
 
-Map::Map(uint8 mapID):
+Map::Map(uint8 mapID, std::vector<CPlayer*> playerList) :
 m_mapID(mapID),
 m_HEIGHT(DEFAULT_HEIGHT),
 m_WIDTH(DEFAULT_WIDTH)
 {
 	//get data from mapID
-	initializeTerrain(mapID);
+	initializeTerrain(mapID, playerList);
 }
 
 Map::~Map(){
@@ -39,7 +39,7 @@ uint16 Map::newUnitId()
 	return unitId;
 }
 
-void Map::initializeTerrain(uint8 mapID){
+void Map::initializeTerrain(uint8 mapID, std::vector<CPlayer*> playerList){
 	//TODO: use mapID to generate different maps
 
 	//temp hardcoded map - all plains except for opposing corners
@@ -54,10 +54,10 @@ void Map::initializeTerrain(uint8 mapID){
 	TerrainBuilder factoryBuilder(TerrainType::Factory);
 	delete m_terrain[0][0];
 	m_terrain[0][0] = factoryBuilder.getResult();
-	m_terrain[0][0]->setOwner(0);
+	m_terrain[0][0]->setOwner(playerList[0]);
 	delete m_terrain[15][15];
 	m_terrain[15][15] = factoryBuilder.getResult();
-	m_terrain[0][0]->setOwner(1);
+	m_terrain[15][15]->setOwner(playerList[1]);
 }
 
 uint8 Map::getMapID(){
@@ -143,12 +143,18 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 	{
 		return true;
 	}
+	//ensure unit can move onto newPos
+	else if (newPos->getMoveCost(unit->getMobilityType()) < 1){
+		return false;
+	}
+	//TODO: pathfinding 
+	//ensure newPos doesn't already have a unit.
 	else if (newPos->getUnit() == NULL)
 	{
 		Terrain* oldPos = getTerrainUnderUnit(unit->getID());
 		oldPos->setUnit(NULL);
 		newPos->setUnit(unit);
-		//todo: reduce fuel
+		//todo: implement fuel (not yet implemented on client)
 		return true;
 	}
 	return false;
@@ -156,11 +162,11 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 
 bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetdamage, int* returndamage)
 {
-	if (!unit->isActive()){
+	if (!unit->isActive() || getUnitAt(new_x, new_y) != target){
 		return false;
 	}
-	if (moveUnit(unit, new_x, new_y))
-	{
+	if (moveUnit(unit, new_x, new_y))     //?
+  	{
 		//TODO: ammo check, range check
 		unit->attack(target, targetdamage, returndamage);
 		if (target->getHealth() == 0)
@@ -200,18 +206,19 @@ bool Map::unitsRemain(CPlayer* player)
 	return false;
 }
 
-bool Map::captureStructure(uint8 x, uint8 y, uint8 owner){
+bool Map::captureStructure(uint8 x, uint8 y){
 	Unit *unit = getUnitAt(x, y);
-	//TODO: validate x,y can be captured
-	if (!unit->isActive()){
+	Terrain *captureTerrain = getTerrainAt(x, y);
+	if (!unit->isActive() || !captureTerrain->canBeCaptured()){
 		return false;
 	}
+
 	bool captured = unit->capture();
 	unit->deactivate();
 
 	//Set owner if captured
 	if (captured){
-		m_terrain[x][y]->setOwner(owner);
+		m_terrain[x][y]->setOwner(unit->getOwner());
 	}
 	return captured;
 }

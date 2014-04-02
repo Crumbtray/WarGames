@@ -15,9 +15,9 @@ private:
 	uint8 m_activePlayer;
 	Map* m_map;
 	CPlayer* m_winner;
-public:
-	std::vector<CPlayer*> playerList;
+	std::vector<CPlayer*> m_playerList;
 
+public:
 	Map* getMap();
 	Unit* getUnit(uint16);
 
@@ -35,13 +35,13 @@ public:
 	void sendAction(Unit* initiator, Unit* target, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos);
 	void checkVictoryCondition();
 
-	CGame(uint8 mapID);
+	CGame(uint8 mapID, std::vector<CPlayer*> playerList);
 	~CGame();
 };
 
 namespace games
 {
-	CGame* createGame(uint8 mapID);
+	CGame* createGame(uint8 mapID,	std::vector<CPlayer*> playerList);
 	CGame* getGame(CPlayer*);
 }
 

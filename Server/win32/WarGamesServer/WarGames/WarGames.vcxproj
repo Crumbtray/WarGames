@@ -116,6 +116,7 @@
     <ClCompile Include="..\..\..\src\Terrain.cpp" />
     <ClCompile Include="..\..\..\src\TerrainBuilder.cpp" />
     <ClCompile Include="..\..\..\src\test\test.cpp" />
+    <ClCompile Include="..\..\..\src\test\testMap.cpp" />
     <ClCompile Include="..\..\..\src\test\testTerrain.cpp" />
     <ClCompile Include="..\..\..\src\test\testUnit.cpp" />
     <ClCompile Include="..\..\..\src\Unit.cpp" />

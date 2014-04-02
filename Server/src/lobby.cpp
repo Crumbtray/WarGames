@@ -198,7 +198,7 @@ namespace lobbies
 				uint8 tick = lobby->nextTick();
 				if (tick == 0)
 				{
-					CGame* game = games::createGame(lobby->getMapID());
+					CGame* game = games::createGame(lobby->getMapID(), lobby->playerList);
 					for (auto player : lobby->playerList)
 					{
 						game->addPlayer(player);

@@ -13,8 +13,6 @@ class Test
 {
 public:
 	static void run();
-	bool testTerrain();
-	bool testMap();
 };
 
 class TestUnit
@@ -67,4 +65,16 @@ private:
 	bool testFactory(Terrain *testTerrain);
 	bool testCity(Terrain *testTerrain);
 	bool testAirport(Terrain *testTerrain);
+};
+
+class TestMap{
+public:
+	TestMap();
+	~TestMap();
+
+	bool run();
+
+private:
+	bool m_allTestsPassed;
+
 };

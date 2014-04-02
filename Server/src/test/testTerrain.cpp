@@ -60,8 +60,7 @@ bool TestTerrain::run()
 }
 
 bool TestTerrain::testGeneralTerrain(Terrain *testTerrain){
-	std::cout << testTerrain->getOwner();
-	assert(testTerrain->getOwner() == UINT8_MAX);
+	assert(testTerrain->getOwner() == NULL);
 	assert(testTerrain->getUnit() == NULL);
 	return true;
 }

@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.wargames.client.helpers.Coordinate;
+import com.wargames.client.model.UnitCosts;
+import com.wargames.client.model.UnitType;
 
 public class FactoryWindow extends JDialog implements ActionListener{
 
@@ -44,7 +46,7 @@ public class FactoryWindow extends JDialog implements ActionListener{
 		soldierButton.addActionListener(this);
 		myPanel.add(soldierButton);
 		
-		URL urlTankImage = getClass().getResource("/com/wargames/client/gui/img/tank_" + color + "_01.png");
+		URL urlTankImage = getClass().getResource("/com/wargames/client/gui/img/tank_" + color + "01.png");
 		ImageIcon tankImg = new ImageIcon(urlTankImage);
 		JButton tankButton = new JButton("Create Tank");
 		tankButton.setIcon(tankImg);
@@ -54,6 +56,16 @@ public class FactoryWindow extends JDialog implements ActionListener{
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		myPanel.add(cancelButton);
+		
+		int availableFunds = client.guiMap.logicalGame.currentTurn.funds;
+		if(availableFunds < UnitCosts.getSoldierCost())
+		{
+			soldierButton.setEnabled(false);
+		}
+		if(availableFunds < UnitCosts.getTankCost())
+		{
+			tankButton.setEnabled(false);
+		}
 		
 		this.setLocationRelativeTo(client.f);
 		this.setUndecorated(true);
@@ -69,8 +81,12 @@ public class FactoryWindow extends JDialog implements ActionListener{
 		switch(selectedButton.getText())
 		{
 			case "Create Soldier":
+				this.client.guiMap.CreateUnit(UnitType.SOLDIER, factoryLocation);
+				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getSoldierCost();
 				break;
-			case "Create Tank:":
+			case "Create Tank":
+				this.client.guiMap.CreateUnit(UnitType.TANK, factoryLocation);
+				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getTankCost();
 				break;
 			default:
 				

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.model.MapException;
+import com.wargames.client.model.Structure;
 import com.wargames.client.model.TerrainType;
 import com.wargames.client.model.Unit;
 
@@ -46,9 +47,6 @@ public class GameMouseListener implements MouseListener{
 						break;
 					case UnitSelected:
 						handleOnUnitSelected(e);
-						break;
-					case FactorySelected:
-						handleOnFactorySelected(e);
 						break;
 					case FindingAttackTarget:
 						handleOnUnitAttackSelection(e);
@@ -127,12 +125,6 @@ public class GameMouseListener implements MouseListener{
 		}
 	}
 	
-	private void handleOnFactorySelected(MouseEvent e)
-	{
-		System.out.println("Create a unit!");
-		this.mouseState = MouseState.NothingSelected;
-	}
-	
 	/**
 	 * We reach this point when the mouse clicks on anything after the "Attack" button is selected.
 	 * @param e
@@ -177,11 +169,15 @@ public class GameMouseListener implements MouseListener{
 			}	
 			else if(this.client.selectedTerrain.getLogicalTerrain().terrainType.equals(TerrainType.Factory))
 			{
-				this.mouseState = MouseState.FactorySelected;
-				// We open the Build Unit Window.
-				Coordinate factoryLocation = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
-				FactoryWindow factoryWindow = new FactoryWindow(this.client, factoryLocation);
-				System.out.println("Factory Selected!");
+				Structure factory = (Structure) this.client.selectedTerrain.getLogicalTerrain();
+				if(factory.owner == this.client.guiMap.logicalGame.currentTurn)
+				{
+					// We open the Build Unit Window.
+					Coordinate factoryLocation = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
+					FactoryWindow factoryWindow = new FactoryWindow(this.client, factoryLocation);
+					System.out.println("Factory Selected!");
+					this.mouseState = MouseState.NothingSelected;
+				}
 			}
 			this.client.repaint();
 		} catch (MapException e1) {

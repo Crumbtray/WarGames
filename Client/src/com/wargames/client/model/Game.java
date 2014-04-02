@@ -77,7 +77,7 @@ public class Game {
 	 * @param unitType
 	 * @param owner
 	 */
-	public void createUnit(int x, int y, UnitType unitType, Player owner)
+	public Unit createUnit(int x, int y, UnitType unitType, Player owner)
 	{
 		Unit newUnit = null;
 		switch(unitType)
@@ -100,6 +100,7 @@ public class Game {
 			System.out.println("Game: Error in creating new unit. This should never happen.");
 			e.printStackTrace();
 		}
+		return newUnit;
 	}
 	
 	public void setTurn(Player player)
@@ -124,7 +125,7 @@ public class Game {
 			}
 			Player nextPlayer = gameMap.players.get(nextPlayerNumber);
 			setTurn(nextPlayer);
-			
+			nextPlayer.addFunds(15000);
 			// Activate all units.
 			gameMap.activateAllUnits();
 			

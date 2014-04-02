@@ -43,7 +43,7 @@ public class Terrain {
 	public static Terrain createWoodTerrain() {
 		Terrain newTerrain = new Terrain(3, "Wood provides protection, but vehicles have a harder time travelling through.", TerrainType.Wood);
 		newTerrain.moveCost.put(MoveType.FOOT, 1);
-		newTerrain.moveCost.put(MoveType.TANK, 2);
+		newTerrain.moveCost.put(MoveType.TANK, 3);
 		newTerrain.moveCost.put(MoveType.TIRE, 3);
 		return newTerrain;
 	}

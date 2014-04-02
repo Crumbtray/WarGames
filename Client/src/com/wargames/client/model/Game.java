@@ -8,7 +8,8 @@ public class Game {
 	public Game(Map gameMap)
 	{
 		this.gameMap = gameMap;
-		this.currentTurn = gameMap.players.get(0);
+		this.currentTurn = gameMap.players.get(gameMap.players.size() - 1);
+		this.endTurn(currentTurn);
 	}
 	
 	/**

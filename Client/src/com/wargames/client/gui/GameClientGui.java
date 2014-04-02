@@ -57,7 +57,7 @@ public class GameClientGui extends JPanel {
 		game = new Game(MapGenerator.generateMap02(player1, player2));
 		
 		// Wrap our Map around the game Map
-		guiMap = new GuiMap(game);
+		guiMap = new GuiMap(game, this);
 		
 		
 		// label to display game state
@@ -221,5 +221,10 @@ public class GameClientGui extends JPanel {
 			returnString = returnString.concat("\n" + player.color + " funds: " + player.funds);
 		}
 		return returnString;
+	}
+	
+	public void endGame(Player winner)
+	{
+		EndGameWindow window = new EndGameWindow(this, winner);
 	}
 }

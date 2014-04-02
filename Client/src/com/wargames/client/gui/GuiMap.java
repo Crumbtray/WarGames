@@ -6,12 +6,15 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 import com.wargames.client.helpers.Coordinate;
+import com.wargames.client.helpers.DamageCalculator;
+import com.wargames.client.helpers.WinChecker;
 import com.wargames.client.model.*;
 
 public class GuiMap {
 	public Game logicalGame;
 	private GuiUnit[][] graphicalUnits;
 	private GuiTerrain[][] graphicalTerrain;
+	private GameClientGui client;
 	
 	private final int MapOffsetX = 44;
 	private final int MapOffsetY = 44;
@@ -20,9 +23,10 @@ public class GuiMap {
 	private int mapWidth;
 	private int mapHeight;
 	
-	public GuiMap(Game logicalGame)
+	public GuiMap(Game logicalGame, GameClientGui client)
 	{
 		this.logicalGame = logicalGame;
+		this.client = client;
 		mapWidth = logicalGame.gameMap.getWidth();
 		mapHeight = logicalGame.gameMap.getHeight();
 		this.graphicalUnits = new GuiUnit[mapWidth][mapHeight];
@@ -137,10 +141,20 @@ public class GuiMap {
 	public void moveAttackUnit(GuiUnit selectedUnit, Coordinate moveCoordinate, Coordinate victimCoordinate)
 	{
 		moveSelectedUnit(selectedUnit, moveCoordinate);
-		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 1);
+		Unit attacker = selectedUnit.getLogicalUnit();
+		Unit defender = this.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y);
+		Terrain defenderTerrain = this.logicalGame.gameMap.getTerrainAt(victimCoordinate.x, victimCoordinate.y);
+		int damage = DamageCalculator.calculateDamage(attacker, defender, defenderTerrain);
+		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
 		if(isDead)
 		{
 			this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
+			Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
+			if(winner != null)
+			{
+				System.out.println("Winner: " + winner.color);
+				client.endGame(winner);
+			}
 		}
 		selectedUnit.getLogicalUnit().deactivate();
 	}
@@ -152,10 +166,20 @@ public class GuiMap {
 	 */
 	public void AttackUnit(GuiUnit selectedUnit, Coordinate victimCoordinate)
 	{
-		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, 1);
+		Unit attacker = selectedUnit.getLogicalUnit();
+		Unit defender = this.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y);
+		Terrain defenderTerrain = this.logicalGame.gameMap.getTerrainAt(victimCoordinate.x, victimCoordinate.y);
+		int damage = DamageCalculator.calculateDamage(attacker, defender, defenderTerrain);
+		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
 		if(isDead)
 		{
 			this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
+			Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
+			if(winner != null)
+			{
+				System.out.println("Winner: " + winner.color);
+				client.endGame(winner);
+			}
 		}
 		selectedUnit.getLogicalUnit().deactivate();
 	}

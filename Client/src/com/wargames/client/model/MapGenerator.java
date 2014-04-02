@@ -81,12 +81,12 @@ public class MapGenerator {
 			for(int j = 0; j < 16; j++)
 			{
 				// Loop through all the coordinates
-				if(i == 0 && j == 0)
+				if((i == 0 && j == 0) || (i == 2 && j == 0) || (i == 0 && j == 2))
 				{
 					// Player 1's factory.
 					Terrain playerOneFactory = Structure.createFactory(player1);
 					try {
-						newMap.addTerrain(0, 0, playerOneFactory);
+						newMap.addTerrain(i, j, playerOneFactory);
 					} 
 					catch (MapException e)
 					{
@@ -94,7 +94,7 @@ public class MapGenerator {
 						e.printStackTrace();
 					}
 				}
-				else if(i == 15 && j == 15)
+				else if((i == 15 && j == 15) || (i == 13 && j == 15) || (i == 15 && j == 13))
 				{
 					// Player 2's factory.
 					Terrain playerTwoFactory = Structure.createFactory(player2);
@@ -113,6 +113,19 @@ public class MapGenerator {
 					Terrain mountainTerrain = Terrain.createMountainTerrain();
 					try {
 						newMap.addTerrain(i, j, mountainTerrain);
+					}
+					catch(MapException e)
+					{
+						System.out.println("GenerateMap01 Terrain Adding Error: This should never happen.");
+						e.printStackTrace();
+					}
+				}
+				else if((i > 3 && i < 11) && (j > 3 && j < 11))
+				{
+					// Fill with wood.
+					Terrain woodTerrain = Terrain.createWoodTerrain();
+					try {
+						newMap.addTerrain(i, j, woodTerrain);
 					}
 					catch(MapException e)
 					{

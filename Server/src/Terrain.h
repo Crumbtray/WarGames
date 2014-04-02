@@ -30,6 +30,7 @@ public:
 	void setOwner(CPlayer *owner);
 	int getMoveCost(MobilityType type);
 	int getDefense();
+	bool canMove(Unit *unit);
 	bool canBeCaptured();
 };
 

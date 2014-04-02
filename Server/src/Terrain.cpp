@@ -57,3 +57,10 @@ bool Terrain::canBeCaptured(){
 	}
 	return false;
 }
+
+bool Terrain::canMove(Unit *unit){
+	if (getMoveCost(unit->getMobilityType()) > 0){
+		return true;
+	}
+	return false;
+}

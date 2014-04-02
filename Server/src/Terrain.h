@@ -13,7 +13,7 @@ private:
 	const int m_INCOME;
 	const int m_defense;
 	const MoveCost m_moveCost;
-	uint8 m_owner;
+	CPlayer *m_owner;
 	Unit *m_unit;
 
 
@@ -26,9 +26,10 @@ public:
 
 	Unit *getUnit();
 	Unit *setUnit(Unit *unit);
-	uint8 getOwner();
-	void setOwner(uint8 owner);
+	CPlayer *getOwner();
+	void setOwner(CPlayer *owner);
 	int getMoveCost(MobilityType type);
 	int getDefense();
+	bool canBeCaptured();
 };
 

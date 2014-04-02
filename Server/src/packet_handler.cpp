@@ -26,6 +26,7 @@ namespace packethandler
 		ShowWarning(CL_YELLOW"packet parser: unhandled packet %02hX from username %s\n" CL_RESET, RBUFB(data, 0), PPlayer->GetName());
 	}
 
+	//Login Status
 	void Packet0x01(session_data_t* session, CPlayer* player, int8* data)
 	{
 		char* query = "SELECT id, handle, wins, losses FROM accounts WHERE handle = '%s' AND password = PASSWORD('%s');";
@@ -69,7 +70,7 @@ namespace packethandler
 			session->PPlayer->pushPacket(new CLoginPacket(session->PPlayer, LOGIN_UNDEF));
 		}
 	}
-
+	//Account Creation
 	void Packet0x02(session_data_t* session, CPlayer* player, int8* data)
 	{
 		char* query = "SELECT id, handle FROM accounts WHERE handle LIKE '%s';";
@@ -118,7 +119,7 @@ namespace packethandler
 			session->PPlayer->pushPacket(new CAccountCreatePacket(CREATE_UNDEF));
 		}
 	}
-
+	//Lobby Update
 	void Packet0x03(session_data_t* session, CPlayer* player, int8* data)
 	{
 		uint32 lobbyID = WBUFW(data, 0x02);
@@ -135,7 +136,7 @@ namespace packethandler
 			lobby->addPlayer(player);
 		}
 	}
-
+	//Lobby Chat
 	void Packet0x04(session_data_t* session, CPlayer* player, int8* data)
 	{
 		int length = WBUFB(data, 0x02);
@@ -151,7 +152,7 @@ namespace packethandler
 			}
 		}
 	}
-
+	//Lobby Countdown
 	void Packet0x05(session_data_t* session, CPlayer* player, int8* data)
 	{
 		int action = WBUFB(data, 0x02);
@@ -169,7 +170,7 @@ namespace packethandler
 			}
 		}
 	}
-
+	//Turn Change
 	void Packet0x13(session_data_t* session, CPlayer* player, int8* data)
 	{
 		CGame* game = games::getGame(player);
@@ -179,7 +180,7 @@ namespace packethandler
 			game->endTurn();
 		}
 	}
-
+	//Action
 	void Packet0x15(session_data_t* session, CPlayer* player, int8* data)
 	{
 		CGame* game = games::getGame(player);
@@ -193,7 +194,6 @@ namespace packethandler
 
 		Unit* initiator = game->getUnit(unitID);
 		Unit* target = game->getUnit(targetID);
-		uint8 currentPlayer = game->getActivePlayer();
 
 		switch (action)
 		{
@@ -217,7 +217,7 @@ namespace packethandler
 		}
 			break;
 		case ACTION_CAPTURE:
-			game->getMap()->captureStructure(xpos, ypos, currentPlayer);
+			game->getMap()->captureStructure(xpos, ypos);
 			break;
 		case ACTION_PRODUCE:
 			initiator = game->getMap()->produceUnit(xpos, ypos, player, (UnitType)unitID);

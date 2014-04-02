@@ -7,6 +7,7 @@ void Test::run(){
 	bool allTestsPassed = true;
 	TestUnit *testUnits = new TestUnit();
 	TestTerrain *testTerrain = new TestTerrain();
+	TestMap *testMap = new TestMap();
 
 	ShowStatus("Testing Unit Creation\n");
 	if (!testUnits->run())
@@ -15,11 +16,10 @@ void Test::run(){
 	ShowStatus("Testing Terrain Creation\n");
 	if (!testTerrain->run())
 		allTestsPassed = false;
-	/*
+	
 	ShowStatus("Testing Map Creation\n");
-	if (!testMap())
+	if (!testTerrain->run())
 		allTestsPassed = false;
-	*/
 
 	if (allTestsPassed)
 		ShowInfo(CL_CYAN"All Tests Passed"CL_RESET"\n\nPress enter to exit test.\n");
@@ -28,12 +28,4 @@ void Test::run(){
 
 	char c = getchar();
 	std::cout << "\n";
-}
-
-bool Test::testTerrain(){
-	return true;
-}
-
-bool Test::testMap(){
-	return true;
 }

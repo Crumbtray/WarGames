@@ -7,7 +7,7 @@ m_INCOME(income),
 m_defense(defense),
 m_moveCost(cost)
 {
-	m_owner = UINT8_MAX;
+	m_owner = NULL;
 	m_unit = NULL;
 }
 
@@ -33,11 +33,11 @@ Unit *Terrain::setUnit(Unit *unit){
 	return this->m_unit;
 }
 
-uint8 Terrain::getOwner(){
+CPlayer *Terrain::getOwner(){
 	return this->m_owner;
 }
 
-void Terrain::setOwner(uint8 owner){
+void Terrain::setOwner(CPlayer *owner){
 	this->m_owner = owner;
 }
 int Terrain::getMoveCost(MobilityType type){
@@ -46,4 +46,14 @@ int Terrain::getMoveCost(MobilityType type){
 
 int Terrain::getDefense(){
 	return this->m_defense;
+}
+
+bool Terrain::canBeCaptured(){
+	if (this->m_TYPE == TerrainType::Airport ||
+		this->m_TYPE == TerrainType::City ||
+		this->m_TYPE == TerrainType::HQ ||
+		this->m_TYPE == TerrainType::Factory){
+		return true;
+	}
+	return false;
 }

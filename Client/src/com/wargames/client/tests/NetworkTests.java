@@ -15,7 +15,7 @@ public class NetworkTests {
 
 	private DatagramSocket socket;
 	
-	private final String Address = "50.65.25.35";
+	private final String Address = "127.0.0.1";
 	private final int PORT = 31111;
 	
 	@Before
@@ -27,7 +27,7 @@ public class NetworkTests {
 	public void testAccountCreation() {
 		byte[] accountCreationPacket = new byte[29];
 		
-		accountCreationPacket[0] = 0x02;
+		accountCreationPacket[0] = 0x01;
 		accountCreationPacket[1] = 0x1C;
 		String userName = "Clinton012";
 		String password = "testpassword";

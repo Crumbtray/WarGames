@@ -12,15 +12,18 @@
 class CPlayer;
 class Map
 {
+typedef std::map<uint16, Unit*> UnitList;
+typedef std::vector< std::vector<Terrain*>> TerrainMatrix;
+
 private:
-	uint8 m_WIDTH;
-	uint8 m_HEIGHT;
-	uint8 m_mapID;
-	std::vector< std::vector<Terrain*> > m_terrain;
-	std::map<uint16, Unit*> m_unitList;
+	const uint8 m_WIDTH;
+	const uint8 m_HEIGHT;
+	const uint8 m_mapID;
+	TerrainMatrix m_terrain;
+	UnitList m_unitList;
 
 	uint16 newUnitId(); //same as lobby's newLobbyId()
-	void initializeTerrain();
+	void initializeTerrain(uint8 mapID);
 
 public:
 	Map(uint8 width, uint8 height, uint8 mapID);
@@ -35,7 +38,7 @@ public:
 
 	Terrain* getTerrainAt(uint8 x, uint8 y);
 	Terrain* getTerrainUnderUnit(uint16 id);
-	uint8 addTerrain(uint8 x, uint8 y, Terrain terrain);
+	void addTerrain(uint8 x, uint8 y, Terrain *terrain);
 	TerrainType getTerrainTypeAt(uint8 x, uint8 y);
 
 	std::pair<uint8, uint8> getUnitPos(uint16 id);
@@ -46,6 +49,7 @@ public:
 	bool moveUnit(Unit* unit, uint8 new_x, uint8 new_y);
 	bool attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetdamage, int* returndamage);
 	bool deleteUnit(Unit* unit);
-	bool captureStructure(uint8 x, uint8 y);
+	bool captureStructure(uint8 x, uint8 y, uint8 owner); 
+
 };
 

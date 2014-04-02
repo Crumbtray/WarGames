@@ -1,31 +1,28 @@
 
-
 #include "Map.h"
 #include "Terrain.h"
 #include "TerrainBuilder.h"
 #include "UnitBuilder.h"
 #include "player.h"
 
-Map::Map(uint8 width, uint8 height, uint8 mapID)
+Map::Map(uint8 width, uint8 height, uint8 mapID):
+m_mapID(mapID),
+m_HEIGHT(height),
+m_WIDTH(width)
 {
-	m_mapID = mapID;
-	m_HEIGHT = height;
-	m_WIDTH = width;
-	
-	initializeTerrain();
+	initializeTerrain(mapID);
 }
-Map::Map(uint8 mapID)
+
+Map::Map(uint8 mapID):
+m_mapID(mapID),
+m_HEIGHT(DEFAULT_HEIGHT),
+m_WIDTH(DEFAULT_WIDTH)
 {
 	//get data from mapID
-	m_mapID = mapID;
-	m_HEIGHT = 16;
-	m_WIDTH = 16;
-
-	initializeTerrain();
+	initializeTerrain(mapID);
 }
-Map::~Map()
-{
 
+Map::~Map(){
 }
 
 uint16 Map::newUnitId()
@@ -42,9 +39,10 @@ uint16 Map::newUnitId()
 	return unitId;
 }
 
-void Map::initializeTerrain()
-{
-	//temp hardcoded map
+void Map::initializeTerrain(uint8 mapID){
+	//TODO: use mapID to generate different maps
+
+	//temp hardcoded map - all plains except for opposing corners
 	TerrainBuilder plainBuilder(TerrainType::Plain);
 	for (auto i : m_terrain)
 	{
@@ -56,25 +54,25 @@ void Map::initializeTerrain()
 	TerrainBuilder factoryBuilder(TerrainType::Factory);
 	delete m_terrain[0][0];
 	m_terrain[0][0] = factoryBuilder.getResult();
+	m_terrain[0][0]->setOwner(0);
 	delete m_terrain[15][15];
 	m_terrain[15][15] = factoryBuilder.getResult();
+	m_terrain[0][0]->setOwner(1);
 }
 
-uint8 Map::getMapID()
-{
+uint8 Map::getMapID(){
 	return m_mapID;
 }
-uint8 Map::getWidth()
-{
+
+uint8 Map::getWidth(){
 	return m_WIDTH;
 }
-uint8 Map::getHeight()
-{
+
+uint8 Map::getHeight(){
 	return m_HEIGHT;
 }
 
-Terrain* Map::getTerrainAt(uint8 x, uint8 y)
-{
+Terrain* Map::getTerrainAt(uint8 x, uint8 y){
 	return m_terrain[x][y];
 }
 
@@ -93,14 +91,18 @@ Terrain* Map::getTerrainUnderUnit(uint16 id)
 	return NULL;
 }
 
-std::pair<uint8, uint8> Map::getUnitPos(uint16 id)
-{
-	for (int i = 0; i < m_WIDTH; i++)
-	{
-		for (int j = 0; j < m_HEIGHT; j++)
-		{
-			if (m_terrain[i][j]->getUnit() && m_terrain[i][j]->getUnit()->getID() == id)
-			{
+void Map::addTerrain(uint8 x, uint8 y, Terrain *terrain){
+	m_terrain[x][y] = terrain;
+}
+
+TerrainType Map::getTerrainTypeAt(uint8 x, uint8 y){
+	return m_terrain[x][y]->getType();
+}
+
+std::pair<uint8, uint8> Map::getUnitPos(uint16 id){
+	for (int i = 0; i < m_WIDTH; i++){
+		for (int j = 0; j < m_HEIGHT; j++){
+			if (m_terrain[i][j]->getUnit() && m_terrain[i][j]->getUnit()->getID() == id){
 				return std::pair<uint8, uint8>(i, j);
 			}
 		}
@@ -108,13 +110,11 @@ std::pair<uint8, uint8> Map::getUnitPos(uint16 id)
 	return std::pair<uint8, uint8>(-1, -1);
 }
 
-Unit* Map::getUnit(uint16 id)
-{
+Unit* Map::getUnit(uint16 id){
 	return m_unitList.find(id)->second;
 }
 
-Unit* Map::getUnitAt(uint8 x, uint8 y)
-{
+Unit* Map::getUnitAt(uint8 x, uint8 y){
 	return m_terrain[x][y]->getUnit();
 }
 
@@ -124,7 +124,14 @@ Unit* Map::produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type)
 	if (pos->getUnit() == NULL)
 	{
 		UnitBuilder builder(type, owner, newUnitId());
-		return builder.getResult();
+		Unit* newUnit = builder.getResult();
+
+		//Add unit to map
+		m_terrain[x][y]->setUnit(newUnit);
+
+		//Add unit to unit list
+		m_unitList[newUnit->getID()] = newUnit;
+		return newUnit;
 	}
 	return NULL;
 }
@@ -149,6 +156,9 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 
 bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetdamage, int* returndamage)
 {
+	if (!unit->isActive()){
+		return false;
+	}
 	if (moveUnit(unit, new_x, new_y))
 	{
 		//TODO: ammo check, range check
@@ -164,6 +174,7 @@ bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* ta
 			delete unit;
 		}
 		return true;
+		unit->deactivate();
 	}
 	return false;
 }
@@ -177,11 +188,6 @@ bool Map::deleteUnit(Unit* unit)
 	return true;
 }
 
-bool Map::captureStructure(uint8 x, uint8 y)
-{
-	return false;
-}
-
 bool Map::unitsRemain(CPlayer* player)
 {
 	for (auto u : m_unitList)
@@ -192,4 +198,20 @@ bool Map::unitsRemain(CPlayer* player)
 		}
 	}
 	return false;
+}
+
+bool Map::captureStructure(uint8 x, uint8 y, uint8 owner){
+	Unit *unit = getUnitAt(x, y);
+	//TODO: validate x,y can be captured
+	if (!unit->isActive()){
+		return false;
+	}
+	bool captured = unit->capture();
+	unit->deactivate();
+
+	//Set owner if captured
+	if (captured){
+		m_terrain[x][y]->setOwner(owner);
+	}
+	return captured;
 }

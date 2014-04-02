@@ -21,11 +21,12 @@ void Test::run(){
 	*/
 
 	if (allTestsPassed)
-		ShowInfo(CL_CYAN"All Tests Passed"CL_RESET"\n\nPress enter to exit test.");
+		ShowInfo(CL_CYAN"All Tests Passed"CL_RESET"\n\nPress enter to exit test.\n");
 	else
-		ShowInfo(CL_CYAN"Test(s) Failed"CL_RESET"\n\nPress enter to exit test.");
+		ShowInfo(CL_CYAN"Test(s) Failed"CL_RESET"\n\nPress enter to exit test.\n");
 
 	char c = getchar();
+	std::cout << "\n";
 }
 
 bool Test::testTerrain(){

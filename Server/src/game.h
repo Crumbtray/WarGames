@@ -2,6 +2,7 @@
 #define _GAME_H
 
 #include "lib/cbasetypes.h"
+#include "packets/action.h"
 #include <vector>
 
 class CPlayer;

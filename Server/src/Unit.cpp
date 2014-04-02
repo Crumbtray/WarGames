@@ -90,7 +90,8 @@ void Unit::damageUnit(int damage){
 	this->m_health -= damage;
 }
 
-//returns true if unit has captured the current position
+// returns true if unit has captured the current position,
+// and false if the unit just started capturing
 bool Unit::capture(){
 	if (this->m_capturing == false){
 		//unit has started capturing this position
@@ -162,10 +163,6 @@ void Unit::attack(Unit* target, int* targetdamage, int* returndamage){
 
 int Unit::capture(int x, int y){
 	return 0;
-}
-
-void Unit::updateIncome(int amount){
-	// TODO: update m_owner's income
 }
 
 void Unit::setDamage(int damage)

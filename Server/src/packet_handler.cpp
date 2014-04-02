@@ -192,7 +192,8 @@ namespace packethandler
 		uint16 targetID = WBUFW(data, 0x07);
 
 		Unit* initiator = game->getUnit(unitID);
-		Unit* target = game->getUnit(unitID);
+		Unit* target = game->getUnit(targetID);
+		uint8 currentPlayer = game->getActivePlayer();
 
 		switch (action)
 		{
@@ -204,6 +205,7 @@ namespace packethandler
 			}
 			break;
 		case ACTION_ATTACK:
+		{
 			int targetdamage = 0, unitdamage = 0;
 			if (map->attackUnit(initiator, xpos, ypos, target, &targetdamage, &unitdamage))
 			{
@@ -212,9 +214,10 @@ namespace packethandler
 				game->updateEntity(target);
 				game->checkVictoryCondition();
 			}
+		}
 			break;
 		case ACTION_CAPTURE:
-			initiator->capture(xpos, ypos);
+			game->getMap()->captureStructure(xpos, ypos, currentPlayer);
 			break;
 		case ACTION_PRODUCE:
 			initiator = game->getMap()->produceUnit(xpos, ypos, player, (UnitType)unitID);

@@ -1,18 +1,5 @@
 package com.wargames.client.gui;
 
-// Fri Oct 25 18:07:43 EST 2004
-//
-// Written by Sean R. Owens, sean at guild dot net, released to the
-// public domain.  Share and enjoy.  Since some people argue that it is
-// impossible to release software to the public domain, you are also free
-// to use this code under any version of the GPL, LPGL, or BSD licenses,
-// or contact me for use of another license.
-// http://darksleep.com/player
-
-// A very simple custom dialog that takes a string as a parameter,
-// displays it in a JLabel, along with two Jbuttons, one labeled Yes,
-// and one labeled No, and waits for the user to click one of them.
-
 import javax.swing.JDialog; 
 
 import java.awt.GridLayout;

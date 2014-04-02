@@ -64,7 +64,6 @@ public class Map {
 			Unit targetUnit = unitMap[startX][startY];
 			unitMap[startX][startY] = null;
 			unitMap[destX][destY] = targetUnit;
-			targetUnit.deactivate();
 			return targetUnit;
 		}
 		else

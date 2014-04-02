@@ -104,7 +104,10 @@ public class GameMouseListener implements MouseListener{
 					{
 						if(client.selectedUnit.getLogicalUnit().canMoveAndAttack())
 						{
-							possibleActions.add(UnitActionType.Attack);
+							if(!possibleActions.contains(UnitActionType.Attack))
+							{
+								possibleActions.add(UnitActionType.Attack);
+							}	
 						}
 					}
 				}

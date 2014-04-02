@@ -62,17 +62,7 @@ public class MapGenerator {
 					}
 				}
 			}
-		}
-		
-		// Add a unit for each player.
-		try {
-			newMap.createUnit(0, 0, Unit.createSoldier(player1));
-			newMap.createUnit(15, 15, Unit.createSoldier(player2));
-		} catch (MapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
+		}	
 		return newMap;
 	}
 	

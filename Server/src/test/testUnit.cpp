@@ -80,7 +80,6 @@ bool TestUnit::testGeneralUnit(Unit *testUnit){
 	assert(testUnit->getHealth() == MAX_HEALTH);
 	assert(testUnit->isActive());
 	assert(testUnit->getAmmo() == MAX_AMMO);
-	assert(testUnit->getArmor() == 0);
 	assert(testUnit->getFuel() == MAX_FUEL);
 	assert(!testUnit->isCapturing());
 	return true;
@@ -95,6 +94,8 @@ bool TestUnit::testInfantry(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 2);
+	assert(testUnit->getArmor() == 0);
+	assert(testUnit->getDamageType() == DamageType::Bullet);
 	return true;
 }
 
@@ -107,6 +108,8 @@ bool TestUnit::testTank(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 3);
+	assert(testUnit->getArmor() == 2);
+	assert(testUnit->getDamageType() == DamageType::Concussive);
 	return true;
 }
 
@@ -119,6 +122,8 @@ bool TestUnit::testArtillery(Unit *testUnit){
 	assert(testUnit->getMinRange() == 2); 
 	assert(testUnit->getMaxRange() == 3);
 	assert(testUnit->getVision() == 3);
+	assert(testUnit->getArmor() == 1);
+	assert(testUnit->getDamageType() == DamageType::Concussive);
 	return true;
 }
 
@@ -131,6 +136,8 @@ bool TestUnit::testRecon(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 5);
+	assert(testUnit->getArmor() == 0);
+	assert(testUnit->getDamageType() == DamageType::Bullet);
 	return true;
 }
 
@@ -143,6 +150,8 @@ bool TestUnit::testBike(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 2);
+	assert(testUnit->getArmor() == 0);
+	assert(testUnit->getDamageType() == DamageType::Bullet);
 	return true;
 }
 
@@ -155,6 +164,8 @@ bool TestUnit::testRockets(Unit *testUnit){
 	assert(testUnit->getMinRange() == 3); 
 	assert(testUnit->getMaxRange() == 5);
 	assert(testUnit->getVision() == 3);
+	assert(testUnit->getArmor() == 0);
+	assert(testUnit->getDamageType() == DamageType::Concussive);
 	return true;
 }
 
@@ -167,6 +178,8 @@ bool TestUnit::testMech(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 2);
+	assert(testUnit->getArmor() == 0);
+	assert(testUnit->getDamageType() == DamageType::Concussive);
 	return true;
 }
 
@@ -179,6 +192,8 @@ bool TestUnit::testFighter(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 5);
+	assert(testUnit->getArmor() == 2);
+	assert(testUnit->getDamageType() == DamageType::Bullet);
 	return true;
 }
 
@@ -191,6 +206,8 @@ bool TestUnit::testDuster(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 4);
+	assert(testUnit->getArmor() == 1);
+	assert(testUnit->getDamageType() == DamageType::Bullet);
 	return true;
 }
 
@@ -203,6 +220,8 @@ bool TestUnit::testBomber(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 3);
+	assert(testUnit->getArmor() == 2);
+	assert(testUnit->getDamageType() == DamageType::Concussive);
 	return true;
 }
 
@@ -215,6 +234,8 @@ bool TestUnit::testTransportCopter(Unit *testUnit){
 	assert(testUnit->getMinRange() == 0); 
 	assert(testUnit->getMaxRange() == 0);
 	assert(testUnit->getVision() == 1);
+	assert(testUnit->getArmor() == 0);
+	assert(testUnit->getDamageType() == DamageType::NoDamage);
 	return true;
 }
 
@@ -227,6 +248,8 @@ bool TestUnit::testBattleship(Unit *testUnit){
 	assert(testUnit->getMinRange() == 3);
 	assert(testUnit->getMaxRange() == 5);
 	assert(testUnit->getVision() == 5);
+	assert(testUnit->getArmor() == 2);
+	assert(testUnit->getDamageType() == DamageType::Concussive);
 	return true;
 }
 
@@ -239,6 +262,8 @@ bool TestUnit::testCruiser(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 5);
+	assert(testUnit->getArmor() == 1);
+	assert(testUnit->getDamageType() == DamageType::Bullet);
 	return true;
 }
 
@@ -251,6 +276,8 @@ bool TestUnit::testSubmarine(Unit *testUnit){
 	assert(testUnit->getMinRange() == 1); 
 	assert(testUnit->getMaxRange() == 1);
 	assert(testUnit->getVision() == 5);
+	assert(testUnit->getArmor() == 1);
+	assert(testUnit->getDamageType() == DamageType::Concussive);
 	return true;
 }
 
@@ -263,5 +290,7 @@ bool TestUnit::testLander(Unit *testUnit){
 	assert(testUnit->getMinRange() == 0); 
 	assert(testUnit->getMaxRange() == 0);
 	assert(testUnit->getVision() == 1);
+	assert(testUnit->getArmor() == 0);
+	assert(testUnit->getDamageType() == DamageType::NoDamage);
 	return true;
 }

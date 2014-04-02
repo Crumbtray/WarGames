@@ -7,7 +7,7 @@ m_INCOME(income),
 m_defense(defense),
 m_moveCost(cost)
 {
-	m_owner = 255;
+	m_owner = UINT8_MAX;
 	m_unit = NULL;
 }
 
@@ -22,6 +22,10 @@ Unit *Terrain::getUnit(){
 
 TerrainType Terrain::getType(){
 	return this->m_TYPE;
+}
+
+int Terrain::getIncome(){
+	return this->m_INCOME;
 }
 
 Unit *Terrain::setUnit(Unit *unit){

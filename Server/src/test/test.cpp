@@ -6,15 +6,16 @@ void Test::run(){
 
 	bool allTestsPassed = true;
 	TestUnit *testUnits = new TestUnit();
+	TestTerrain *testTerrain = new TestTerrain();
 
 	ShowStatus("Testing Unit Creation\n");
 	if (!testUnits->run())
 		allTestsPassed = false;
-	/*
+
 	ShowStatus("Testing Terrain Creation\n");
-	if (!testTerrain())
+	if (!testTerrain->run())
 		allTestsPassed = false;
-	
+	/*
 	ShowStatus("Testing Map Creation\n");
 	if (!testMap())
 		allTestsPassed = false;

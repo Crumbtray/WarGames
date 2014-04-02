@@ -45,3 +45,26 @@ private:
 	bool testSubmarine(Unit *testUnit);
 	bool testLander(Unit *testUnit);
 };
+
+class TestTerrain
+{
+public:
+	TestTerrain();
+	~TestTerrain();
+
+	bool run();
+
+private:
+	bool m_allTestsPassed;
+
+	bool testGeneralTerrain(Terrain *testTerrain);
+	bool testPlain(Terrain *testTerrain);
+	bool testMountain(Terrain *testTerrain);
+	bool testRoad(Terrain *testTerrain);
+	bool testSea(Terrain *testTerrain);
+	bool testWood(Terrain *testTerrain);
+	bool testHQ(Terrain *testTerrain);
+	bool testFactory(Terrain *testTerrain);
+	bool testCity(Terrain *testTerrain);
+	bool testAirport(Terrain *testTerrain);
+};

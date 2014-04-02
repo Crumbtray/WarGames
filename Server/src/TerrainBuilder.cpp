@@ -23,10 +23,10 @@ TerrainBuilder::TerrainBuilder(TerrainType type)
 			buildHQ();
 			break;
 		case TerrainType::Factory:
-			void buildFactory();
+			buildFactory();
 			break;
 		case TerrainType::City:
-			void buildCity();
+			buildCity();
 			break;
 		case TerrainType::Airport:
 			void buildAirport();
@@ -47,6 +47,8 @@ TerrainBuilder::~TerrainBuilder()
 
 
 Terrain *TerrainBuilder::getResult(){
+	if (m_type == TerrainType::Error)
+		return NULL;
 	return new Terrain(m_type, m_income, m_defense, m_moveCost);
 }
 

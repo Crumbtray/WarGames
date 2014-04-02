@@ -1,7 +1,7 @@
-package com.wargames.client.communication.packet;
+package com.wargames.client.communication.packet.incoming;
 
 /**
- * All Packets sent and received should follow this basic structure.
+ * All Packets sent should follow this basic structure.
  * @author Clinton
  *
  */

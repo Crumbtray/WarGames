@@ -47,7 +47,7 @@ namespace packethandler
 
 		if (ret != SQL_ERROR)
 		{
-			if (Sql_NumRows(SqlHandle) != 0)
+			if (Sql_NumRows(SqlHandle) != 0 && Sql_NextRow(SqlHandle) == SQL_SUCCESS)
 			{
 				//fill in account specific stuff (wins/losses/etc)
 				delete session->PPlayer;

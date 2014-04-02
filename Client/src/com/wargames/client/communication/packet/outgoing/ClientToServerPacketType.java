@@ -1,4 +1,4 @@
-package com.wargames.client.communication.packet;
+package com.wargames.client.communication.packet.outgoing;
 
 public enum ClientToServerPacketType {
 	LoginPacket,

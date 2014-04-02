@@ -1,4 +1,4 @@
-package com.wargames.client.communication.packet;
+package com.wargames.client.communication.packet.incoming;
 
 public class PlayerDefinitionPacket extends Packet {
 

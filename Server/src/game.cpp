@@ -6,6 +6,7 @@
 #include "packets\action.h"
 #include "packets\entity_update.h"
 #include "packets\player_definition.h"
+#include "packets\player_update.h"
 #include "packets\post_game.h"
 #include "packets\turn_change.h"
 
@@ -36,6 +37,12 @@ void CGame::endTurn()
 {
 	m_activePlayer = m_activePlayer >= m_playerList.size() - 1 ? 0 : m_activePlayer + 1;
 
+	CPlayer* active = m_playerList[m_activePlayer];
+
+	active->AddMoney(active->GetIncome());
+
+	active->pushPacket(new CPlayerUpdatePacket(active));
+
 	for (auto player : m_playerList)
 	{
 		player->pushPacket(new CTurnChangePacket(m_activePlayer));
@@ -45,11 +52,20 @@ void CGame::endTurn()
 void CGame::start()
 {
 	m_activePlayer = 0;
+
 	for (auto player : m_playerList)
 	{
 		for (auto player2 : m_playerList)
 		{
 			player->pushPacket(new CPlayerDefinitionPacket(player2));
+		}
+		if (player == m_playerList[m_activePlayer])
+		{
+			CPlayer* active = m_playerList[m_activePlayer];
+
+			active->AddMoney(active->GetIncome());
+
+			active->pushPacket(new CPlayerUpdatePacket(active));
 		}
 		player->pushPacket(new CTurnChangePacket(m_activePlayer));
 	}
@@ -60,6 +76,7 @@ void CGame::addPlayer(CPlayer* player)
 	m_playerList.push_back(player);
 	player->SetMoney(0);
 	player->SetScore(0);
+	player->SetIncome(2000);
 }
 
 void CGame::end(CPlayer* winner)
@@ -144,6 +161,18 @@ void CGame::sendAction(Unit* initiator, Unit* target, ACTION action, int8 dmgini
 	{
 		p->pushPacket(new CActionPacket(initiator, target, action, dmginit, dmgtarget, pos));
 	}
+}
+
+uint8 CGame::getPlayerNumber(CPlayer* player)
+{
+	for (uint8 i = 0; i < m_playerList.size(); i++)
+	{
+		if (m_playerList[i] == player)
+		{
+			return i;
+		}
+	}
+	return -1;
 }
 
 namespace games

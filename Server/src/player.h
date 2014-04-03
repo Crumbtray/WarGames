@@ -17,6 +17,7 @@ private:
 	uint8 m_color;
 	int32 m_money;
 	int32 m_score;
+	uint32 m_income;
 
 	PacketQueue_t PacketQueue;
 
@@ -34,12 +35,15 @@ public:
 	void AddMoney(int32);
 	void SetScore(int32);
 	void AddScore(int32);
+	void SetIncome(int32);
+	void AddIncome(int32);
 	uint32 GetWins();
 	uint32 GetLosses();
 	uint8 GetTeam();
 	uint8 GetColor();
 	int32 GetScore();
 	int32 GetMoney();
+	int32 GetIncome();
 
 	bool packetQueueEmpty();
 	void clearPacketQueue();

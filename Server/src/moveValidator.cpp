@@ -101,7 +101,7 @@ CoordinateList MoveValidator::getAttackableCoordinates(int old_x, int old_y, Uni
 {
 	CoordinateList attackableCoords = CoordinateList();
 	//if range > 1, unit can either move or attack, not both
-	if (!playerUnit->getMaxRange() > 1){ //equivalent to "canMoveAndAttack" on client side
+	if (!(playerUnit->getMaxRange() > 1)){ //equivalent to "canMoveAndAttack" on client side
 		CoordinateList moveableSpots = validLocations(old_x, old_y, playerUnit, gameMap);
 		for (Coordinate moveable : moveableSpots){
 			for (Coordinate attackableCoordinate : getAttackableNeighbours(moveable, playerUnit, gameMap)){

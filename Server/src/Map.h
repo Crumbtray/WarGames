@@ -50,6 +50,6 @@ public:
 	bool attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetdamage, int* returndamage);
 	bool deleteUnit(Unit* unit);
 	bool captureStructure(uint8 x, uint8 y); 
-
+	void turnChange(CPlayer* player);
 };
 

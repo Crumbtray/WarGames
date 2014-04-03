@@ -11,6 +11,7 @@ CPlayer::CPlayer(int id)
 	m_color = 0;
 	m_money = 0;
 	m_score = 0;
+	m_income = 0;
 }
 
 CPlayer::~CPlayer()
@@ -87,6 +88,16 @@ void CPlayer::AddScore(int32 score)
 	m_score += score;
 }
 
+void CPlayer::SetIncome(int32 income)
+{
+	m_income = income;
+}
+
+void CPlayer::AddIncome(int32 income)
+{
+	m_income += income;
+}
+
 uint32 CPlayer::GetWins()
 {
 	return m_wins;
@@ -110,6 +121,11 @@ uint8 CPlayer::GetColor()
 int32 CPlayer::GetMoney()
 {
 	return m_money;
+}
+
+int32 CPlayer::GetIncome()
+{
+	return m_income;
 }
 
 int32 CPlayer::GetScore()

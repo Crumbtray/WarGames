@@ -222,3 +222,18 @@ bool Map::captureStructure(uint8 x, uint8 y){
 	}
 	return captured;
 }
+
+void Map::turnChange(CPlayer* player)
+{
+	for (auto u : m_unitList)
+	{
+		if (u.second->getOwner() == player)
+		{
+			u.second->activate();
+		}
+		else
+		{
+			u.second->deactivate();
+		}
+	}
+}

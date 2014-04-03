@@ -10,7 +10,7 @@ class CPlayer;
 class CPlayerDefinitionPacket : public CPacket
 {
 public:
-	CPlayerDefinitionPacket(CPlayer*);
+	CPlayerDefinitionPacket(CPlayer*, uint8);
 };
 
 

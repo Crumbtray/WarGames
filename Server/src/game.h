@@ -35,6 +35,7 @@ public:
 	void sendAction(Unit* initiator, Unit* target, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos);
 	void checkVictoryCondition();
 	uint8 getPlayerNumber(CPlayer*);
+	void playerDefeated(CPlayer*);
 
 	CGame(uint8 mapID, std::vector<CPlayer*> playerList);
 	~CGame();

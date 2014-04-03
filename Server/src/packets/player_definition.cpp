@@ -5,7 +5,7 @@
 
 #include "../lib/socket.h"
 
-CPlayerDefinitionPacket::CPlayerDefinitionPacket(CPlayer* player)
+CPlayerDefinitionPacket::CPlayerDefinitionPacket(CPlayer* player, uint8 playerNumber)
 {
 	this->type = 0x12;
 	this->size = 0x13;
@@ -14,11 +14,5 @@ CPlayerDefinitionPacket::CPlayerDefinitionPacket(CPlayer* player)
 	memcpy(packet + 0x06, player->GetName(), 10);
 	WBUFB(packet, 0x10) = player->GetColor();
 	WBUFB(packet, 0x11) = player->GetTeam();
-
-	CLobby* lobby = lobbies::getLobby(player);
-
-	if (lobby)
-	{
-		WBUFB(packet, 0x12) = lobby->playerNumber(player);
-	}
+	WBUFB(packet, 0x12) = playerNumber;
 }

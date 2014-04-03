@@ -10,7 +10,7 @@ class CPlayer;
 class CPlayerDefeatedPacket : public CPacket
 {
 public:
-	CPlayerDefeatedPacket(CPlayer*);
+	CPlayerDefeatedPacket(CPlayer*, uint8);
 };
 
 

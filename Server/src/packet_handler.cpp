@@ -15,6 +15,7 @@
 #include "packets\lobby_list.h"
 #include "packets\lobby_update.h"
 #include "packets\login.h"
+#include "packets\player_update.h"
 
 namespace packethandler
 {
@@ -212,7 +213,12 @@ namespace packethandler
 				game->sendAction(initiator, target, ACTION_ATTACK, targetdamage, unitdamage, std::pair<uint8, uint8>(xpos, ypos));
 				game->updateEntity(initiator);
 				game->updateEntity(target);
+				if (!game->getMap()->unitsRemain(target->getOwner()))
+				{
+					game->playerDefeated(target->getOwner());
+				}
 				game->checkVictoryCondition();
+				player->pushPacket(new CPlayerUpdatePacket(player));
 			}
 		}
 			break;
@@ -222,6 +228,7 @@ namespace packethandler
 		case ACTION_PRODUCE:
 			initiator = game->getMap()->produceUnit(xpos, ypos, player, (UnitType)unitID);
 			game->updateEntity(initiator);
+			player->pushPacket(new CPlayerUpdatePacket(player));
 			break;
 		default:
 			break;

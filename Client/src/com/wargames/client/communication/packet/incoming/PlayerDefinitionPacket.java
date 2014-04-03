@@ -1,68 +1,24 @@
 package com.wargames.client.communication.packet.incoming;
 
-public class PlayerDefinitionPacket extends Packet {
+import java.nio.ByteBuffer;
 
-	private int PlayerID;
-	private String PlayerName;
-	private String PlayerColor;
-	private int Team;
-	private int PlayerNumber;
-	
-	private PlayerDefinitionPacket(int size, int playerID, String playerName, String playerColor, int team, int playerNumber)
-	{
-		this.ID = 0x12;
-		this.size = size;
-		this.PlayerID = playerID;
-		this.PlayerName = playerName;
-		this.PlayerColor = playerColor;
-		this.Team = team;
-		this.PlayerNumber = playerNumber;
-	}
-	
-	@Override
-	public int getSize() {
-		return this.size;
-	}
+public class PlayerDefinitionPacket extends PacketFunctor {
 
 	@Override
-	public int getID() {
-		return this.ID;
+	public void parse(ByteBuffer buff) {
+		int id = buff.getInt();
+		byte[] name = new byte[10];
+		for (int j = 0; j < 10; j++)
+		{
+			name[j] = buff.get();
+		}
+		byte color = buff.get();
+		byte team = buff.get();
+		byte number = buff.get();
+		
+		//TODO: do stuff with response
+
 	}
 
-	@Override
-	public byte[] toByteArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public int getPlayerID()
-	{
-		return this.PlayerID;
-	}
-	
-	public String getPlayerName()
-	{
-		return this.PlayerName;
-	}
-	
-	public String getPlayerColor()
-	{
-		return this.PlayerColor;
-	}
-	
-	public int getPlayerTeam()
-	{
-		return this.Team;
-	}
-	
-	public int getPlayerNumber()
-	{
-		return this.PlayerNumber;
-	}
-
-	public static PlayerDefinitionPacket parse(byte[] bytes)
-	{
-		//TODO: Implement
-		return null;
-	}
 }

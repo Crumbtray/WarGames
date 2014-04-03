@@ -5,6 +5,8 @@
 
 #include "packets\action.h"
 #include "packets\entity_update.h"
+#include "packets\game_over.h"
+#include "packets\player_defeated.h"
 #include "packets\player_definition.h"
 #include "packets\player_update.h"
 #include "packets\post_game.h"
@@ -55,9 +57,9 @@ void CGame::start()
 
 	for (auto player : m_playerList)
 	{
-		for (auto player2 : m_playerList)
+		for (uint8 i = 0; i < m_playerList.size(); i++)
 		{
-			player->pushPacket(new CPlayerDefinitionPacket(player2));
+			player->pushPacket(new CPlayerDefinitionPacket(m_playerList[i], i));
 		}
 		if (player == m_playerList[m_activePlayer])
 		{
@@ -85,6 +87,7 @@ void CGame::end(CPlayer* winner)
 
 	for (auto p : m_playerList)
 	{
+		p->pushPacket(new CGameOverPacket(winner, getPlayerNumber(winner)));
 		p->pushPacket(new CPostGamePacket(winner, this));
 
 		if (p == m_winner)
@@ -173,6 +176,14 @@ uint8 CGame::getPlayerNumber(CPlayer* player)
 		}
 	}
 	return -1;
+}
+
+void CGame::playerDefeated(CPlayer* player)
+{
+	for (auto p : m_playerList)
+	{
+		p->pushPacket(new CPlayerDefeatedPacket(player, getPlayerNumber(player)));
+	}
 }
 
 namespace games

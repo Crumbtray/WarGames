@@ -10,7 +10,7 @@ class CPlayer;
 class CGameOverPacket : public CPacket
 {
 public:
-	CGameOverPacket(CPlayer*);
+	CGameOverPacket(CPlayer*, uint8);
 };
 
 

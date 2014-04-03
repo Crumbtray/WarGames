@@ -1,17 +1,13 @@
 package com.wargames.client.communication.packet.incoming;
 
+import java.nio.ByteBuffer;
+
 /**
  * All Packets sent should follow this basic structure.
  * @author Clinton
  *
  */
-abstract class Packet {
-	protected int ID;
-	protected int size;
+public abstract class PacketFunctor {
 	
-	abstract int getSize();
-	
-	abstract int getID();
-	
-	abstract byte[] toByteArray();
+	public abstract void parse(ByteBuffer buff);
 }

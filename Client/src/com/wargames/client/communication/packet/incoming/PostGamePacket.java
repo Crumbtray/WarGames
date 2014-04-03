@@ -1,71 +1,21 @@
 package com.wargames.client.communication.packet.incoming;
 
-public class PostGamePacket extends Packet {
+import java.nio.ByteBuffer;
 
-	private int playerID;
-	private int playerTeam;
-	private String playerColor;
-	private boolean winOrLose;
-	private int score;
-	private int totalWins;
-	private int totalLosses;
-	
-	@Override
-	int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+public class PostGamePacket extends PacketFunctor {
 
 	@Override
-	int getID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	byte[] toByteArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public int getPlayerID()
-	{
-		return this.playerID;
-	}
-	
-	public int getPlayerTeam()
-	{
-		return this.playerTeam;
-	}
-	
-	public String getPlayerColor()
-	{
-		return this.playerColor;
-	}
-	
-	public boolean getWinOrLose()
-	{
-		return this.winOrLose;
-	}
-	
-	public int getScore()
-	{
-		return this.score;
-	}
-	
-	public int getTotalWins()
-	{
-		return this.totalWins;
-	}
-	
-	public int getTotalLosses()
-	{
-		return this.totalLosses;
-	}
-	
-	public static PostGamePacket parse(byte[] bytes)
-	{
-		return null;
+	public void parse(ByteBuffer buff) {
+		int id = buff.getInt();
+		byte color = buff.get();
+		byte team = buff.get();
+		byte winner = buff.get(); //bool
+		int score = buff.getInt();
+		byte wins = buff.get();
+		byte losses = buff.get();
+		
+		//TODO: do stuff with response
+		
 	}
 
 }

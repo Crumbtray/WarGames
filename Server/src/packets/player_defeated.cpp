@@ -5,16 +5,11 @@
 
 #include "../lib/socket.h"
 
-CPlayerDefeatedPacket::CPlayerDefeatedPacket(CPlayer* player)
+CPlayerDefeatedPacket::CPlayerDefeatedPacket(CPlayer* player, uint8 playerNumber)
 {
 	this->type = 0x16;
 	this->size = 0x07;
 
-	CLobby* lobby = lobbies::getLobby(player);
-
-	if (lobby)
-	{
-		WBUFB(packet, 0x02) = lobby->playerNumber(player);
-	}
+	WBUFB(packet, 0x02) = playerNumber;
 	WBUFL(packet, 0x03) = player->id;
 }

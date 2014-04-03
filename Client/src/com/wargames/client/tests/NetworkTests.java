@@ -7,9 +7,13 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.wargames.client.communication.packet.outgoing.*;
+import com.wargames.client.communication.packet.incoming.IncomingPacketList;
 
 public class NetworkTests {
 
@@ -25,29 +29,15 @@ public class NetworkTests {
 
 	@Test
 	public void testAccountCreation() {
-		byte[] accountCreationPacket = new byte[29];
-		
-		accountCreationPacket[0] = 0x01;
-		accountCreationPacket[1] = 0x1C;
-		String userName = "Clinton012";
-		String password = "testpassword";
-		byte[] userNameBytes = userName.getBytes();
-		byte[] passwordBytes = password.getBytes();
-		
-		for(int i = 0; i < 10; i++)
-		{
-			accountCreationPacket[i + 2] = userNameBytes[i];
-		}
-		
-		for(int i = 0; i < passwordBytes.length; i++)
-		{
-			accountCreationPacket[i + 12] = passwordBytes[i];
-		}
-		
+		byte[] data = new LoginPacket("TestAcc", "testpass").toByteArray();
+		byte[] data2 = new LobbyJoinPacket((short)1234).toByteArray();
+				
 		InetAddress address;
 		try {
 			address = InetAddress.getByName(Address);
-			DatagramPacket packet = new DatagramPacket(accountCreationPacket, accountCreationPacket.length, address, PORT);
+			DatagramPacket packet = new DatagramPacket(data, data.length, address, PORT);
+			socket.send(packet);
+			packet = new DatagramPacket(data2, data2.length, address, PORT);
 			socket.send(packet);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -68,12 +58,13 @@ public class NetworkTests {
 		}
 			
 		byte[] packetData = initialPacket.getData();
-		short id = (short) packetData[0];
-		short size = (short) packetData[1];
-		short result = packetData[2];
+		byte id = packetData[0];
+		byte size = packetData[1];
+		
+		IncomingPacketList.parse(packetData);
+		
 		System.out.println("ID: " + id);
 		System.out.println("Size: " + size);
-		System.out.println("Result: " + result);
 	}
 	
 	@Test

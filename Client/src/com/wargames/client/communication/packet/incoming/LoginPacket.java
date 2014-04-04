@@ -11,7 +11,9 @@ public class LoginPacket extends PacketFunctor {
 		int losses = buff.getInt();
 		
 		//TODO: do stuff with response
-
+		System.out.println("Response: " + response);
+		System.out.println("Wins: " + wins);
+		System.out.println("Losses: " + losses);
 	}
 
 }

@@ -91,7 +91,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 		DatagramSocket socket;
 		try {
 			socket = new DatagramSocket();
-			PasswordValidator validator = new PasswordValidator(this.f, socket);
+			PasswordValidator validator = new PasswordValidator(this, socket);
 			validator.execute();
 			address = InetAddress.getByName("50.65.25.35");
 			DatagramPacket packet = new DatagramPacket(data, data.length, address, 31111);
@@ -123,9 +123,9 @@ public class LoginWindow extends JPanel implements ActionListener {
 	class PasswordValidator extends SwingWorker<Void, Integer> {
 
 		private DatagramSocket socket;
-		private JFrame client;
+		private JPanel client;
 
-		public PasswordValidator(JFrame client, DatagramSocket socket)
+		public PasswordValidator(JPanel client, DatagramSocket socket)
 		{
 			this.socket = socket;
 			this.client = client;

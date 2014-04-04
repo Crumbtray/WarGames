@@ -2,12 +2,12 @@ package com.wargames.client.communication.packet.incoming;
 
 import java.nio.ByteBuffer;
 
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class PlayerUpdatePacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JFrame client) {
+	public void parse(ByteBuffer buff, JPanel client) {
 		int money = buff.getInt();
 		int score = buff.getInt();
 		

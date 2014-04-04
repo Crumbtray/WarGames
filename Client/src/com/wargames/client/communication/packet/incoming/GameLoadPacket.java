@@ -2,15 +2,15 @@ package com.wargames.client.communication.packet.incoming;
 
 import java.nio.ByteBuffer;
 
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class GameLoadPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JFrame client) {
+	public void parse(ByteBuffer buff, JPanel client) {
 		byte mapID = buff.get();
 		
-		//TODO: do stuff with response
+		// Take the client's parent, create a new map, and give it to the Game Client GUI.
 
 	}
 

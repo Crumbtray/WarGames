@@ -160,4 +160,32 @@ public class MapGenerator {
 		
 		return newMap;
 	}
+
+
+	/**
+	 * Starter map for demo.
+	 * Same layout as map 2, but with units in pre-set positions.
+	 * @return Map
+	 */
+	public static Map generateMap03(Player player1, Player player2){
+		Map newMap = generateMap02(player1, player2);
+		
+		//delete players default units
+		newMap.deleteUnitAt(0,  0);
+		newMap.deleteUnitAt(15,  15);
+		
+		// Add units for each player.
+		try {
+			newMap.createUnit(9, 3, Unit.createTank(player1));
+			newMap.createUnit(5, 4, Unit.createSoldier(player1));
+			newMap.createUnit(2, 7, Unit.createSoldier(player1));
+			newMap.createUnit(7, 6, Unit.createSoldier(player2));
+		} catch (MapException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		
+		return newMap;
+	}
 }

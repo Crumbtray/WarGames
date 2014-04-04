@@ -59,7 +59,10 @@ public class Map {
 	 */
 	public Unit moveUnit(int startX, int startY, int destX, int destY) throws MapException
 	{
-		if(unitMap[destX][destY] == null)
+		if (startX == destX && startY == destY){
+			return unitMap[startX][startY];
+		}
+			else if(unitMap[destX][destY] == null)
 		{
 			Unit targetUnit = unitMap[startX][startY];
 			unitMap[startX][startY] = null;
@@ -108,9 +111,9 @@ public class Map {
 	{
 		if(this.unitMap[x][y] == null)
 		{
-			Structure factoryStructure = (Structure) terrainMap[x][y];
-			if(factoryStructure.terrainType.equals(TerrainType.Factory))
+			if(terrainMap[x][y].terrainType.equals(TerrainType.Factory))
 			{
+				Structure factoryStructure = (Structure) terrainMap[x][y];
 				if(factoryStructure.owner == unit.getOwner())
 				{
 					this.unitMap[x][y] = unit;
@@ -122,7 +125,9 @@ public class Map {
 			}
 			else
 			{
-				throw new MapException("MapException: Units can only be created on Factory locations.");
+				//TODO: temporary hack for demo to spawn units in middle of map
+				//throw new MapException("MapException: Units can only be created on Factory locations.");
+				this.unitMap[x][y] = unit;
 			}	
 		}
 		else

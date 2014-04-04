@@ -145,6 +145,7 @@ public class GameMouseListener implements MouseListener{
 			
 			//Attack code here!
 			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
+			/////////
 			this.mouseState = MouseState.NothingSelected;
 			this.client.repaint();
 		}
@@ -192,7 +193,9 @@ public class GameMouseListener implements MouseListener{
 	
 	private void stationaryAttack(Coordinate victimCoordinate)
 	{
+		///////////////
 		this.client.guiMap.AttackUnit(this.client.selectedUnit, victimCoordinate);
+		///////////////
 		this.client.revalidate();
 		this.client.repaint();
 	}

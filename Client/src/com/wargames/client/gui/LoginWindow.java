@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 import com.wargames.client.communication.packet.incoming.IncomingPacketList;
 import com.wargames.client.communication.packet.outgoing.LobbyJoinPacket;
 import com.wargames.client.communication.packet.outgoing.LoginPacket;
+import com.wargames.client.helpers.SocketSingleton;
 
 public class LoginWindow extends JPanel implements ActionListener {
 
@@ -90,13 +91,12 @@ public class LoginWindow extends JPanel implements ActionListener {
 		InetAddress address;
 		DatagramSocket socket;
 		try {
-			socket = new DatagramSocket();
-			PasswordValidator validator = new PasswordValidator(this, socket);
+			socket = SocketSingleton.getInstance().socket;
+			PasswordValidator validator = new PasswordValidator(this);
 			validator.execute();
 			address = InetAddress.getByName("50.65.25.35");
 			DatagramPacket packet = new DatagramPacket(data, data.length, address, 31111);
 			socket.send(packet);
-			socket.close();
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,9 +125,9 @@ public class LoginWindow extends JPanel implements ActionListener {
 		private DatagramSocket socket;
 		private JPanel client;
 
-		public PasswordValidator(JPanel client, DatagramSocket socket)
+		public PasswordValidator(JPanel client)
 		{
-			this.socket = socket;
+			this.socket = SocketSingleton.getInstance().socket;
 			this.client = client;
 		}
 

@@ -24,7 +24,8 @@ public class LoginPacket extends PacketFunctor {
 		if(response == 1)
 		{
 			System.out.println("Logged in.");
-			((JFrame) client.getParent()).dispose();
+			JFrame topframe = (JFrame) SwingUtilities.getWindowAncestor(client);
+			topframe.dispose();
 			new MainGui();
 		}
 	}

@@ -1,15 +1,18 @@
 package com.wargames.client.communication.packet.incoming;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
+
+import com.wargames.client.model.Lobby;
 
 public class LobbyListPacket extends PacketFunctor {
 
 	@Override
 	public void parse(ByteBuffer buff, JPanel client) {
 		byte numlobbies = buff.get();
-		
+		ArrayList<Lobby> lobbies = new ArrayList<Lobby>();
 		for (int i = 0; i < numlobbies; i++)
 		{
 			short id = buff.getShort();
@@ -22,10 +25,14 @@ public class LobbyListPacket extends PacketFunctor {
 				name[j] = buff.get();
 			}
 			
-			//TODO: do stuff with response
 			
+			//TODO: do stuff with response
+			Lobby newLobby = new Lobby(id, size, maxSize, mapID, new String(name));
+			lobbies.add(newLobby);
 		}
-
+		
+		// Get rid of current Login Window, and show the lobby window.
+		
 	}
 
 }

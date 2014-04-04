@@ -81,11 +81,15 @@ public class FactoryWindow extends JDialog implements ActionListener{
 		switch(selectedButton.getText())
 		{
 			case "Create Soldier":
+				//////////////////
 				this.client.guiMap.CreateUnit(UnitType.SOLDIER, factoryLocation);
+				//////////////////
 				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getSoldierCost();
 				break;
 			case "Create Tank":
+				///////////////////
 				this.client.guiMap.CreateUnit(UnitType.TANK, factoryLocation);
+				///////////////////
 				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getTankCost();
 				break;
 			default:

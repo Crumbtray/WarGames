@@ -42,15 +42,18 @@ uint16 Map::newUnitId()
 void Map::initializeTerrain(uint8 mapID, std::vector<CPlayer*> playerList){
 	//TODO: use mapID to generate different maps
 
-	//temp hardcoded map - all plains except for opposing corners
 	TerrainBuilder plainBuilder(TerrainType::Plain);
-	for (auto i : m_terrain)
+
+	for (int i = 0; i < 16; i++)
 	{
-		for (auto terrain : i)
+		std::vector<Terrain*> row;
+		for (int j = 0; j < 16; j++)
 		{
-			terrain = plainBuilder.getResult();
+			row.push_back(plainBuilder.getResult());
 		}
+		m_terrain.push_back(row);
 	}
+
 	TerrainBuilder factoryBuilder(TerrainType::Factory);
 	delete m_terrain[0][0];
 	m_terrain[0][0] = factoryBuilder.getResult();

@@ -120,7 +120,7 @@ namespace packethandler
 			session->PPlayer->pushPacket(new CAccountCreatePacket(CREATE_UNDEF));
 		}
 	}
-	//Lobby Update
+	//Lobby Join
 	void Packet0x03(session_data_t* session, CPlayer* player, int8* data)
 	{
 		uint32 lobbyID = WBUFW(data, 0x02);
@@ -153,7 +153,7 @@ namespace packethandler
 			}
 		}
 	}
-	//Lobby Countdown
+	//Lobby Action
 	void Packet0x05(session_data_t* session, CPlayer* player, int8* data)
 	{
 		int action = WBUFB(data, 0x02);
@@ -161,7 +161,7 @@ namespace packethandler
 
 		if (lobby && lobby->getHost() == player)
 		{
-			if (action == 0x01 && lobby->getStatus() == LOBBY_IDLE)
+			if (action == 0x01 && lobby->getStatus() == LOBBY_IDLE && lobby->playerList.size() > 1)
 			{
 				lobby->startCountdown();
 			}

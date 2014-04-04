@@ -75,7 +75,6 @@ void CGame::start()
 
 void CGame::addPlayer(CPlayer* player)
 {
-	m_playerList.push_back(player);
 	player->SetMoney(0);
 	player->SetScore(0);
 	player->SetIncome(2000);

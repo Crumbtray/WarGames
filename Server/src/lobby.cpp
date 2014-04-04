@@ -10,7 +10,7 @@
 CLobby::CLobby(uint32 id)
 {
 	this->id = id;
-	m_maxSize = 0;
+	m_maxSize = 2;
 	m_mapID = 0;
 }
 
@@ -131,7 +131,7 @@ void CLobby::cancelCountdown()
 
 uint8 CLobby::nextTick()
 {
-	return m_lastCountdown == 0 ? 0 : m_lastCountdown--;
+	return m_lastCountdown == 0 ? 0 : --m_lastCountdown;
 }
 
 namespace lobbies

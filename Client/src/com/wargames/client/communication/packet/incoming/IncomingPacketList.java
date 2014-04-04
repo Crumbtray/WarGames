@@ -3,6 +3,8 @@ package com.wargames.client.communication.packet.incoming;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 
+import javax.swing.JFrame;
+
 public class IncomingPacketList {
 	static PacketFunctor[] packetParser = new PacketFunctor[32];
 	
@@ -25,7 +27,7 @@ public class IncomingPacketList {
 		packetParser[0x17] = new GameOverPacket();
 	}
 	
-	public static void parse(byte[] data)
+	public static void parse(byte[] data, JFrame client)
 	{
 		int begin = 0;
 		
@@ -43,7 +45,7 @@ public class IncomingPacketList {
 			buff.rewind();
 			try
 			{
-				packetParser[type].parse(buff);
+				packetParser[type].parse(buff, client);
 			}
 			catch (Error e)
 			{

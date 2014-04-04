@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -83,34 +85,29 @@ public class LoginWindow extends JPanel implements ActionListener {
 	}
 
 	public void login(String username, String password)
-	{
+	{	
 		byte[] data = new LoginPacket(username, password).toByteArray();
-
-
 		InetAddress address;
+		DatagramSocket socket;
 		try {
-			DatagramSocket socket = new DatagramSocket();
+			socket = new DatagramSocket();
+			PasswordValidator validator = new PasswordValidator(this.f, socket);
+			validator.execute();
 			address = InetAddress.getByName("50.65.25.35");
 			DatagramPacket packet = new DatagramPacket(data, data.length, address, 31111);
 			socket.send(packet);
-			// Try to read back
-			byte[] initialBytes = new byte[3];
-			DatagramPacket initialPacket = new DatagramPacket(initialBytes, initialBytes.length);
-
-			socket.receive(initialPacket);
-			byte[] packetData = initialPacket.getData();
-			byte id = packetData[0];
-			byte size = packetData[1];
-
-			IncomingPacketList.parse(packetData);
-
-			System.out.println("ID: " + id);
-			System.out.println("Size: " + size);
 			socket.close();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	public static void main(String[] args)
@@ -122,14 +119,48 @@ public class LoginWindow extends JPanel implements ActionListener {
 			}
 		});
 	}
-	
-	class PasswordValidator extends SwingWorker<String, Object> {
+
+	class PasswordValidator extends SwingWorker<Void, Integer> {
+
+		private DatagramSocket socket;
+		private JFrame client;
+
+		public PasswordValidator(JFrame client, DatagramSocket socket)
+		{
+			this.socket = socket;
+			this.client = client;
+		}
 
 		@Override
-		protected String doInBackground() throws Exception {
-			// TODO Auto-generated method stub
+		protected Void doInBackground() throws Exception {
+			System.out.println("Starting to read...");
+
+			try {
+
+				// Try to read back
+				byte[] initialBytes = new byte[3];
+				DatagramPacket initialPacket = new DatagramPacket(initialBytes, initialBytes.length);
+
+				socket.receive(initialPacket);
+				byte[] packetData = initialPacket.getData();
+				byte id = packetData[0];
+				byte size = packetData[1];
+
+				IncomingPacketList.parse(packetData, client);
+
+				System.out.println("ID: " + id);
+				System.out.println("Size: " + size);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return null;
 		}
-		
+
+		@Override
+		protected void done() {
+
+		}
+
 	}
 }

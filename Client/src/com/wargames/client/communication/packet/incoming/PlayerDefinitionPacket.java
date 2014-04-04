@@ -2,10 +2,12 @@ package com.wargames.client.communication.packet.incoming;
 
 import java.nio.ByteBuffer;
 
+import javax.swing.JFrame;
+
 public class PlayerDefinitionPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff) {
+	public void parse(ByteBuffer buff, JFrame client) {
 		int id = buff.getInt();
 		byte[] name = new byte[10];
 		for (int j = 0; j < 10; j++)

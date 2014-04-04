@@ -156,6 +156,7 @@ void CGame::checkVictoryCondition()
 			}
 		}
 	}
+	delete this;
 }
 
 void CGame::sendAction(Unit* initiator, Unit* target, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos)

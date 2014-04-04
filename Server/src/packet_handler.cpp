@@ -217,8 +217,8 @@ namespace packethandler
 				{
 					game->playerDefeated(target->getOwner());
 				}
-				game->checkVictoryCondition();
 				player->pushPacket(new CPlayerUpdatePacket(player));
+				game->checkVictoryCondition();
 			}
 		}
 			break;

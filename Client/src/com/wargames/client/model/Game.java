@@ -94,7 +94,15 @@ public class Game {
 				break;
 		}
 		try {
-			this.gameMap.createUnit(x, y, newUnit);
+			// Game Logic here -- Prevent creation if factory isn't here.
+			if(gameMap.getTerrainAt(x, y).terrainType.equals(TerrainType.Factory))
+			{
+				Structure factoryStructure = (Structure) gameMap.getTerrainAt(x,y);
+				if(factoryStructure.owner == owner)
+				{
+					this.gameMap.createUnit(x, y, newUnit);
+				}
+			}
 		}
 		catch(MapException e)
 		{

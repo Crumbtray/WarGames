@@ -119,6 +119,12 @@ public class GameMouseListener implements MouseListener{
 				
 				ActionWindow actionWindow = new ActionWindow(client, e, possibleActions, this);
 			}
+			else
+			{
+				// Otherwise, close the selection, treat it as if nothing happened.
+				this.mouseState = MouseState.NothingSelected;
+				handleOnNothingSelected(e);
+			}
 		}
 		else
 		{

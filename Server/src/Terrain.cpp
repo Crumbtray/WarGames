@@ -28,8 +28,10 @@ int Terrain::getIncome(){
 	return this->m_INCOME;
 }
 
+//sets unit iff terrain is empty, returns unit in terrain
 Unit *Terrain::setUnit(Unit *unit){
-	this->m_unit = unit;
+	if (this->m_unit == NULL)
+		this->m_unit = unit;
 	return this->m_unit;
 }
 

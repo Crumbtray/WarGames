@@ -94,6 +94,7 @@
     <ClCompile Include="..\..\..\src\lobby.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\Map.cpp" />
+    <ClCompile Include="..\..\..\src\MapBuilder.cpp" />
     <ClCompile Include="..\..\..\src\moveValidator.cpp" />
     <ClCompile Include="..\..\..\src\packets\account_creation.cpp" />
     <ClCompile Include="..\..\..\src\packets\action.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="..\..\..\src\lib\utils.h" />
     <ClInclude Include="..\..\..\src\lobby.h" />
     <ClInclude Include="..\..\..\src\Map.h" />
+    <ClInclude Include="..\..\..\src\MapBuilder.h" />
     <ClInclude Include="..\..\..\src\moveValidator.h" />
     <ClInclude Include="..\..\..\src\packets\account_creation.h" />
     <ClInclude Include="..\..\..\src\packets\action.h" />

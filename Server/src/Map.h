@@ -3,31 +3,34 @@
 #define DEFAULT_WIDTH 16
 #define DEFAULT_HEIGHT 16
 
+#include "lib/cbasetypes.h"
 #include <utility>
 #include <vector>
 #include "TypeEnums.h"
 #include "Terrain.h"
 #include "Unit.h"
+#include "player.h"
 
-class CPlayer;
-class Map
-{
 typedef std::map<uint16, Unit*> UnitList;
 typedef std::vector< std::vector<Terrain*>> TerrainMatrix;
+typedef std::vector< CPlayer*> PlayerList;
 
+class Map
+{
 private:
 	const uint8 m_WIDTH;
 	const uint8 m_HEIGHT;
 	const uint8 m_mapID;
-	TerrainMatrix m_terrain;
+	const TerrainMatrix m_terrain;
 	UnitList m_unitList;
+	const PlayerList m_playerList;
+
 
 	uint16 newUnitId(); //same as lobby's newLobbyId()
-	void initializeTerrain(uint8 mapID,	std::vector<CPlayer*> playerList);
 
 public:
-	Map(uint8 width, uint8 height, uint8 mapID, std::vector<CPlayer*> playerList);
-	Map(uint8 mapID, std::vector<CPlayer*> playerList);
+	Map(uint8 mapID, uint8 width, uint8 height, TerrainMatrix terrain, UnitList unitList, PlayerList playerList);
+	Map(uint8 mapID, TerrainMatrix terrain, UnitList unitList, PlayerList playerList);
 	~Map();
 
 	bool unitsRemain(CPlayer*);
@@ -38,7 +41,6 @@ public:
 
 	Terrain* getTerrainAt(uint8 x, uint8 y);
 	Terrain* getTerrainUnderUnit(uint16 id);
-	void addTerrain(uint8 x, uint8 y, Terrain *terrain);
 	TerrainType getTerrainTypeAt(uint8 x, uint8 y);
 
 	std::pair<uint8, uint8> getUnitPos(uint16 id);

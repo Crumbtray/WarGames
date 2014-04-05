@@ -150,6 +150,9 @@
     <ClCompile Include="..\..\..\src\moveValidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\MapBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\server.h">
@@ -264,6 +267,9 @@
       <Filter>test</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\moveValidator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MapBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

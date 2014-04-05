@@ -1,6 +1,7 @@
 
 #include "game.h"
 #include "Map.h"
+#include "MapBuilder.h"
 #include "player.h"
 
 #include "packets\action.h"
@@ -15,7 +16,8 @@
 CGame::CGame(uint8 map, std::vector<CPlayer*> playerList)
 {
 	m_playerList = playerList;
-	m_map = new Map(map, playerList);
+	MapBuilder *builder = new MapBuilder(map, playerList);
+	m_map = builder->getResult();
 	m_activePlayer = 0;
 	m_winner = NULL;
 }

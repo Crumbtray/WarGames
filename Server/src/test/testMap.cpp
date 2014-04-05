@@ -8,7 +8,7 @@ bool TestMap::run()
 {
 	//TODO
 	m_allTestsPassed = true;
-	Map *testMap;
+	//Map *testMap;
 	
 	return m_allTestsPassed;
 }

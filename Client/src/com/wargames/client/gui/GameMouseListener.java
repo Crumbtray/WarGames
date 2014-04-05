@@ -110,6 +110,7 @@ public class GameMouseListener implements MouseListener{
 				ActionWindow actionWindow = new ActionWindow(client, e, possibleActions, this);
 
 				// Simple attack
+				//TODO: cancel button doesnt work when selecting a unit to attack
 				stationaryAttack(mouseCoordinate);
 				if (movePos!= null)
 					client.guiMap.moveSelectedUnit(client.selectedUnit, movePos);
@@ -141,6 +142,7 @@ public class GameMouseListener implements MouseListener{
 			{
 				// Otherwise, close the selection, treat it as if nothing happened.
 				this.mouseState = MouseState.NothingSelected;
+
 				handleOnNothingSelected(e);
 			}
 		}

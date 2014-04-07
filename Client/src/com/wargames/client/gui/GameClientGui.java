@@ -16,7 +16,6 @@ import javax.swing.JTextArea;
 import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.model.Game;
-import com.wargames.client.model.MapGenerator;
 import com.wargames.client.model.Player;
 import com.wargames.client.model.Terrain;
 import com.wargames.client.model.Unit;
@@ -27,9 +26,6 @@ public class GameClientGui extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 7504649405406424171L;
-	private Game game;
-	private Player player1;
-	private Player player2;
 	
 	// Gui objects
 	public GuiMap guiMap;
@@ -43,22 +39,17 @@ public class GameClientGui extends JPanel {
 	private JTextArea lblGameState;
 	private JButton endTurnButton;
 	public JFrame f;
+	public Player loggedInPlayer;
 	
-	public GameClientGui()
+	public GameClientGui(Game game, Player loggedInPlayer)
 	{
 		// background
 		URL urlBackgroundImg = getClass().getResource("/com/wargames/client/gui/img/background.png");
 		this.imgBackground = new ImageIcon(urlBackgroundImg).getImage();
 		
-		// Initialize the game.
-		player1 = new Player(0, "Clinton", 1, 0, "red");
-		player2 = new Player(1, "Jesus", 2, 1, "blue");
-		
-		game = new Game(MapGenerator.generateMap03(player1, player2));
-		
 		// Wrap our Map around the game Map
 		guiMap = new GuiMap(game, this);
-		
+		this.loggedInPlayer = loggedInPlayer;
 		
 		// label to display game state
 		this.lblSelectedTerrain = new JTextArea(5, 10);
@@ -138,7 +129,7 @@ public class GameClientGui extends JPanel {
 		if(this.selectedUnit != null && this.selectedUnit.getLogicalUnit().isActive())
 		{
 			Coordinate unitCoordinate = guiMap.getCoordinateOfUnit(selectedUnit);
-			ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, selectedUnit.getLogicalUnit(), this.game.gameMap);
+			ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, selectedUnit.getLogicalUnit(), this.guiMap.logicalGame.gameMap);
 			for(Coordinate validLocation : validLocations)
 			{
 				int highlightX = validLocation.x * 32 + 44;
@@ -148,7 +139,7 @@ public class GameClientGui extends JPanel {
 				g.setColor(new Color(0, 255, 0, 100));
 				g.fillRoundRect( highlightX, highlightY, 32, 32, 10, 10);
 			}
-			ArrayList<Coordinate> attackables = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, selectedUnit.getLogicalUnit(), this.game.gameMap);
+			ArrayList<Coordinate> attackables = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, selectedUnit.getLogicalUnit(), this.guiMap.logicalGame.gameMap);
 			for(Coordinate attackable : attackables)
 			{
 				int highlightX = attackable.x * 32 + 44;
@@ -166,14 +157,14 @@ public class GameClientGui extends JPanel {
 		Terrain logicalTerrain;
 		if(this.selectedTerrain == null)
 		{
-			logicalTerrain = this.game.gameMap.getTerrainAt(0, 0);
+			logicalTerrain = this.guiMap.logicalGame.gameMap.getTerrainAt(0, 0);
 		}
 		else
 		{
 			logicalTerrain = this.selectedTerrain.getLogicalTerrain();
 		}
 		
-		return logicalTerrain.terrainType.toString() + "\n" + logicalTerrain.description;
+		return logicalTerrain.terrainType.toString() + "\n" + logicalTerrain.description + "\nDefense: " + logicalTerrain.defense;
 	}
 	
 	public String getSelectedUnit()
@@ -215,8 +206,8 @@ public class GameClientGui extends JPanel {
 	
 	public String getStateText()
 	{
-		String returnString = "Current Turn: " + this.game.currentTurn.color;
-		for(Player player : game.gameMap.players)
+		String returnString = "Current Turn: " + this.guiMap.logicalGame.currentTurn.color;
+		for(Player player : guiMap.logicalGame.gameMap.players)
 		{
 			returnString = returnString.concat("\n" + player.color + " funds: " + player.funds);
 		}

@@ -1,19 +1,17 @@
 package com.wargames.client.tests;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.wargames.client.communication.packet.outgoing.*;
 import com.wargames.client.communication.packet.incoming.IncomingPacketList;
+import com.wargames.client.communication.packet.outgoing.LobbyJoinPacket;
+import com.wargames.client.communication.packet.outgoing.LoginPacket;
 
 public class NetworkTests {
 
@@ -61,7 +59,7 @@ public class NetworkTests {
 		byte id = packetData[0];
 		byte size = packetData[1];
 		
-		IncomingPacketList.parse(packetData);
+		IncomingPacketList.parse(packetData, null);
 		
 		System.out.println("ID: " + id);
 		System.out.println("Size: " + size);

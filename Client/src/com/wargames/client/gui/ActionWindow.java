@@ -1,15 +1,14 @@
 package com.wargames.client.gui;
 
-import javax.swing.JDialog; 
-
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-import javax.swing.JPanel;
 import javax.swing.JButton;
-import java.awt.event.ActionEvent;
-import java.util.*;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 public class ActionWindow extends JDialog implements ActionListener {
 	/**

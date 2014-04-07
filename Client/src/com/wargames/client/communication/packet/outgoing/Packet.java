@@ -5,7 +5,7 @@ package com.wargames.client.communication.packet.outgoing;
  * @author Clinton
  *
  */
-abstract class Packet {
+public abstract class Packet {
 	protected byte ID;
 	protected byte size;
 	

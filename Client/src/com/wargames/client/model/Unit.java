@@ -6,6 +6,7 @@ package com.wargames.client.model;
  *
  */
 public class Unit {
+	public int id;
 	private UnitType unitType;
 	public int health;
 	private MoveType moveType;
@@ -16,8 +17,9 @@ public class Unit {
 	private boolean isActive;
 	private boolean canMoveAndAttack;
 	
-	private Unit(UnitType unitType, int health, MoveType moveType, int range, int mobility, String description, Player owner, boolean canMoveAndAttack)
+	private Unit(int ID, UnitType unitType, int health, MoveType moveType, int range, int mobility, String description, Player owner, boolean canMoveAndAttack)
 	{
+		this.id = ID;
 		this.unitType = unitType;
 		this.health = health;
 		this.moveType = moveType;
@@ -32,9 +34,9 @@ public class Unit {
 	 * Creates a new Soldier Unit for the given player.
 	 * @return A Unit object containing the statistics for Soldier.
 	 */
-	public static Unit createSoldier(Player owner) 
+	public static Unit createSoldier(Player owner, int ID) 
 	{
-		Unit newUnit = new Unit(UnitType.SOLDIER, 10, MoveType.FOOT, 1, 3, "The cheapest unit.  They can capture bases.", owner, true);
+		Unit newUnit = new Unit(ID, UnitType.SOLDIER, 10, MoveType.FOOT, 1, 3, "The cheapest unit.  They can capture bases.", owner, true);
 		newUnit.deactivate();
 		return newUnit;
 	}
@@ -44,16 +46,16 @@ public class Unit {
 	 * @param owner
 	 * @return A Unit object containing the statistics for the tank.
 	 */
-	public static Unit createTank(Player owner)
+	public static Unit createTank(Player owner, int ID)
 	{
-		Unit newUnit = new Unit(UnitType.TANK, 10, MoveType.TANK, 1, 6, "Tanks are heavy damage dealers.", owner, true);
+		Unit newUnit = new Unit(ID, UnitType.TANK, 10, MoveType.TANK, 1, 6, "Tanks are heavy damage dealers.", owner, true);
 		newUnit.deactivate();
 		return newUnit;
 	}
 	
-	public static Unit createArtillery(Player owner)
+	public static Unit createArtillery(Player owner, int ID)
 	{
-		Unit newUnit = new Unit(UnitType.ARTILLERY, 10, MoveType.TIRE, 1, 5, "Artillery are ranged attackers.", owner, false);
+		Unit newUnit = new Unit(ID, UnitType.ARTILLERY, 10, MoveType.TIRE, 1, 5, "Artillery are ranged attackers.", owner, false);
 		newUnit.deactivate();
 		return newUnit;
 	}

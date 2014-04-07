@@ -5,7 +5,8 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import com.wargames.client.model.*;
+import com.wargames.client.model.Structure;
+import com.wargames.client.model.Terrain;
 
 public class GuiTerrain {
 	private Terrain logicalTerrain;

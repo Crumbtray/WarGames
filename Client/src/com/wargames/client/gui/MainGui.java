@@ -11,6 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.wargames.client.model.Game;
+import com.wargames.client.model.MapGenerator;
+import com.wargames.client.model.Player;
+
 public class MainGui extends JPanel implements ActionListener{
 
 	/**
@@ -59,7 +63,12 @@ public class MainGui extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		this.f.dispose();
-		new GameClientGui();
+		// Initialize the game.
+		Player player1 = new Player(0, "Clinton", 1, 0, "red");
+		Player player2 = new Player(1, "Jesus", 2, 1, "blue");
+		
+		Game game = new Game(MapGenerator.generateMap03(player1, player2));
+		new GameClientGui(game, player1);
 	}
 
 }

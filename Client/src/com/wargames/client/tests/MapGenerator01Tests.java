@@ -1,10 +1,15 @@
 package com.wargames.client.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import com.wargames.client.model.*;
+
+import com.wargames.client.model.Map;
+import com.wargames.client.model.MapGenerator;
+import com.wargames.client.model.Player;
+import com.wargames.client.model.Structure;
+import com.wargames.client.model.TerrainType;
 
 public class MapGenerator01Tests {
 

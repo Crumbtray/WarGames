@@ -2,7 +2,9 @@ package com.wargames.client.helpers;
 
 import java.util.ArrayList;
 
-import com.wargames.client.model.*;
+import com.wargames.client.model.Map;
+import com.wargames.client.model.Terrain;
+import com.wargames.client.model.Unit;
 
 public class MoveValidator {
 

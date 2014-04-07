@@ -1,6 +1,5 @@
 package com.wargames.client.tests;
 
-import java.io.Console;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -107,7 +106,7 @@ public class PacketTestTool {
 			byte id = packetData[0];
 			byte size = packetData[1];
 			
-			IncomingPacketList.parse(packetData);
+			IncomingPacketList.parse(packetData, null);
 			
 			System.out.println("ID: " + id);
 			System.out.println("Size: " + size);

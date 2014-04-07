@@ -1,7 +1,6 @@
 package com.wargames.client.communication.packet.incoming;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 
 import javax.swing.JPanel;
 

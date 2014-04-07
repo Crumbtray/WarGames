@@ -9,24 +9,23 @@ import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.model.MapException;
 import com.wargames.client.model.Structure;
 import com.wargames.client.model.TerrainType;
-import com.wargames.client.model.Unit;
 
 public class GameMouseListener implements MouseListener{
 
 	public MouseState mouseState;
 	private GameClientGui client;
 	public Coordinate lastClick;
-	
+
 	public GameMouseListener(GameClientGui client)
 	{
 		this.mouseState = MouseState.NothingSelected;
 		this.client = client;
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -34,14 +33,16 @@ public class GameMouseListener implements MouseListener{
 		// TODO Auto-generated method stub
 		int mouseXPosition = e.getX();
 		int mouseYPosition = e.getY();
-			
-		if(mouseXPosition >= 44 && mouseXPosition < 556)
+		// Only respond if it is my turn.
+		if(client.guiMap.logicalGame.currentTurn == client.loggedInPlayer)
 		{
-			if(mouseYPosition >= 44 && mouseYPosition < 556)
+			if(mouseXPosition >= 44 && mouseXPosition < 556)
 			{
-				// We're manipulating the map!
-				switch(this.mouseState)
+				if(mouseYPosition >= 44 && mouseYPosition < 556)
 				{
+					// We're manipulating the map!
+					switch(this.mouseState)
+					{
 					case NothingSelected:
 						handleOnNothingSelected(e);
 						break;
@@ -51,28 +52,29 @@ public class GameMouseListener implements MouseListener{
 					case FindingAttackTarget:
 						handleOnUnitAttackSelection(e);
 						break;
+					}
+
 				}
-				
 			}
-		}		
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void handleOnUnitSelected(MouseEvent e)
@@ -82,12 +84,12 @@ public class GameMouseListener implements MouseListener{
 		Coordinate unitCoordinate = this.client.guiMap.getCoordinateOfUnit(this.client.selectedUnit);
 		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.guiMap.logicalGame.gameMap);
 		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(unitCoordinate.x, unitCoordinate.y, this.client.selectedUnit.getLogicalUnit(), this.client.guiMap.logicalGame.gameMap);
-		
+
 		// If we click anywhere outside the valid locations, we go back to nothing selected state.
 		Coordinate mouseCoordinate = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
 		if(this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.guiMap.logicalGame.currentTurn)
 		{
-			if(attackableUnits.contains(mouseCoordinate))
+			if(attackableUnits.contains(mouseCoordinate) && MoveValidator.isNeighbour(unitCoordinate, mouseCoordinate))
 			{
 				// Simple attack
 				stationaryAttack(mouseCoordinate);
@@ -111,12 +113,12 @@ public class GameMouseListener implements MouseListener{
 						}
 					}
 				}
-				
+
 				// Open the action window here.
 				// Get all possible actions
 
 				possibleActions.add(UnitActionType.Move);
-				
+
 				ActionWindow actionWindow = new ActionWindow(client, e, possibleActions, this);
 			}
 			else
@@ -132,7 +134,7 @@ public class GameMouseListener implements MouseListener{
 			handleOnNothingSelected(e);
 		}
 	}
-	
+
 	/**
 	 * We reach this point when the mouse clicks on anything after the "Attack" button is selected.
 	 * @param e
@@ -147,7 +149,7 @@ public class GameMouseListener implements MouseListener{
 			// We can attack this unit.
 			System.out.println("Attacking unit at (" + victimCoordinate.x + "," + victimCoordinate.y + ")" );
 			Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
-			
+
 			//Attack code here!
 			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
 			/////////
@@ -161,7 +163,7 @@ public class GameMouseListener implements MouseListener{
 			this.client.repaint();
 		}
 	}
-	
+
 	private void handleOnNothingSelected(MouseEvent e)
 	{
 		int mouseXPosition = e.getX();
@@ -195,7 +197,7 @@ public class GameMouseListener implements MouseListener{
 			e1.printStackTrace();
 		}
 	}
-	
+
 	private void stationaryAttack(Coordinate victimCoordinate)
 	{
 		///////////////

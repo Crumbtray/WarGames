@@ -3,7 +3,9 @@ package com.wargames.client.helpers;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import com.wargames.client.model.*;
+import com.wargames.client.model.Map;
+import com.wargames.client.model.Player;
+import com.wargames.client.model.Unit;
 
 public class WinChecker {
 	

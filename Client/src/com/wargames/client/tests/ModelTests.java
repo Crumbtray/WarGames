@@ -1,7 +1,6 @@
 package com.wargames.client.tests;
 
-import com.wargames.client.model.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 

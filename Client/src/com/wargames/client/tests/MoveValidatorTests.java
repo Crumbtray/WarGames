@@ -1,15 +1,16 @@
 package com.wargames.client.tests;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.MoveValidator;
-import com.wargames.client.model.*;
-import com.wargames.client.helpers.*;
+import com.wargames.client.model.Map;
+import com.wargames.client.model.MapGenerator;
+import com.wargames.client.model.Player;
+import com.wargames.client.model.Unit;
 
 public class MoveValidatorTests {
 	private Player player1;
@@ -26,7 +27,7 @@ public class MoveValidatorTests {
 
 	@Test
 	public void testMoveValidator() {
-		Unit unit = Unit.createSoldier(player1);
+		Unit unit = Unit.createSoldier(player1, 1);
 		System.out.println("Soldier's mobility: " + unit.getMobility());
 		ArrayList<Coordinate> validMoves = MoveValidator.validLocations(0, 0, unit, gameMap);
 		for(Coordinate validCoordinate : validMoves)

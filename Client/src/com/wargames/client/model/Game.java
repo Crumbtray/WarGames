@@ -78,19 +78,19 @@ public class Game {
 	 * @param unitType
 	 * @param owner
 	 */
-	public Unit createUnit(int x, int y, UnitType unitType, Player owner)
+	public Unit createUnit(int x, int y, UnitType unitType, Player owner, int ID)
 	{
 		Unit newUnit = null;
 		switch(unitType)
 		{
 			case SOLDIER:
-				newUnit = Unit.createSoldier(owner);
+				newUnit = Unit.createSoldier(owner, ID);
 				break;
 			case TANK:
-				newUnit = Unit.createTank(owner);
+				newUnit = Unit.createTank(owner, ID);
 				break;
 			case ARTILLERY:
-				newUnit = Unit.createArtillery(owner);
+				newUnit = Unit.createArtillery(owner, ID);
 				break;
 		}
 		try {
@@ -121,9 +121,7 @@ public class Game {
 	 * 
 	 */
 	public void endTurn(Player player)
-	{
-		System.out.println("Input player: " + player.color);
-		
+	{		
 		if(this.currentTurn == player)
 		{
 			// Change the currentTurn to the other player.

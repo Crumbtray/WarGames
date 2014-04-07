@@ -1,8 +1,12 @@
 package com.wargames.client.communication.packet.incoming;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
+
+import com.wargames.client.gui.LobbyWindow;
+import com.wargames.client.model.Player;
 
 public class LobbyUpdatePacket extends PacketFunctor {
 
@@ -11,6 +15,8 @@ public class LobbyUpdatePacket extends PacketFunctor {
 		byte maxSize = buff.get();
 		byte mapID = buff.get();
 		byte players = buff.get();
+		
+		ArrayList<Player> playerList = new ArrayList<Player>();
 		
 		for (int i = 0; i < players; i++)
 		{
@@ -24,9 +30,21 @@ public class LobbyUpdatePacket extends PacketFunctor {
 			}
 			
 			//TODO: do stuff with response
-			
+			Player player;
+			if(color == 1)
+			{
+				player = new Player(id, new String(name), team, i, "red");
+			}
+			else
+			{
+				player = new Player(id, new String(name), team, i, "blue");
+			}
+			playerList.add(player);
 		}
-
+	
+		LobbyWindow window = (LobbyWindow) client;
+		window.lobby.setPlayers(playerList);
+		window.lobby.setMapID(mapID);
+		window.lobby.setMaxPlayers(maxSize);
 	}
-
 }

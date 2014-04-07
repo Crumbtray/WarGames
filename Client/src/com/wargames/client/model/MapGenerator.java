@@ -151,8 +151,8 @@ public class MapGenerator {
 		
 		// Add a unit for each player.
 		try {
-			newMap.createUnit(0, 0, Unit.createSoldier(player1));
-			newMap.createUnit(15, 15, Unit.createSoldier(player2));
+			newMap.createUnit(0, 0, Unit.createSoldier(player1, 1));
+			newMap.createUnit(15, 15, Unit.createSoldier(player2, 2));
 		} catch (MapException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -176,10 +176,10 @@ public class MapGenerator {
 		
 		// Add units for each player.
 		try {
-			newMap.createUnit(9, 3, Unit.createTank(player1));
-			newMap.createUnit(5, 4, Unit.createSoldier(player1));
-			newMap.createUnit(2, 7, Unit.createSoldier(player1));
-			newMap.createUnit(7, 6, Unit.createSoldier(player2));
+			newMap.createUnit(9, 3, Unit.createTank(player1, 1));
+			newMap.createUnit(5, 4, Unit.createSoldier(player1, 2));
+			newMap.createUnit(2, 7, Unit.createSoldier(player1, 3));
+			newMap.createUnit(7, 6, Unit.createSoldier(player2, 4));
 		} catch (MapException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

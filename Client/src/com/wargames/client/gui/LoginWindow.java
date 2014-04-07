@@ -1,28 +1,25 @@
 package com.wargames.client.gui;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.List;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 
 import com.wargames.client.communication.packet.incoming.IncomingPacketList;
-import com.wargames.client.communication.packet.outgoing.LobbyJoinPacket;
 import com.wargames.client.communication.packet.outgoing.LoginPacket;
+import com.wargames.client.helpers.PacketSender;
 import com.wargames.client.helpers.SocketSingleton;
 
 public class LoginWindow extends JPanel implements ActionListener {
@@ -35,7 +32,8 @@ public class LoginWindow extends JPanel implements ActionListener {
 	private JPasswordField password;
 	private JButton loginButton;
 	private JFrame f;
-
+	private Image imgBackground;
+	
 	public LoginWindow()
 	{
 		username = new JTextField(16);
@@ -51,10 +49,12 @@ public class LoginWindow extends JPanel implements ActionListener {
 		loginButton.addActionListener(this);
 
 		this.add(loginButton);
-
+		URL urlBackgroundImg = getClass().getResource("/com/wargames/client/gui/img/mainBackground.png");
+		this.imgBackground = new ImageIcon(urlBackgroundImg).getImage();
+		
 		// create application frame and set visible
-		//
 		f = new JFrame();
+		f.setSize(100, 100);
 		f.setVisible(true);
 		f.setResizable(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,6 +65,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 	@Override
 	protected void paintComponent(Graphics g)
 	{
+		g.drawImage(this.imgBackground, 0, 0, null);
 		username.setLocation(300,300);
 		password.setLocation(300,340);
 		loginButton.setLocation(400, 400);
@@ -87,45 +88,23 @@ public class LoginWindow extends JPanel implements ActionListener {
 
 	public void login(String username, String password)
 	{	
-		byte[] data = new LoginPacket(username, password).toByteArray();
-		InetAddress address;
-		DatagramSocket socket;
-		try {
-			socket = SocketSingleton.getInstance().socket;
-			PasswordValidator validator = new PasswordValidator(this);
-			validator.execute();
-			address = InetAddress.getByName("50.65.25.35");
-			DatagramPacket packet = new DatagramPacket(data, data.length, address, 31111);
-			socket.send(packet);
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		PacketSender.sendPacket(new LoginPacket(username, password));
 	}
 
 	public static void main(String[] args)
 	{
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				UIManager.put("swing.boldMetal", Boolean.FALSE);
-				new LoginWindow();
-			}
-		});
+		LoginWindow window = new LoginWindow();
+		SocketReader socketReader = new SocketReader(window);
+		socketReader.execute();
 	}
-
-	class PasswordValidator extends SwingWorker<Void, Integer> {
+	
+	
+	static class SocketReader extends SwingWorker<Void, Integer> {
 
 		private DatagramSocket socket;
 		private JPanel client;
 
-		public PasswordValidator(JPanel client)
+		public SocketReader(JPanel client)
 		{
 			this.socket = SocketSingleton.getInstance().socket;
 			this.client = client;
@@ -134,27 +113,26 @@ public class LoginWindow extends JPanel implements ActionListener {
 		@Override
 		protected Void doInBackground() throws Exception {
 			System.out.println("Starting to read...");
+			while(true) {
+				try {
 
-			try {
+					// Try to read back
+					byte[] initialBytes = new byte[3];
+					DatagramPacket initialPacket = new DatagramPacket(initialBytes, initialBytes.length);
 
-				// Try to read back
-				byte[] initialBytes = new byte[3];
-				DatagramPacket initialPacket = new DatagramPacket(initialBytes, initialBytes.length);
+					System.out.println("Waiting to receive...");
+					socket.receive(initialPacket);
+					System.out.println("Received a packet!");
+					byte[] packetData = initialPacket.getData();
+					byte id = packetData[0];
+					byte size = packetData[1];
 
-				socket.receive(initialPacket);
-				byte[] packetData = initialPacket.getData();
-				byte id = packetData[0];
-				byte size = packetData[1];
-
-				IncomingPacketList.parse(packetData, client);
-
-				System.out.println("ID: " + id);
-				System.out.println("Size: " + size);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					IncomingPacketList.parse(packetData, client);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			return null;
 		}
 
 		@Override

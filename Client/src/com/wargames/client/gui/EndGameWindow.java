@@ -19,6 +19,7 @@ public class EndGameWindow extends JDialog implements ActionListener{
 	
 	public EndGameWindow(GameClientGui client, Player winner)
 	{
+		super(client.f, true);
 		this.client = client;
 		this.winner = winner;
 		
@@ -31,10 +32,6 @@ public class EndGameWindow extends JDialog implements ActionListener{
 		
 		JLabel winnerLabel = new JLabel(winner.color.toUpperCase() + " Team won!");
 		myPanel.add(winnerLabel);
-		
-		JButton newGameButton = new JButton("New Game?");
-		newGameButton.addActionListener(this);
-		myPanel.add(newGameButton);
 		
 		JButton exitButton = new JButton("Exit");
 		exitButton.addActionListener(this);
@@ -54,10 +51,6 @@ public class EndGameWindow extends JDialog implements ActionListener{
 		{
 			case "Exit":
 				this.client.f.dispose();
-				break;
-			case "New Game?":
-				this.client.f.dispose();
-				new GameClientGui();
 				break;
 		}
 		this.dispose();

@@ -1,11 +1,17 @@
 package com.wargames.client.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.wargames.client.model.*;
+import com.wargames.client.model.Game;
+import com.wargames.client.model.Map;
+import com.wargames.client.model.MapGenerator;
+import com.wargames.client.model.Player;
+import com.wargames.client.model.Unit;
+import com.wargames.client.model.UnitType;
 
 public class GameModelTests {
 
@@ -33,7 +39,7 @@ public class GameModelTests {
 	public void UnitSpawnTests() {
 		// Spawn a unit for player 1.
 		// Player 1's factory is at (0,0)
-		testGame.createUnit(0, 0, UnitType.SOLDIER, player1);
+		testGame.createUnit(0, 0, UnitType.SOLDIER, player1, 1);
 		assertFalse(testGame.gameMap.getUnitAt(0,0) == null);
 		Unit player1createdUnit = testGame.gameMap.getUnitAt(0, 0);
 		assertEquals(player1createdUnit.getOwner(), player1);
@@ -42,7 +48,7 @@ public class GameModelTests {
 		
 		// Spawn a unit for player 2.
 		// Player 2's factory is at (15,15)
-		testGame.createUnit(15, 15, UnitType.SOLDIER, player2);
+		testGame.createUnit(15, 15, UnitType.SOLDIER, player2, 2);
 		assertFalse(testGame.gameMap.getUnitAt(15,15) == null);
 		Unit player2createdUnit = testGame.gameMap.getUnitAt(0, 0);
 		assertEquals(player2createdUnit.getOwner(), player1);
@@ -54,7 +60,7 @@ public class GameModelTests {
 	public void UnitMovementTests() {
 		// Spawn a unit for player 1.
 		// Player 1's factory is at (0,0)
-		testGame.createUnit(0, 0, UnitType.SOLDIER, player1);
+		testGame.createUnit(0, 0, UnitType.SOLDIER, player1, 1);
 		assertFalse(testGame.gameMap.getUnitAt(0,0) == null);
 		Unit player1createdUnit = testGame.gameMap.getUnitAt(0, 0);
 		assertEquals(player1createdUnit.getOwner(), player1);

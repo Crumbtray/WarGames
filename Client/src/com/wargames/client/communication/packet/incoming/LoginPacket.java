@@ -3,10 +3,7 @@ package com.wargames.client.communication.packet.incoming;
 import java.nio.ByteBuffer;
 
 import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
-import com.wargames.client.gui.MainGui;
 
 public class LoginPacket extends PacketFunctor {
 
@@ -24,9 +21,6 @@ public class LoginPacket extends PacketFunctor {
 		if(response == 1)
 		{
 			System.out.println("Logged in.");
-			JFrame topframe = (JFrame) SwingUtilities.getWindowAncestor(client);
-			topframe.dispose();
-			new MainGui();
 		}
 	}
 

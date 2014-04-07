@@ -1,7 +1,6 @@
 package com.wargames.client.gui;
 
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -29,6 +28,8 @@ public class FactoryWindow extends JDialog implements ActionListener{
 	
 	public FactoryWindow(GameClientGui client, Coordinate factoryLocation)
 	{
+		super(client.f, true);
+		
 		this.client = client;
 		this.factoryLocation = factoryLocation;
 		String color = this.client.guiMap.logicalGame.currentTurn.color;
@@ -41,20 +42,23 @@ public class FactoryWindow extends JDialog implements ActionListener{
 		
 		URL urlSoldierImage = getClass().getResource("/com/wargames/client/gui/img/soldier_" + color + "01.png");
 		ImageIcon soldierImg = new ImageIcon(urlSoldierImage);
-		JButton soldierButton = new JButton("Create Soldier");
+		JButton soldierButton = new JButton("Create Soldier (" + UnitCosts.getSoldierCost() + ")");
+		soldierButton.setActionCommand("soldier");
 		soldierButton.setIcon(soldierImg);
 		soldierButton.addActionListener(this);
 		myPanel.add(soldierButton);
 		
 		URL urlTankImage = getClass().getResource("/com/wargames/client/gui/img/tank_" + color + "01.png");
 		ImageIcon tankImg = new ImageIcon(urlTankImage);
-		JButton tankButton = new JButton("Create Tank");
+		JButton tankButton = new JButton("Create Tank (" + UnitCosts.getTankCost() + ")");
+		tankButton.setActionCommand("tank");
 		tankButton.setIcon(tankImg);
 		tankButton.addActionListener(this);
 		myPanel.add(tankButton);
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
+		cancelButton.setActionCommand("cancel");
 		myPanel.add(cancelButton);
 		
 		int availableFunds = client.guiMap.logicalGame.currentTurn.funds;
@@ -75,18 +79,16 @@ public class FactoryWindow extends JDialog implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		JButton selectedButton = (JButton) e.getSource();
-		System.out.println(selectedButton.getText());
-		switch(selectedButton.getText())
+		String action = e.getActionCommand();
+		switch(action)
 		{
-			case "Create Soldier":
+			case "soldier":
 				//////////////////
 				this.client.guiMap.CreateUnit(UnitType.SOLDIER, factoryLocation);
 				//////////////////
 				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getSoldierCost();
 				break;
-			case "Create Tank":
+			case "tank":
 				///////////////////
 				this.client.guiMap.CreateUnit(UnitType.TANK, factoryLocation);
 				///////////////////

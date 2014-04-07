@@ -1,6 +1,5 @@
 package com.wargames.client.communication.packet.incoming;
 
-import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 
 import javax.swing.JPanel;

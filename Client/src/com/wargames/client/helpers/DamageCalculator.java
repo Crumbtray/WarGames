@@ -1,6 +1,7 @@
 package com.wargames.client.helpers;
 
-import com.wargames.client.model.*;
+import com.wargames.client.model.Terrain;
+import com.wargames.client.model.Unit;
 
 public class DamageCalculator {
 	public static int calculateDamage(Unit attacker, Unit defender, Terrain defenderTerrain)

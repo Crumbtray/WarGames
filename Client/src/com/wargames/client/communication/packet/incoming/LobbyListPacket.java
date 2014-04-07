@@ -3,8 +3,11 @@ package com.wargames.client.communication.packet.incoming;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import com.wargames.client.gui.LobbyListWindow;
 import com.wargames.client.model.Lobby;
 
 public class LobbyListPacket extends PacketFunctor {
@@ -31,8 +34,13 @@ public class LobbyListPacket extends PacketFunctor {
 			lobbies.add(newLobby);
 		}
 		
-		// Get rid of current Login Window, and show the lobby window.
+		LobbyListWindow window = (LobbyListWindow) client;
+		String username = window.username;
 		
+		// Get rid of current Login Window, and show the lobby window.
+		JFrame topframe = (JFrame) SwingUtilities.getWindowAncestor(client);
+		topframe.dispose();
+		new LobbyListWindow(lobbies, username);
 	}
 
 }

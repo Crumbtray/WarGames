@@ -1,5 +1,5 @@
 package com.wargames.client.model;
-import java.util.*;
+import java.util.Hashtable;
 
 public class Terrain {
 	public int defense;

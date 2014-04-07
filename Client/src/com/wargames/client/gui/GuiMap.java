@@ -8,7 +8,12 @@ import javax.swing.ImageIcon;
 import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.DamageCalculator;
 import com.wargames.client.helpers.WinChecker;
-import com.wargames.client.model.*;
+import com.wargames.client.model.Game;
+import com.wargames.client.model.MapException;
+import com.wargames.client.model.Player;
+import com.wargames.client.model.Terrain;
+import com.wargames.client.model.Unit;
+import com.wargames.client.model.UnitType;
 
 public class GuiMap {
 	public Game logicalGame;
@@ -191,7 +196,7 @@ public class GuiMap {
 	public void CreateUnit(UnitType unitType, Coordinate factoryCoordinates)
 	{
 		Player currentPlayer = this.logicalGame.currentTurn;
-		Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, currentPlayer);
+		Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, currentPlayer, 1);
 		this.graphicalUnits[factoryCoordinates.x][factoryCoordinates.y] = new GuiUnit(newUnit, factoryCoordinates.x * TILEWIDTH + MapOffsetX, factoryCoordinates.y * TILEHEIGHT + MapOffsetY);
 		newUnit.deactivate();		
 	}

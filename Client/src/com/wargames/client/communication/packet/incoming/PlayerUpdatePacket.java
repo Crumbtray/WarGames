@@ -4,6 +4,9 @@ import java.nio.ByteBuffer;
 
 import javax.swing.JPanel;
 
+import com.wargames.client.gui.GameClientGui;
+import com.wargames.client.model.Player;
+
 public class PlayerUpdatePacket extends PacketFunctor {
 
 	@Override
@@ -11,8 +14,10 @@ public class PlayerUpdatePacket extends PacketFunctor {
 		int money = buff.getInt();
 		int score = buff.getInt();
 		
-		//TODO: do stuff with response
-
+		// This is money that the player gets.
+		GameClientGui clientGui = (GameClientGui) client;
+		Player selfPlayer = clientGui.loggedInPlayer;
+		selfPlayer.addFunds(money);
 	}
 
 }

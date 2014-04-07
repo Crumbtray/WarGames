@@ -1,7 +1,9 @@
 package com.wargames.client.gui;
 
 import java.awt.Graphics;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 
@@ -46,6 +48,31 @@ public class GuiMap {
 				if(logicalGame.gameMap.getUnitAt(i, j) != null)
 				{
 					this.graphicalUnits[i][j] = new GuiUnit(logicalGame.gameMap.getUnitAt(i,j), i * TILEWIDTH + MapOffsetX, j * TILEHEIGHT + MapOffsetY);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Refreshes the GuiMap with the information in the game map.
+	 */
+	public void UpdateGui()
+	{
+		for(int x = 0; x < mapWidth; x++)
+		{
+			for(int y = 0; y < mapHeight; y++)
+			{
+				graphicalUnits[x][y] = null;
+			}
+		}
+		for(int i = 0; i < mapWidth; i++)
+		{
+			for(int j = 0; j < mapHeight; j++)
+			{
+				if(logicalGame.gameMap.getUnitAt(i, j) != null)
+				{
+					Unit unit = logicalGame.gameMap.getUnitAt(i, j);
+					this.graphicalUnits[i][j] = new GuiUnit(unit, i * TILEWIDTH + MapOffsetX, j * TILEHEIGHT + MapOffsetY);
 				}
 			}
 		}
@@ -126,14 +153,12 @@ public class GuiMap {
 	public void moveSelectedUnit(GuiUnit selectedUnit, Coordinate destinationCoordinate)
 	{
 		Coordinate selectedUnitCoordinates = getCoordinateOfUnit(selectedUnit);
-		this.logicalGame.moveUnit(selectedUnitCoordinates.x, selectedUnitCoordinates.y, destinationCoordinate.x, destinationCoordinate.y);
+		
+		// This is taken care of by the return packet.
+		//this.logicalGame.moveUnit(selectedUnitCoordinates.x, selectedUnitCoordinates.y, destinationCoordinate.x, destinationCoordinate.y);
 		
 		// If everything is OK, we update the unit's position
-		selectedUnit.setX(destinationCoordinate.x * TILEWIDTH + MapOffsetX);
-		selectedUnit.setY(destinationCoordinate.y * TILEHEIGHT + MapOffsetY);
-		
-		graphicalUnits[destinationCoordinate.x][destinationCoordinate.y] = selectedUnit;
-		graphicalUnits[selectedUnitCoordinates.x][selectedUnitCoordinates.y] = null;
+		//this.UpdateGui();
 		selectedUnit.getLogicalUnit().deactivate();
 	}
 	
@@ -148,19 +173,21 @@ public class GuiMap {
 		moveSelectedUnit(selectedUnit, moveCoordinate);
 		Unit attacker = selectedUnit.getLogicalUnit();
 		Unit defender = this.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y);
-		Terrain defenderTerrain = this.logicalGame.gameMap.getTerrainAt(victimCoordinate.x, victimCoordinate.y);
-		int damage = DamageCalculator.calculateDamage(attacker, defender, defenderTerrain);
-		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
-		if(isDead)
-		{
-			this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
-			Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
-			if(winner != null)
-			{
-				System.out.println("Winner: " + winner.color);
-				client.endGame(winner);
-			}
-		}
+		
+		// This stuff commented out because it's implemented by the packet response system!
+		//Terrain defenderTerrain = this.logicalGame.gameMap.getTerrainAt(victimCoordinate.x, victimCoordinate.y);
+		//int damage = DamageCalculator.calculateDamage(attacker, defender, defenderTerrain);
+		//boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
+		//if(isDead)
+		//{
+		//	this.UpdateGui();
+		//	Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
+		//	if(winner != null)
+		//	{
+		//		System.out.println("Winner: " + winner.color);
+		//		client.endGame(winner);
+		//	}
+		//}
 		selectedUnit.getLogicalUnit().deactivate();
 	}
 	
@@ -178,7 +205,7 @@ public class GuiMap {
 		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
 		if(isDead)
 		{
-			this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
+			this.UpdateGui();
 			Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
 			if(winner != null)
 			{
@@ -197,7 +224,7 @@ public class GuiMap {
 	{
 		Player currentPlayer = this.logicalGame.currentTurn;
 		Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, currentPlayer, 1);
-		this.graphicalUnits[factoryCoordinates.x][factoryCoordinates.y] = new GuiUnit(newUnit, factoryCoordinates.x * TILEWIDTH + MapOffsetX, factoryCoordinates.y * TILEHEIGHT + MapOffsetY);
+		this.UpdateGui();
 		newUnit.deactivate();		
 	}
 }

@@ -3,6 +3,8 @@ package com.wargames.client.model;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import com.wargames.client.helpers.Coordinate;
+
 public class Map {
 	private Unit[][] unitMap;
 	private Terrain[][] terrainMap;
@@ -163,5 +165,49 @@ public class Map {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Given a Unit ID, we find that unit.
+	 * @param ID
+	 * @return
+	 */
+	public Unit findUnitById(int ID)
+	{
+		Unit returnUnit = null;
+		for(int i = 0; i < this.width; i++)
+		{
+			for(int j = 0; j < this.height; j++)
+			{
+				Unit possibleUnit = this.getUnitAt(i, j);
+				if(possibleUnit.id == ID)
+				{
+					return possibleUnit;
+				}
+			}
+		}
+		
+		return returnUnit;
+	}
+	
+	/**
+	 * Given a unit ID, give the coordinates of that unit.
+	 * @param UnitID
+	 * @return
+	 */
+	public Coordinate findCoordinateByUnitID(int UnitID)
+	{
+		for(int i = 0; i < this.width; i++)
+		{
+			for(int j = 0; j < this.height; j++)
+			{
+				Unit possibleUnit = this.getUnitAt(i, j);
+				if(possibleUnit.id == UnitID)
+				{
+					return new Coordinate(i, j);
+				}
+			}
+		}
+		return null;
 	}
 }

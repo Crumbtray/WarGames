@@ -11,4 +11,14 @@ public class UnitCosts {
 	{
 		return 7000;
 	}
+	
+	public static int getUnitCost(UnitType type){
+		switch (type){
+			case SOLDIER:
+				return getSoldierCost();
+			case TANK:
+				return getTankCost();
+		}
+		return 0;
+	}
 }

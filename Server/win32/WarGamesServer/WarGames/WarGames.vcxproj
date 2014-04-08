@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\damageCalculator.cpp" />
     <ClCompile Include="..\..\..\src\game.cpp" />
     <ClCompile Include="..\..\..\src\lib\malloc.cpp" />
     <ClCompile Include="..\..\..\src\lib\showmsg.cpp" />
@@ -125,6 +126,7 @@
     <ClCompile Include="..\..\..\src\UnitBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\damageCalculator.h" />
     <ClInclude Include="..\..\..\src\game.h" />
     <ClInclude Include="..\..\..\src\lib\cbasetypes.h" />
     <ClInclude Include="..\..\..\src\lib\malloc.h" />

@@ -8,7 +8,9 @@
 #include "lib/taskmgr.h"
 #include "lib/timer.h"
 
-#include "packets\packet.h"
+#include "packets/packet.h"
+
+#include <string.h>
 
 int8*  g_PBuff = NULL;
 int8*  PTempBuff = NULL;
@@ -28,7 +30,7 @@ void server_init()
 	//bind socket
 	ShowStatus("Binding to port: %u", SERVER_PORT);
 	fd = makeBind_udp(INADDR_ANY, SERVER_PORT);
-	ShowMessage("\t\t - "CL_GREEN"OK"CL_RESET"\n");
+	ShowMessage("/t/t - "CL_GREEN"OK"CL_RESET"\n");
 
 	CREATE(g_PBuff, int8, RECV_BUFFER_SIZE + 20);
 	CREATE(PTempBuff, int8, RECV_BUFFER_SIZE + 20);
@@ -42,7 +44,7 @@ void server_init()
 	}
 	Sql_Keepalive(SqlHandle);
 
-	ShowMessage("\t - "CL_GREEN"OK"CL_RESET"\n");
+	ShowMessage("/t - "CL_GREEN"OK"CL_RESET"\n");
 
 	CTaskMgr::getInstance()->AddTask("lobby_countdowns", gettick(), NULL, CTaskMgr::TASK_INTERVAL, lobbies::lobby_timer, 1000);
 
@@ -65,7 +67,7 @@ session_data_t* get_session_ipport(uint64 ipp)
 session_data_t* create_session(uint32 ip, uint16 port)
 {
 	session_data_t* session_data = new session_data_t;
-	memset(session_data, 0, sizeof session_data_t);
+	memset(session_data, 0, sizeof(session_data_t));
 	session_data->PPlayer = new CPlayer(0);
 
 	// might need this later for checking order of packets

@@ -12,7 +12,7 @@
 #include "player.h"
 
 typedef std::map<uint16, Unit*> UnitList;
-typedef std::vector< std::vector<Terrain*>> TerrainMatrix;
+typedef std::vector< std::vector<Terrain*> > TerrainMatrix;
 typedef std::vector< CPlayer*> PlayerList;
 
 class Map

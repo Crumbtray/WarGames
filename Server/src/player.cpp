@@ -1,6 +1,6 @@
 #include "player.h"
 #include "server.h"
-#include "packets\packet.h"
+#include "packets/packet.h"
 
 CPlayer::CPlayer(int id)
 {

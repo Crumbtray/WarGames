@@ -7,15 +7,15 @@
 
 #include "lib/showmsg.h"
 
-#include "packets\packet.h"
-#include "packets\account_creation.h"
-#include "packets\action.h"
-#include "packets\lobby_chat.h"
-#include "packets\lobby_countdown.h"
-#include "packets\lobby_list.h"
-#include "packets\lobby_update.h"
-#include "packets\login.h"
-#include "packets\player_update.h"
+#include "packets/packet.h"
+#include "packets/account_creation.h"
+#include "packets/action.h"
+#include "packets/lobby_chat.h"
+#include "packets/lobby_countdown.h"
+#include "packets/lobby_list.h"
+#include "packets/lobby_update.h"
+#include "packets/login.h"
+#include "packets/player_update.h"
 
 namespace packethandler
 {

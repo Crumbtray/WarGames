@@ -15,6 +15,7 @@ import com.wargames.client.model.MapException;
 import com.wargames.client.model.Player;
 import com.wargames.client.model.Terrain;
 import com.wargames.client.model.Unit;
+import com.wargames.client.model.UnitCosts;
 import com.wargames.client.model.UnitType;
 
 public class GuiMap {
@@ -159,7 +160,26 @@ public class GuiMap {
 		
 		// If everything is OK, we update the unit's position
 		//this.UpdateGui();
-		selectedUnit.getLogicalUnit().deactivate();
+		//selectedUnit.getLogicalUnit().deactivate();
+		
+		
+		if (this.client.guiMap.logicalGame.isLocalGame()){
+			//update UI locally
+			this.logicalGame.moveUnit(selectedUnitCoordinates.x, selectedUnitCoordinates.y, destinationCoordinate.x, destinationCoordinate.y);
+			
+			// If everything is OK, we update the unit's position
+			selectedUnit.setX(destinationCoordinate.x * TILEWIDTH + MapOffsetX);
+			selectedUnit.setY(destinationCoordinate.y * TILEHEIGHT + MapOffsetY);
+			
+			if (!(destinationCoordinate.x==selectedUnitCoordinates.x && destinationCoordinate.y == selectedUnitCoordinates.y)){
+				graphicalUnits[destinationCoordinate.x][destinationCoordinate.y] = selectedUnit;
+				graphicalUnits[selectedUnitCoordinates.x][selectedUnitCoordinates.y] = null;
+			}
+			selectedUnit.getLogicalUnit().deactivate();
+		} else {
+			//TODO: SEND PACKET
+			//wait for server to update UI
+		}
 	}
 	
 	/**
@@ -170,25 +190,46 @@ public class GuiMap {
 	 */
 	public void moveAttackUnit(GuiUnit selectedUnit, Coordinate moveCoordinate, Coordinate victimCoordinate)
 	{
-		moveSelectedUnit(selectedUnit, moveCoordinate);
 		Unit attacker = selectedUnit.getLogicalUnit();
+		Coordinate attackerCoordinate = this.getCoordinateOfUnit(selectedUnit);
 		Unit defender = this.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y);
+		Terrain attackerTerrain = this.logicalGame.gameMap.getTerrainAt(attackerCoordinate.x, attackerCoordinate.y);
+		Terrain defenderTerrain = this.logicalGame.gameMap.getTerrainAt(victimCoordinate.x, victimCoordinate.y);
+		int damage = DamageCalculator.calculateDamage(attacker, defender, defenderTerrain);
+		int returnDamage = DamageCalculator.calculateDamage(defender, attacker, attackerTerrain) / 2;//initiator takes half damage
 		
-		// This stuff commented out because it's implemented by the packet response system!
-		//Terrain defenderTerrain = this.logicalGame.gameMap.getTerrainAt(victimCoordinate.x, victimCoordinate.y);
-		//int damage = DamageCalculator.calculateDamage(attacker, defender, defenderTerrain);
-		//boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
-		//if(isDead)
-		//{
-		//	this.UpdateGui();
-		//	Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
-		//	if(winner != null)
-		//	{
-		//		System.out.println("Winner: " + winner.color);
-		//		client.endGame(winner);
-		//	}
-		//}
-		selectedUnit.getLogicalUnit().deactivate();
+		
+		if (this.logicalGame.isLocalGame()){
+			//update UI locally
+			moveSelectedUnit(selectedUnit, moveCoordinate);
+			boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
+			if(isDead)
+			{
+				this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
+				Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
+				if(winner != null)
+				{
+					System.out.println("Winner: " + winner.color);
+					client.endGame(winner);
+				}
+			}
+			selectedUnit.getLogicalUnit().deactivate();
+			isDead = this.logicalGame.damageUnit(moveCoordinate.x, moveCoordinate.y, returnDamage);
+			if(isDead)
+			{
+				this.graphicalUnits[moveCoordinate.x][moveCoordinate.y] = null;
+				Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
+				if(winner != null)
+				{
+					System.out.println("Winner: " + winner.color);
+					client.endGame(winner);
+				}
+			}
+		}
+		else{
+			//TODO: SEND PACKET attackerID, movecoordinate.x, movecoordinate.y, ACTION_ATTACK, targetID
+			//wait for server packet to update UI
+		}
 	}
 	
 	/**
@@ -199,21 +240,43 @@ public class GuiMap {
 	public void AttackUnit(GuiUnit selectedUnit, Coordinate victimCoordinate)
 	{
 		Unit attacker = selectedUnit.getLogicalUnit();
+		Coordinate attackerCoordinate = this.getCoordinateOfUnit(selectedUnit);
 		Unit defender = this.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y);
+		Terrain attackerTerrain = this.logicalGame.gameMap.getTerrainAt(attackerCoordinate.x, attackerCoordinate.y);
 		Terrain defenderTerrain = this.logicalGame.gameMap.getTerrainAt(victimCoordinate.x, victimCoordinate.y);
 		int damage = DamageCalculator.calculateDamage(attacker, defender, defenderTerrain);
-		boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
-		if(isDead)
-		{
-			this.UpdateGui();
-			Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
-			if(winner != null)
+		int returnDamage = DamageCalculator.calculateDamage(defender, attacker, attackerTerrain) / 2;//initiator takes half damage
+		
+		if (this.logicalGame.isLocalGame()){
+			//update UI locally
+			boolean isDead = this.logicalGame.damageUnit(victimCoordinate.x, victimCoordinate.y, damage);
+			if(isDead)
 			{
-				System.out.println("Winner: " + winner.color);
-				client.endGame(winner);
+				this.graphicalUnits[victimCoordinate.x][victimCoordinate.y] = null;
+				Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
+				if(winner != null)
+				{
+					System.out.println("Winner: " + winner.color);
+					client.endGame(winner);
+				}
+			}
+			selectedUnit.getLogicalUnit().deactivate();
+			isDead = this.logicalGame.damageUnit(attackerCoordinate.x, attackerCoordinate.y, returnDamage);
+			if(isDead)
+			{
+				this.graphicalUnits[attackerCoordinate.x][attackerCoordinate.y] = null;
+				Player winner = WinChecker.checkWinCondition(this.logicalGame.gameMap);
+				if(winner != null)
+				{
+					System.out.println("Winner: " + winner.color);
+					client.endGame(winner);
+				}
 			}
 		}
-		selectedUnit.getLogicalUnit().deactivate();
+		else{
+			//TODO: SEND PACKET attacker_id, attackerCoordinate.x, attackerCoordinate.y, ACTION_ATTACK, targetID 
+			//wait for server to update UI
+		}
 	}
 	
 	/**
@@ -222,8 +285,19 @@ public class GuiMap {
 	 */
 	public void CreateUnit(UnitType unitType, Player owner, int UnitID, Coordinate factoryCoordinates)
 	{
-		Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, owner, UnitID);
-		this.UpdateGui();
-		newUnit.deactivate();		
+		if (this.client.guiMap.logicalGame.isLocalGame()){
+			//update UI locally
+			Player currentPlayer = this.logicalGame.currentTurn;
+			Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, currentPlayer, UnitID);
+			this.graphicalUnits[factoryCoordinates.x][factoryCoordinates.y] = new GuiUnit(newUnit, factoryCoordinates.x * TILEWIDTH + MapOffsetX, factoryCoordinates.y * TILEHEIGHT + MapOffsetY);
+			client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getUnitCost(unitType);
+			this.UpdateGui();
+			newUnit.deactivate();	
+		}
+		else{
+			Player currentPlayer = this.logicalGame.currentTurn;
+			//TODO: SEND PACKET unit creation
+			//wait for server to update UI
+		}
 	}
 }

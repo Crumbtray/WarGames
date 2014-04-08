@@ -31,7 +31,7 @@ public class GameLoadPacket extends PacketFunctor {
 		
 		if(players.size() == 2)
 		{
-			Game game = new Game(MapGenerator.generateMap01(players.get(0), players.get(1)));
+			Game game = new Game(MapGenerator.generateMap01(players.get(0), players.get(1)), false);
 			Player currentPlayer = null;
 			for(Player player : players)
 			{

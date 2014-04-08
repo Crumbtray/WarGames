@@ -3,9 +3,9 @@
 #include "player.h"
 #include "game.h"
 
-#include "packets\game_load.h"
-#include "packets\lobby_update.h"
-#include "packets\lobby_countdown.h"
+#include "packets/game_load.h"
+#include "packets/lobby_update.h"
+#include "packets/lobby_countdown.h"
 
 CLobby::CLobby(uint32 id)
 {

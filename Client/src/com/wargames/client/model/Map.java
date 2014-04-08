@@ -228,5 +228,21 @@ public class Map {
 			return null;
 		}
 	}
-	
+	/**
+	 * Finds unused unitID >=1 and returns it.
+	 * @return unitid
+	 */
+	public int newUnitId()
+	{
+		int unitId = 1;
+		for(int i = 0; i < this.width; i++){
+			for(int j = 0; j < this.height; j++){
+				if (unitMap[i][j].id == unitId){
+					unitId++;
+					i = 0;
+				}
+			}
+		}
+		return unitId;
+	}
 }

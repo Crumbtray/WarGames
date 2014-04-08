@@ -46,7 +46,7 @@ public class GameClientGui extends JPanel {
 		// background
 		URL urlBackgroundImg = getClass().getResource("/com/wargames/client/gui/img/background.png");
 		this.imgBackground = new ImageIcon(urlBackgroundImg).getImage();
-		
+
 		// Wrap our Map around the game Map
 		guiMap = new GuiMap(game, this);
 		this.loggedInPlayer = loggedInPlayer;

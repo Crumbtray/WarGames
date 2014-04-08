@@ -80,22 +80,19 @@ public class FactoryWindow extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+		//localUnitID is only used if the game is being run locally. 
+		//it is cheked in guiMap.CreateUnit
+		int localUnitID = this.client.guiMap.logicalGame.gameMap.newUnitId();
 		switch(action)
 		{
 			case "soldier":
-				//////////////////
-				//this.client.guiMap.CreateUnit(UnitType.SOLDIER, factoryLocation);
-				//////////////////
-				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getSoldierCost();
+				this.client.guiMap.CreateUnit(UnitType.SOLDIER, this.client.loggedInPlayer, localUnitID, factoryLocation);
 				break;
 			case "tank":
-				///////////////////
-				//this.client.guiMap.CreateUnit(UnitType.TANK, factoryLocation);
-				///////////////////
-				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getTankCost();
+				this.client.guiMap.CreateUnit(UnitType.TANK, this.client.loggedInPlayer, localUnitID, factoryLocation);
 				break;
 			default:
-				
+				break;
 		}
 		client.repaint();
 		this.dispose();

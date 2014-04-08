@@ -28,8 +28,6 @@ private:
 	bool m_capturing;
 	
 public:
-	void attack(Unit* target,int* targetdamage, int* returndamage);
-	int capture(int x, int y);
 	void updateIncome(int amount);
 
 	Unit(UnitType type, CPlayer* owner, MobilityType mType, int mobility, int cost, int range, int vision, int id);
@@ -50,20 +48,19 @@ public:
 	int getHealth();
 	void damageUnit(int damage);
 	bool capture();
+	void cancelCapture();
 	bool isCapturing();
-	void decreaseAmmo();
+	void decreaseAmmo(int ammo);
 	void increaseAmmo(int ammo);
 	int getAmmo();
 	int getArmor();
-	void decreaseFuel();
-	void increaseFuel(int ammo);
+	void decreaseFuel(int fuel);
+	void increaseFuel(int fuel);
 	int getFuel();
 	void setDamage(int damage);
 	int getDamage();
 	void setDamageType(DamageType type);
 	DamageType getDamageType();
 	void setArmor(int armor);
-	int delHP(int damage);
-	int calculateDamage(Unit* target);
 };
 

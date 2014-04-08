@@ -4,7 +4,9 @@
 #include "lib/timer.h"
 
 #include "server.h"
-#include "test\test.h"
+#include "test/test.h"
+
+#include <string.h>
 
 int main(int argc, char **argv)
 {

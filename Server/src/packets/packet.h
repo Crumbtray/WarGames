@@ -5,6 +5,8 @@
 
 #include "../lib/cbasetypes.h"
 
+#include <string.h>
+
 class CPacket
 {
 protected:

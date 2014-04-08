@@ -14,7 +14,8 @@ class MoveValidator
 
 public:
 	static bool isMoveValid(int old_x, int old_y, int new_x, int new_y, Unit *unit, Map *map);
-	static CoordinateList validLocations(int x, int y, Unit *unit, Map *gameMap);
+	static bool isAttackValid(int old_x, int old_y, int new_x, int new_y, Unit *unit, Unit *target, Map *map);
+	static CoordinateList getValidLocations(int x, int y, Unit *unit, Map *gameMap);
 	static CoordinateList getNeighbours(int x, int y, Unit *unit, Map *map);
 	static CoordinateList getAttackableCoordinates(int x, int y, Unit *unit, Map *map);
 	static CoordinateList getAttackableNeighbours(Coordinate pos, Unit *unit, Map *map);

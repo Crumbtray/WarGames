@@ -1,7 +1,6 @@
 package com.wargames.client.communication.packet.incoming;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 import javax.swing.JPanel;
 
@@ -27,31 +26,15 @@ public class IncomingPacketList {
 		packetParser[0x17] = new GameOverPacket();
 	}
 	
-	public static JPanel parse(byte[] data, JPanel client)
+	public static JPanel parse(byte type, ByteBuffer buff, JPanel client)
 	{
-		int begin = 0;
-		
-		while (begin < data.length)
+		try
 		{
-			byte type = data[begin];
-			byte size = data[begin+1];
-
-			if (type == 0)
-				break;
-			
-			ByteBuffer buff = ByteBuffer.allocate(size);
-			buff.order(ByteOrder.LITTLE_ENDIAN);
-			buff.put(data, begin+2, (begin+2)+size < data.length ? size : data.length - (begin+2));
-			buff.rewind();
-			try
-			{
-				return packetParser[type].parse(buff, client);
-			}
-			catch (Error e)
-			{
-				System.out.println("Attempted to parse packet "+type+" failed!");
-			}
-			begin = begin+size;
+			return packetParser[type].parse(buff, client);
+		}
+		catch (Error e)
+		{
+			System.out.println("Attempted to parse packet "+type+" failed!");
 		}
 		return client;
 	}

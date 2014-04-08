@@ -20,8 +20,8 @@ std::pair<float, float> DamageCalculator::getDamage(Unit *unit, Unit *target){
 	int baseDamage = m_damage[unit->getUnitType()][target->getUnitType()];
 	int baseReturnDamage = m_damage[target->getUnitType()][unit->getUnitType()] / 2; //initiator takes half damage
 	
-	float damage = static_cast<float>(baseDamage*unit->getHealth()) / 100.0;
-	float returnDamage = static_cast<float>(baseReturnDamage*target->getHealth()) / 100.0;
+	float damage = static_cast<float>(baseDamage*unit->getHealth()) / 100.0f;
+	float returnDamage = static_cast<float>(baseReturnDamage*target->getHealth()) / 100.0f;
 
 	return std::pair<float, float>(damage, returnDamage);
 

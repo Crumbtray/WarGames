@@ -35,11 +35,10 @@ public class IncomingPacketList {
 		{
 			byte type = data[begin];
 			byte size = data[begin+1];
-			if (begin + size < data.length)
-			{
-				//trailing zeroes get cut off for some reason - java "feature"?
-				
-			}
+
+			if (type == 0)
+				break;
+			
 			ByteBuffer buff = ByteBuffer.allocate(size);
 			buff.order(ByteOrder.LITTLE_ENDIAN);
 			buff.put(data, begin+2, (begin+2)+size < data.length ? size : data.length - (begin+2));

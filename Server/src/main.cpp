@@ -4,7 +4,9 @@
 #include "lib/timer.h"
 
 #include "server.h"
-#include "test\test.h"
+#include "test/test.h"
+
+#include <string.h>
 
 int main(int argc, char **argv)
 {
@@ -15,7 +17,7 @@ int main(int argc, char **argv)
 				test->run();
 			}
 				
-	ShowInfo(CL_MAGENTA"WarGames Server"CL_RESET"\n");
+	ShowInfo(CL_MAGENTA"WarGames Server"CL_RESET"/n");
 	//init sockets
 	socket_init();
 	server_init();

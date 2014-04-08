@@ -4,14 +4,14 @@
 #include "MapBuilder.h"
 #include "player.h"
 
-#include "packets\action.h"
-#include "packets\entity_update.h"
-#include "packets\game_over.h"
-#include "packets\player_defeated.h"
-#include "packets\player_definition.h"
-#include "packets\player_update.h"
-#include "packets\post_game.h"
-#include "packets\turn_change.h"
+#include "packets/action.h"
+#include "packets/entity_update.h"
+#include "packets/game_over.h"
+#include "packets/player_defeated.h"
+#include "packets/player_definition.h"
+#include "packets/player_update.h"
+#include "packets/post_game.h"
+#include "packets/turn_change.h"
 
 CGame::CGame(uint8 map, std::vector<CPlayer*> playerList)
 {

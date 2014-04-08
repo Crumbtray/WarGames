@@ -2,6 +2,7 @@
 #define _SOCKET_H_
 
 #include <time.h>
+#include <string.h>
 #include "cbasetypes.h"
 
 #ifdef WIN32
@@ -11,8 +12,12 @@
 #else
 	#include <sys/types.h>
 	#include <sys/socket.h>
+    #include <sys/ioctl.h>
+    #include <net/if.h>
 	#include <netinet/in.h>
 	#include <errno.h>
+    #include <netdb.h>
+    #include <arpa/inet.h>
 #endif
 
 #ifdef WIN32

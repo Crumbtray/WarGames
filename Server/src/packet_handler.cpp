@@ -7,15 +7,15 @@
 
 #include "lib/showmsg.h"
 
-#include "packets\packet.h"
-#include "packets\account_creation.h"
-#include "packets\action.h"
-#include "packets\lobby_chat.h"
-#include "packets\lobby_countdown.h"
-#include "packets\lobby_list.h"
-#include "packets\lobby_update.h"
-#include "packets\login.h"
-#include "packets\player_update.h"
+#include "packets/packet.h"
+#include "packets/account_creation.h"
+#include "packets/action.h"
+#include "packets/lobby_chat.h"
+#include "packets/lobby_countdown.h"
+#include "packets/lobby_list.h"
+#include "packets/lobby_update.h"
+#include "packets/login.h"
+#include "packets/player_update.h"
 
 namespace packethandler
 {
@@ -24,7 +24,7 @@ namespace packethandler
 
 	void EmptyHandler(session_data_t* session, CPlayer* PPlayer, int8* data)
 	{
-		ShowWarning(CL_YELLOW"packet parser: unhandled packet %02hX from username %s\n" CL_RESET, RBUFB(data, 0), PPlayer->GetName());
+		ShowWarning(CL_YELLOW"packet parser: unhandled packet %02hX from username %s/n" CL_RESET, RBUFB(data, 0), PPlayer->GetName());
 	}
 
 	//Login Status
@@ -59,7 +59,7 @@ namespace packethandler
 				session->PPlayer->SetLosses(Sql_GetUIntData(SqlHandle, 3));
 				session->PPlayer->pushPacket(new CLoginPacket(session->PPlayer, LOGIN_SUCCESS));
 				session->PPlayer->pushPacket(new CLobbyListPacket());
-				ShowDebug("Player %s has logged in\n", session->PPlayer->GetName());
+				ShowDebug("Player %s has logged in/n", session->PPlayer->GetName());
 			}
 			else
 			{
@@ -103,7 +103,7 @@ namespace packethandler
 				if (ret != SQL_ERROR && Sql_AffectedRows(SqlHandle) == 1)
 				{
 					session->PPlayer->pushPacket(new CAccountCreatePacket(CREATE_SUCCESS));
-					ShowDebug("Account %s has been created\n", handle);
+					ShowDebug("Account %s has been created/n", handle);
 				}
 				else
 				{

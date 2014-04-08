@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 				test->run();
 			}
 				
-	ShowInfo(CL_MAGENTA"WarGames Server"CL_RESET"/n");
+	ShowInfo(CL_MAGENTA"WarGames Server"CL_RESET"\n");
 	//init sockets
 	socket_init();
 	server_init();

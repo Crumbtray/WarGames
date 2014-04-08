@@ -20,7 +20,7 @@ session_list_t session_list;
 
 void server_init()
 {
-	ShowStatus("Initializing server.../n");
+	ShowStatus("Initializing server...\n");
 
 	packethandler::init();
 	//init sql handle
@@ -30,7 +30,7 @@ void server_init()
 	//bind socket
 	ShowStatus("Binding to port: %u", SERVER_PORT);
 	fd = makeBind_udp(INADDR_ANY, SERVER_PORT);
-	ShowMessage("/t/t - "CL_GREEN"OK"CL_RESET"/n");
+	ShowMessage("/t/t - "CL_GREEN"OK"CL_RESET"\n");
 
 	CREATE(g_PBuff, int8, RECV_BUFFER_SIZE + 20);
 	CREATE(PTempBuff, int8, RECV_BUFFER_SIZE + 20);
@@ -44,12 +44,12 @@ void server_init()
 	}
 	Sql_Keepalive(SqlHandle);
 
-	ShowMessage("/t - "CL_GREEN"OK"CL_RESET"/n");
+	ShowMessage("/t - "CL_GREEN"OK"CL_RESET"\n");
 
 	CTaskMgr::getInstance()->AddTask("lobby_countdowns", gettick(), NULL, CTaskMgr::TASK_INTERVAL, lobbies::lobby_timer, 1000);
 
-	ShowStatus(CL_GREEN"Game server initialized!"CL_RESET"/n");
-	ShowMessage("---------------------------------------/n");
+	ShowStatus(CL_GREEN"Game server initialized!"CL_RESET"\n");
+	ShowMessage("---------------------------------------\n");
 }
 
 session_data_t* get_session_ipport(uint64 ipp)
@@ -83,7 +83,7 @@ session_data_t* create_session(uint32 ip, uint16 port)
 	session_list[ipp] = session_data;
 
 	ShowInfo(CL_WHITE"session created for" CL_RESET":" CL_CYAN"%s" CL_RESET":" CL_CYAN"%u"
-		CL_RESET"/n", ip2str(session_data->addr, NULL), session_data->port);
+		CL_RESET"\n", ip2str(session_data->addr, NULL), session_data->port);
 	return session_data;
 }
 
@@ -105,7 +105,7 @@ int32 recv_parse(int8* buffer, size_t buffsize, sockaddr_in* from, session_data_
 
 		if (packethandler::PacketSizes[chunk_type] == chunk_size || packethandler::PacketSizes[chunk_type] == 0)
 		{
-			ShowInfo("parse: %02hX (size %02hX) from user %s/n", chunk_type, chunk_size, PPlayer->GetName());
+			ShowInfo("parse: %02hX (size %02hX) from user %s\n", chunk_type, chunk_size, PPlayer->GetName());
 			//parse the incoming packet
 			if ((session->PPlayer->id == 0 && (chunk_type == 0x01 || chunk_type == 0x02)) || session->PPlayer->id != 0)
 			{
@@ -114,7 +114,7 @@ int32 recv_parse(int8* buffer, size_t buffsize, sockaddr_in* from, session_data_
 		}
 		else
 		{
-			ShowWarning("Incorrect packet size %02hX for %02hX from user %s/n", chunk_size, chunk_type, PPlayer->GetName());
+			ShowWarning("Incorrect packet size %02hX for %02hX from user %s\n", chunk_size, chunk_type, PPlayer->GetName());
 		}
 	}
 	return 0;
@@ -160,7 +160,7 @@ int32 process_sockets(fd_set* rfd, int32 next)
 	{
 		if (sErrno != S_EINTR)
 		{
-			ShowFatalError("do_sockets: select() failed, error code %d!/n", sErrno);
+			ShowFatalError("do_sockets: select() failed, error code %d!\n", sErrno);
 			exit(EXIT_FAILURE);
 		}
 		return 0;

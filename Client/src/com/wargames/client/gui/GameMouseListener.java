@@ -261,10 +261,14 @@ public class GameMouseListener implements MouseListener{
 
 	private void stationaryAttack(Coordinate victimCoordinate)
 	{
-		///////////////
-		//TODO: check range
-		this.client.guiMap.AttackUnit(this.client.selectedUnit, victimCoordinate);
-		///////////////
+		Coordinate unitPos = client.guiMap.getCoordinateOfUnit(client.selectedUnit);
+		int distance = Math.abs(unitPos.x - victimCoordinate.x) + Math.abs(unitPos.y - victimCoordinate.y);
+		if (client.selectedUnit.getLogicalUnit().getRange() >= distance){
+			this.client.guiMap.AttackUnit(this.client.selectedUnit, victimCoordinate);
+		}
+		client.selectedUnit = null;
+		this.mouseState = MouseState.NothingSelected;
+
 		this.client.revalidate();
 		this.client.repaint();
 	}

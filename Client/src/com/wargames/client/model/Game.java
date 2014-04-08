@@ -4,14 +4,24 @@ package com.wargames.client.model;
 public class Game {
 	public Map gameMap;
 	public Player currentTurn;
+	private boolean localGame;
 	
 	public Game(Map gameMap)
 	{
 		this.gameMap = gameMap;
 		this.currentTurn = gameMap.players.get(gameMap.players.size() - 1);
+		this.localGame = true;
 		this.endTurn(currentTurn);
 	}
 	
+	/**
+	 * Returns true if local game.
+	 * @return localGame
+	 */	
+	public boolean isLocalGame(){
+		return this.localGame;
+	}
+		
 	/**
 	 * Moves a unit from its initial position to its final position.
 	 * @param xStart
@@ -30,7 +40,7 @@ public class Game {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Uses the unit to capture a structure.
 	 * @param x The X coordinate of the structure.

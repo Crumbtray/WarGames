@@ -1,6 +1,7 @@
 package com.wargames.client.communication.packet.incoming;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import javax.swing.JPanel;
 
@@ -40,6 +41,7 @@ public class IncomingPacketList {
 				
 			}
 			ByteBuffer buff = ByteBuffer.allocate(size);
+			buff.order(ByteOrder.LITTLE_ENDIAN);
 			buff.put(data, begin+2, (begin+2)+size < data.length ? size : data.length - (begin+2));
 			buff.rewind();
 			try

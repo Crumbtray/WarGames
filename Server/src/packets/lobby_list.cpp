@@ -7,7 +7,7 @@
 
 CLobbyListPacket::CLobbyListPacket()
 {
-	this->type = 0x06;
+	this->type = 0x07;
 	uint8 lobbies = lobbies::getLobbies().size() > 16 ? 16 : lobbies::getLobbies().size();
 	this->size = 0x0F * lobbies + 2;
 

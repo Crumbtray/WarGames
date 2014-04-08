@@ -217,13 +217,12 @@ public class GuiMap {
 	}
 	
 	/**
-	 * Creates a unit for the current player.
+	 * Creates a unit for the given player.
 	 * @param unitType
 	 */
-	public void CreateUnit(UnitType unitType, Coordinate factoryCoordinates)
+	public void CreateUnit(UnitType unitType, Player owner, int UnitID, Coordinate factoryCoordinates)
 	{
-		Player currentPlayer = this.logicalGame.currentTurn;
-		Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, currentPlayer, 1);
+		Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, owner, UnitID);
 		this.UpdateGui();
 		newUnit.deactivate();		
 	}

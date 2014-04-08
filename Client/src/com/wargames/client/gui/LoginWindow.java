@@ -117,15 +117,13 @@ public class LoginWindow extends JPanel implements ActionListener {
 				try {
 
 					// Try to read back
-					byte[] initialBytes = new byte[3];
+					byte[] initialBytes = new byte[256];
 					DatagramPacket initialPacket = new DatagramPacket(initialBytes, initialBytes.length);
 
 					System.out.println("Waiting to receive...");
 					socket.receive(initialPacket);
 					System.out.println("Received a packet!");
 					byte[] packetData = initialPacket.getData();
-					byte id = packetData[0];
-					byte size = packetData[1];
 
 					IncomingPacketList.parse(packetData, client);
 				} catch (IOException e) {

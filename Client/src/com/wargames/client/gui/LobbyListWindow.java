@@ -27,6 +27,7 @@ public class LobbyListWindow extends JPanel implements ActionListener{
 	private Image imgBackground;
 	private ArrayList<Lobby> lobbyList;
 	private ArrayList<JButton> buttonList;
+	private JButton createLobbyButton;
 	public String username;
 	
 	public LobbyListWindow(ArrayList<Lobby> lobbyList, String username)
@@ -37,7 +38,13 @@ public class LobbyListWindow extends JPanel implements ActionListener{
 		buttonList = new ArrayList<JButton>();
 		this.lobbyList = lobbyList;
 		
-		this.setLayout(new GridLayout(lobbyList.size(), 1));
+		this.setLayout(new GridLayout(lobbyList.size() + 1, 1));
+		
+		createLobbyButton = new JButton("Create New Lobby");
+		createLobbyButton.setActionCommand("Create");
+		createLobbyButton.addActionListener(this);
+		this.add(createLobbyButton);
+		
 		
 		for(int i = 0; i < lobbyList.size(); i++)
 		{			
@@ -70,7 +77,16 @@ public class LobbyListWindow extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		short id = Short.parseShort(action);
+		short id;
+		
+		if(action.equals("Create"))
+		{
+			id = 0;
+		}
+		else
+		{
+			id = Short.parseShort(action);
+		}
 		LobbyJoinPacket packet = new LobbyJoinPacket(id);
 		PacketSender.sendPacket(packet);
 	}

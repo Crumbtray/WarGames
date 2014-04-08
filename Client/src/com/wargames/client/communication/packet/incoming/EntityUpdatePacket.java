@@ -53,6 +53,19 @@ public class EntityUpdatePacket extends PacketFunctor {
 			// We will update the units with information
 			Unit targetUnit = clientWindow.guiMap.logicalGame.gameMap.getUnitAt(targetUnitCoord.x, targetUnitCoord.y);
 			
+			// Check if health is correct.
+			if(targetUnit.health != hp)
+			{
+				targetUnit.health = hp;
+			}
+			
+			// Lastly check if the position is correct.
+			if(targetUnitCoord.x != xPos || targetUnitCoord.y != yPos)
+			{
+				// Coordinates are different.  Move the unit.
+				clientWindow.guiMap.logicalGame.moveUnit(targetUnitCoord.x, targetUnitCoord.y, xPos, yPos);
+				clientWindow.guiMap.UpdateGui();
+			}
 		}
 	}
 	

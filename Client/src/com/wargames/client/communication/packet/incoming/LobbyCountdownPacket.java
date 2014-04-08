@@ -11,7 +11,7 @@ public class LobbyCountdownPacket extends PacketFunctor {
 		byte time = buff.get();
 		
 		//TODO: do stuff with response
-
+		// Not necessary for our implementation.
 	}
 
 }

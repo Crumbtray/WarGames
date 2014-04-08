@@ -12,7 +12,7 @@ public class PlayerDefeatedPacket extends PacketFunctor {
 		int playerID = buff.getInt();
 		
 		//TODO: do stuff with response
-
+		// Not necessary, when Player Defeated, the game should end.
 	}
 
 }

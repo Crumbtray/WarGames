@@ -12,7 +12,7 @@ public class LobbyChatPacket extends PacketFunctor {
 		String msg = buff.asCharBuffer().toString();
 		
 		//TODO: do stuff with response
-
+		// Not necessary for our implementation.
 	}
 
 }

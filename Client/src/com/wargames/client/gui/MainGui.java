@@ -85,7 +85,8 @@ public class MainGui extends JPanel implements ActionListener{
 			new GameClientGui(game, player1);
 			break;
 		case "login":
-			//TODO: display login screen
+			this.f.dispose();
+			LoginWindow.main(null);
 			break;
 		default:
 			break;

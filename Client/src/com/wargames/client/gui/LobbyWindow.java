@@ -1,19 +1,26 @@
 package com.wargames.client.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.wargames.client.communication.packet.outgoing.LobbyActionPacket;
 import com.wargames.client.helpers.PacketSender;
 import com.wargames.client.model.Lobby;
+import com.wargames.client.model.Player;
 
 public class LobbyWindow  extends JPanel implements ActionListener{
 
@@ -26,6 +33,7 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 	private Image imgBackground;
 	private JButton startGameButton;
 	public String username;
+	private JPanel playersPanel;
 	
 	/**
 	 * Displays a lobby.
@@ -43,6 +51,20 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 		startGameButton.setActionCommand("Start");
 		startGameButton.addActionListener(this);
 		
+		playersPanel = new JPanel();
+		playersPanel.setLayout(new GridLayout(lobby.players.size() + 1, 0));
+		playersPanel.setBackground(new Color(0,0,0,0));
+		JLabel playersLabel = new JLabel("   Players in Lobby:   ");
+		playersPanel.add(playersLabel);
+		
+		for(Player player : lobby.players)
+		{
+			JLabel playerLabel = new JLabel("    " + player.name);
+			playersPanel.add(playerLabel);
+		}
+		
+		this.add(playersPanel);
+		
 		// create application frame and set visible
 		f = new JFrame();
 		f.setSize(100, 100);
@@ -57,7 +79,16 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 	protected void paintComponent(Graphics g)
 	{
 		g.drawImage(this.imgBackground, 0, 0, null);
-		startGameButton.setLocation(300, 300);
+		startGameButton.setLocation(300, 450);
+		playersPanel.setLocation(300,300);
+		if(lobby.players.size() >= 2 && lobby.host.equals(this.username))
+		{
+			startGameButton.setEnabled(true);
+		}
+		else
+		{
+			startGameButton.setEnabled(false);
+		}
 	}
 	
 	/**
@@ -76,8 +107,12 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 
 	public static void main(String[] args)
 	{
-		Lobby newLobby = new Lobby(1, 0, 2, 1, "ha");
-		new LobbyWindow(newLobby, "clinton");
+		Lobby newLobby = new Lobby(1, 0, 2, 1, "Clinton");
+		ArrayList<Player> listPlayers = new ArrayList<Player>();
+		listPlayers.add(new Player(0, "Clinton", 1, 0, "red"));
+		listPlayers.add(new Player(0, "Mark", 2, 0, "red"));
+		newLobby.setPlayers(listPlayers);
+		new LobbyWindow(newLobby, "Clinton");
 	}
 	
 }

@@ -92,8 +92,7 @@ public class GameMouseListener implements MouseListener{
 		Coordinate mouseCoordinate = client.guiMap.getCoordinate(mouseXPosition, mouseYPosition);
 		if(this.client.selectedUnit.getLogicalUnit().getOwner() == this.client.guiMap.logicalGame.currentTurn)
 		{
-			if(attackableUnits.contains(mouseCoordinate) && MoveValidator.isNeighbour(unitCoordinate, mouseCoordinate))
-			{
+			if(attackableUnits.contains(mouseCoordinate)){
 				Coordinate movePos = null;
 				ArrayList<UnitActionType> possibleActions = new ArrayList<UnitActionType>();
 				if (MoveValidator.isNeighbour(unitCoordinate, mouseCoordinate)){

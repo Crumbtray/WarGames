@@ -17,6 +17,7 @@ import java.util.*;
 
 import com.wargames.client.communication.packet.outgoing.ActionPacket;
 import com.wargames.client.helpers.Coordinate;
+import com.wargames.client.helpers.MoveValidator;
 import com.wargames.client.helpers.PacketSender;
 
 public class ActionWindow extends JDialog implements ActionListener {
@@ -71,9 +72,17 @@ public class ActionWindow extends JDialog implements ActionListener {
 			try {
 				//check if mouseclick is unit to attack, or terrain to move to
 				if (client.guiMap.getUnitAt(mouseClickX, mouseClickY) == null){
+					//wait for user to click on attack location
 					listener.mouseState = MouseState.FindingAttackTarget;	
 				}else{
-					listener.mouseState = MouseState.FindingMoveTarget;
+					if (MoveValidator.isNeighbour(listener.lastClick, this.client.guiMap.getCoordinateOfUnit(this.client.selectedUnit))){
+						//units are neighbors, attack
+						this.client.guiMap.AttackUnit(this.client.selectedUnit, listener.lastClick);
+						listener.mouseState = MouseState.NothingSelected;
+					}else{
+						//wait for user to click on move location
+						listener.mouseState = MouseState.FindingMoveTarget;
+					}
 				}
 			} catch (MapException e1) {
 				e1.printStackTrace();

@@ -51,6 +51,9 @@ public class GameMouseListener implements MouseListener{
 				case FindingAttackTarget:
 					handleOnUnitAttackSelection(e);
 					break;
+				case FindingMoveTarget:
+					handleMoveOnUnitAttackSelection(e);
+					break;
 				}
 
 			}
@@ -111,13 +114,13 @@ public class GameMouseListener implements MouseListener{
 
 				// Simple attack
 				//TODO: cancel button doesnt work when selecting a unit to attack
-				stationaryAttack(mouseCoordinate);
-				if (movePos!= null)
-					client.guiMap.moveSelectedUnit(client.selectedUnit, movePos);
-				this.mouseState = MouseState.NothingSelected;
-				this.client.repaint();
+				//stationaryAttack(mouseCoordinate);
+				//if (movePos!= null)
+					//client.guiMap.moveSelectedUnit(client.selectedUnit, movePos);
+				//this.mouseState = MouseState.NothingSelected;
+				//this.client.repaint();
 			}
-			if(validLocations.contains(mouseCoordinate))
+			else if(validLocations.contains(mouseCoordinate))
 			{
 				ArrayList<UnitActionType> possibleActions = new ArrayList<UnitActionType>();
 				// If it's a square adjacent to an attackable unit, valid actions are Move and Attack
@@ -141,33 +144,70 @@ public class GameMouseListener implements MouseListener{
 			else
 			{
 				// Otherwise, close the selection, treat it as if nothing happened.
+				this.client.selectedUnit = null;
 				this.mouseState = MouseState.NothingSelected;
-
 				handleOnNothingSelected(e);
 			}
 		}
 		else
 		{
 			// Otherwise, close the selection, treat it as if nothing happened.
+			this.client.selectedUnit = null;
 			this.mouseState = MouseState.NothingSelected;
 			handleOnNothingSelected(e);
 		}
 	}
 
 	/**
-	 * We reach this point when the mouse clicks on anything after the "Attack" button is selected.
+	 * We reach this point when the mouse clicks on a unit after the "Attack" button is selected.
 	 * @param e
 	 */
 	private void handleOnUnitAttackSelection(MouseEvent e)
 	{
+		Coordinate unitCoordinate = this.client.guiMap.getCoordinateOfUnit(this.client.selectedUnit);
 		Coordinate victimCoordinate = this.client.guiMap.getCoordinate(e.getX(), e.getY());
+		Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
+		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, client.selectedUnit.getLogicalUnit(), client.guiMap.logicalGame.gameMap);
 		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(lastClick.x, lastClick.y, client.selectedUnit.getLogicalUnit(), client.guiMap.logicalGame.gameMap);
 		// Check if the spot that we clicked on is a unit we can attack		
-		if(attackableUnits.contains(victimCoordinate))
+		if(attackableUnits.contains(victimCoordinate) && validLocations.contains(moveCoordinate)
+				&& MoveValidator.isNeighbour(moveCoordinate, victimCoordinate))
 		{
 			// We can attack this unit.
 			System.out.println("Attacking unit at (" + victimCoordinate.x + "," + victimCoordinate.y + ")" );
-			Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
+
+			//Attack code here!
+			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
+			/////////
+			this.mouseState = MouseState.NothingSelected;
+			this.client.repaint();
+		}
+		else
+		{
+			// If we get here, we simply cancel everything.	
+			this.client.selectedUnit = null;
+			this.mouseState = MouseState.NothingSelected;
+			this.client.repaint();
+		}
+	}
+	
+	/**
+	 * We reach this point when the mouse clicks on a terrain to move to after the "Attack" button is selected.
+	 * @param e
+	 */
+	private void handleMoveOnUnitAttackSelection(MouseEvent e)
+	{
+		Coordinate unitCoordinate = this.client.guiMap.getCoordinateOfUnit(this.client.selectedUnit);
+		Coordinate moveCoordinate= this.client.guiMap.getCoordinate(e.getX(), e.getY());
+		Coordinate victimCoordinate = new Coordinate(lastClick.x, lastClick.y);
+		ArrayList<Coordinate> validLocations = MoveValidator.validLocations(unitCoordinate.x, unitCoordinate.y, client.selectedUnit.getLogicalUnit(), client.guiMap.logicalGame.gameMap);
+		ArrayList<Coordinate> attackableUnits = MoveValidator.getAttackableCoordinates(lastClick.x, lastClick.y, client.selectedUnit.getLogicalUnit(), client.guiMap.logicalGame.gameMap);
+		// Check if the spot that we clicked on is a unit we can attack		
+		if(attackableUnits.contains(victimCoordinate) && validLocations.contains(moveCoordinate)
+				&& MoveValidator.isNeighbour(moveCoordinate, victimCoordinate))
+		{
+			// We can attack this unit.
+			System.out.println("Attacking unit at (" + victimCoordinate.x + "," + victimCoordinate.y + ")" );
 
 			//Attack code here!
 			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
@@ -178,10 +218,12 @@ public class GameMouseListener implements MouseListener{
 		else
 		{
 			// If we get here, we simply cancel everything.		
+			this.client.selectedUnit = null;
 			this.mouseState = MouseState.NothingSelected;
 			this.client.repaint();
 		}
 	}
+
 
 	private void handleOnNothingSelected(MouseEvent e)
 	{
@@ -220,6 +262,7 @@ public class GameMouseListener implements MouseListener{
 	private void stationaryAttack(Coordinate victimCoordinate)
 	{
 		///////////////
+		//TODO: check range
 		this.client.guiMap.AttackUnit(this.client.selectedUnit, victimCoordinate);
 		///////////////
 		this.client.revalidate();

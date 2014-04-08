@@ -8,6 +8,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+
+import com.wargames.client.model.MapException;
+
 import java.awt.event.ActionEvent;
 import java.util.*;
 
@@ -58,8 +61,18 @@ public class ActionWindow extends JDialog implements ActionListener {
 		{
 		case "Attack":
 			System.out.println("Attacking!");
-			listener.mouseState = MouseState.FindingAttackTarget;
+			client.selectedUnit.isAttacking = true;
 			listener.lastClick = client.guiMap.getCoordinate(mouseClickX, mouseClickY);
+			try {
+				//check if mouseclick is unit to attack, or terrain to move to
+				if (client.guiMap.getUnitAt(mouseClickX, mouseClickY) == null){
+					listener.mouseState = MouseState.FindingAttackTarget;	
+				}else{
+					listener.mouseState = MouseState.FindingMoveTarget;
+				}
+			} catch (MapException e1) {
+				e1.printStackTrace();
+			}			
 			break;
 		case "Move":
 			System.out.println("Moved!");

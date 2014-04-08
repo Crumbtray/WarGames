@@ -10,9 +10,18 @@ public class AccountCreatePacket extends PacketFunctor {
 	public void parse(ByteBuffer buff, JPanel client) {
 		byte response = buff.get();
 		
-		System.out.println(response);
-		
-		//TODO: do stuff with response
+		if(response == 1)
+		{
+			System.out.println("Account successfully created.");
+		}
+		else if(response == 2)
+		{
+			System.out.println("Invalid Username/Password");
+		}
+		else
+		{
+			System.out.println("Server error.");
+		}
 
 	}
 

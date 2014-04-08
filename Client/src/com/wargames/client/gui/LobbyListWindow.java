@@ -25,7 +25,7 @@ public class LobbyListWindow extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 6073655611286339364L;
 	private JFrame f;
 	private Image imgBackground;
-	private ArrayList<Lobby> lobbyList;
+	public ArrayList<Lobby> lobbyList;
 	private ArrayList<JButton> buttonList;
 	private JButton createLobbyButton;
 	public String username;

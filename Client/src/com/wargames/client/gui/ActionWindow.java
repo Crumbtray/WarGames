@@ -15,6 +15,10 @@ import com.wargames.client.model.MapException;
 import java.awt.event.ActionEvent;
 import java.util.*;
 
+import com.wargames.client.communication.packet.outgoing.ActionPacket;
+import com.wargames.client.helpers.Coordinate;
+import com.wargames.client.helpers.PacketSender;
+
 public class ActionWindow extends JDialog implements ActionListener {
 	/**
 	 * 
@@ -77,7 +81,9 @@ public class ActionWindow extends JDialog implements ActionListener {
 			break;
 		case "Move":
 			System.out.println("Moved!");
-			client.guiMap.moveSelectedUnit(client.selectedUnit, client.guiMap.getCoordinate(mouseClickX, mouseClickY));
+			listener.lastClick = client.guiMap.getCoordinate(mouseClickX, mouseClickY);
+			client.guiMap.moveSelectedUnit(client.selectedUnit, listener.lastClick);
+			
 			listener.mouseState = MouseState.NothingSelected;
 			break;
 		case "Capture":

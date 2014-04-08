@@ -3,9 +3,13 @@ package com.wargames.client.communication.packet.incoming;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import com.wargames.client.gui.LobbyListWindow;
 import com.wargames.client.gui.LobbyWindow;
+import com.wargames.client.model.Lobby;
 import com.wargames.client.model.Player;
 
 public class LobbyUpdatePacket extends PacketFunctor {
@@ -42,9 +46,25 @@ public class LobbyUpdatePacket extends PacketFunctor {
 			playerList.add(player);
 		}
 	
-		LobbyWindow window = (LobbyWindow) client;
-		window.lobby.setPlayers(playerList);
-		window.lobby.setMapID(mapID);
-		window.lobby.setMaxPlayers(maxSize);
+		if(client.getClass().getSimpleName().contains("LobbyList"))
+		{
+			// Client is a LobbyListWindow.
+			// We need to create and make it a LobbyWindow.
+			LobbyListWindow window = (LobbyListWindow) client;
+			Lobby selectedLobby = new Lobby(0, playerList.size(), (int)maxSize, (int)mapID, playerList.get(0).name);
+			selectedLobby.setPlayers(playerList);
+			String currentPlayer = window.username;
+			// Swap out screens
+			JFrame topframe = (JFrame) SwingUtilities.getWindowAncestor(client);
+			topframe.dispose();
+			new LobbyWindow(selectedLobby, currentPlayer);
+		}
+		else
+		{
+			LobbyWindow window = (LobbyWindow) client;
+			window.lobby.setPlayers(playerList);
+			window.lobby.setMapID(mapID);
+			window.lobby.setMaxPlayers(maxSize);
+		}
 	}
 }

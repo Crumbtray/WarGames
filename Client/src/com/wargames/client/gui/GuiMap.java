@@ -7,8 +7,10 @@ import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 
+import com.wargames.client.communication.packet.outgoing.ActionPacket;
 import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.DamageCalculator;
+import com.wargames.client.helpers.PacketSender;
 import com.wargames.client.helpers.WinChecker;
 import com.wargames.client.model.Game;
 import com.wargames.client.model.MapException;
@@ -18,6 +20,11 @@ import com.wargames.client.model.Unit;
 import com.wargames.client.model.UnitCosts;
 import com.wargames.client.model.UnitType;
 
+/**
+ * GuiMap manages displaying the Game Map to the JFrame.
+ * @author Clinton
+ *
+ */
 public class GuiMap {
 	public Game logicalGame;
 	private GuiUnit[][] graphicalUnits;
@@ -155,13 +162,6 @@ public class GuiMap {
 	{
 		Coordinate selectedUnitCoordinates = getCoordinateOfUnit(selectedUnit);
 		
-		// This is taken care of by the return packet.
-		//this.logicalGame.moveUnit(selectedUnitCoordinates.x, selectedUnitCoordinates.y, destinationCoordinate.x, destinationCoordinate.y);
-		
-		// If everything is OK, we update the unit's position
-		//this.UpdateGui();
-		//selectedUnit.getLogicalUnit().deactivate();
-		
 		
 		if (this.client.guiMap.logicalGame.isLocalGame()){
 			//update UI locally
@@ -177,7 +177,14 @@ public class GuiMap {
 			}
 			selectedUnit.getLogicalUnit().deactivate();
 		} else {
-			//TODO: SEND PACKET
+			// Setup and send the action packet to move here.
+			short moverUnitID = (short) this.client.selectedUnit.getLogicalUnit().id;
+			byte xPos = (byte) destinationCoordinate.x;
+			byte yPos = (byte) destinationCoordinate.y;
+			byte moveAction = 0;
+			short targetUnitID = 0;
+			ActionPacket packet = new ActionPacket(moverUnitID, xPos, yPos, moveAction, targetUnitID);
+			PacketSender.sendPacket(packet);
 			//wait for server to update UI
 		}
 	}
@@ -227,7 +234,14 @@ public class GuiMap {
 			}
 		}
 		else{
-			//TODO: SEND PACKET attackerID, movecoordinate.x, movecoordinate.y, ACTION_ATTACK, targetID
+			// Send an action packet.
+			short attackerUnitID = (short) this.client.selectedUnit.getLogicalUnit().id;
+			byte xPos = (byte) moveCoordinate.x;
+			byte yPos = (byte) moveCoordinate.y;
+			byte attackAction = 1;
+			short targetUnitID = (short) client.guiMap.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y).id;
+			ActionPacket packet = new ActionPacket(attackerUnitID, xPos, yPos, attackAction, targetUnitID);
+			PacketSender.sendPacket(packet);
 			//wait for server packet to update UI
 		}
 	}

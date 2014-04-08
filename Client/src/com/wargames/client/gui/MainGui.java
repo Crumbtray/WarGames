@@ -86,7 +86,7 @@ public class MainGui extends JPanel implements ActionListener{
 			break;
 		case "login":
 			this.f.dispose();
-			LoginWindow.main(null);
+			new LoginWindow();
 			break;
 		default:
 			break;

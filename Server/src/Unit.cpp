@@ -87,7 +87,12 @@ int Unit::getHealth(){
 }
 
 void Unit::damageUnit(int damage){
-	this->m_health -= damage;
+	if (damage > m_health){
+		m_health = 0;
+	}
+	else{
+		this->m_health -= damage;
+	}
 }
 
 // returns true if unit has captured the current position,
@@ -105,12 +110,16 @@ bool Unit::capture(){
 	}
 }
 
+void Unit::cancelCapture(){
+	this->m_capturing = false;
+}
+
 bool Unit::isCapturing(){
 	return this->m_capturing;
 }
 
-void Unit::decreaseAmmo(){
-	this->m_ammo--;
+void Unit::decreaseAmmo(int ammo){
+	this->m_ammo -= ammo;
 }
 
 void Unit::increaseAmmo(int ammo){
@@ -120,8 +129,8 @@ void Unit::increaseAmmo(int ammo){
 int Unit::getAmmo(){
 	return this->m_ammo;
 }
-void Unit::decreaseFuel(){
-	this->m_fuel--;
+void Unit::decreaseFuel(int fuel){
+	this->m_fuel -= fuel;
 }
 
 void Unit::increaseFuel(int fuel){
@@ -134,35 +143,6 @@ int Unit::getFuel(){
 
 int Unit::getArmor(){
 	return this->m_armor;
-}
-
-int Unit::calculateDamage(Unit* target)
-{
-	if (m_damageType == DamageType::Bullet)
-	{
-		return (m_damage * 2 * m_health) / (10 * target->getArmor() + 1);
-	}
-	else if (m_damageType == DamageType::Concussive)
-	{
-		return (m_damage * 2 * m_health) / (10 * 3 - target->getArmor());
-	}
-	return 0;
-}
-
-//I might refactor these into the map class
-void Unit::attack(Unit* target, int* targetdamage, int* returndamage){
-	*targetdamage = calculateDamage(target);
-	int targethp = target->delHP(*targetdamage);
-	if (targethp != 0)
-	{
-		*returndamage = target->calculateDamage(this);
-
-		delHP(*returndamage);
-	}
-}
-
-int Unit::capture(int x, int y){
-	return 0;
 }
 
 void Unit::setDamage(int damage)
@@ -185,15 +165,4 @@ void Unit::setArmor(int armor)
 {
 	m_armor = armor;
 }
-int Unit::delHP(int damage)
-{
-	if (damage >= m_health)
-	{
-		m_health = 0;
-	}
-	else
-	{
-		m_health -= damage;
-	}
-	return m_health;
-}
+

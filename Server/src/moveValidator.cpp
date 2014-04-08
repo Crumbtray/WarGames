@@ -3,10 +3,49 @@
 
 bool MoveValidator::isMoveValid(int old_x, int old_y, int new_x, int new_y, Unit *unit, Map *gameMap)
 {
+	CoordinateList validLocations = getValidLocations(old_x, old_y, unit, gameMap);
+	if (std::find(validLocations.begin(), validLocations.end(), Coordinate(new_x, new_y)) != validLocations.end()){
+		return true;
+	}
+	return false;
+}
+//old x,y are the attacking unit's coordinates
+//new x,y is the coordinate the attacking unit is moving to
+//returns true if unit can attack target
+bool MoveValidator::isAttackValid(int old_x, int old_y, int new_x, int new_y, Unit *unit, Unit *target, Map *gameMap){
+	Coordinate targetPos = gameMap->getUnitPos(target->getID());
+
+	if (unit->getMaxRange() > 1 && !(old_x == new_x && old_y == new_y) ){
+		//unit mustn't move
+		return false; 
+	}
+	else if (unit->getMaxRange() > 1){
+		// ranged attack, no move
+		// target must be within range
+		int attackDistance = std::abs(targetPos.first - old_x) + std::abs(targetPos.second - old_y);
+		if (attackDistance > unit->getMinRange() && attackDistance < unit->getMaxRange()){
+			return true;
+		}
+		return false;
+	}
+	else if (unit->getMaxRange() == 1){
+		CoordinateList validAttacks = getAttackableCoordinates(old_x, old_y, unit, gameMap);
+		CoordinateList validLocations = getValidLocations(old_x, old_y, unit, gameMap);
+		if (std::find(validLocations.begin(), validLocations.end(), Coordinate(new_x, new_y)) != validLocations.end()
+			&& std::find(validAttacks.begin(), validAttacks.end(), targetPos) != validAttacks.end()){
+			//unit can move to x,y and attack target
+			return true;
+		}
+		return false;
+	}
 	return false;
 }
 
-CoordinateList MoveValidator::validLocations(int x, int y, Unit *unit, Map *gameMap){
+// returns all valid locations unit can move to,
+// including the unit's current location.
+// valid locations must be reachable by the unit's
+// mobility type, and must not contain a unit
+CoordinateList MoveValidator::getValidLocations(int x, int y, Unit *unit, Map *gameMap){
 	CoordinateList validLocations = CoordinateList();
 	// Maximum possible area to move in one direction is based on mobility.
 	int remainingMobility = unit->getMobility();
@@ -15,6 +54,7 @@ CoordinateList MoveValidator::validLocations(int x, int y, Unit *unit, Map *game
 
 	while (remainingMobility > 0)
 	{
+		//find neighbors of valid coordinates
 		CoordinateList neighbours = CoordinateList();
 		for (Coordinate validCoord : validLocations)
 		{
@@ -58,7 +98,8 @@ CoordinateList MoveValidator::validLocations(int x, int y, Unit *unit, Map *game
 	return validLocations;
 }
 
-
+//returns list of coordinates adjacent to old_x, old_y
+//that are either empty, or contain friendly units
 CoordinateList MoveValidator::getNeighbours(int old_x, int old_y, Unit *playerUnit, Map *gameMap)
 {
 	CoordinateList neighbours = CoordinateList();
@@ -97,12 +138,19 @@ CoordinateList MoveValidator::getNeighbours(int old_x, int old_y, Unit *playerUn
 	return neighbours;
 }
 
+//returns coordinate list of attackable locations
 CoordinateList MoveValidator::getAttackableCoordinates(int old_x, int old_y, Unit *playerUnit, Map *gameMap)
 {
 	CoordinateList attackableCoords = CoordinateList();
-	//if range > 1, unit can either move or attack, not both
-	if (!(playerUnit->getMaxRange() > 1)){ //equivalent to "canMoveAndAttack" on client side
-		CoordinateList moveableSpots = validLocations(old_x, old_y, playerUnit, gameMap);
+	if (playerUnit->getMaxRange() > 1){ //equivalent to "canMoveAndAttack" on client side
+		//unit can either move or attack, not both
+		for (int i = playerUnit->getMinRange(); i < playerUnit->getMaxRange(); i++){
+			//TODO: calculate attackable coordinates within unit.range
+		}
+
+	}
+	else if (playerUnit->getMaxRange() == 1){ // unit can move and attack
+		CoordinateList moveableSpots = getValidLocations(old_x, old_y, playerUnit, gameMap);
 		for (Coordinate moveable : moveableSpots){
 			for (Coordinate attackableCoordinate : getAttackableNeighbours(moveable, playerUnit, gameMap)){
 				if (std::find(attackableCoords.begin(), attackableCoords.end(), attackableCoordinate) != attackableCoords.end()){
@@ -111,8 +159,7 @@ CoordinateList MoveValidator::getAttackableCoordinates(int old_x, int old_y, Uni
 			}
 		}
 	}
-	else
-	{
+	else {//unit can't attack
 
 	}
 	return attackableCoords;
@@ -178,7 +225,7 @@ CoordinateList MoveValidator::getAttackableNeighbours(Coordinate startingPositio
 	return validAttacks;
 }
 
-
+//returns true if a and b are neighbours
 bool MoveValidator::isNeighbour(Coordinate a, Coordinate b){
 	if (std::abs(a.first - b.first) == 1 && (a.second == b.second))
 	{

@@ -1,5 +1,7 @@
 
+#include "damageCalculator.h"
 #include "Map.h"
+#include "moveValidator.h"
 #include "Terrain.h"
 #include "TerrainBuilder.h"
 #include "UnitBuilder.h"
@@ -114,48 +116,54 @@ Unit* Map::produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type)
 	return NULL;
 }
 
+//returns false if move is invalid or destination is occupied
 bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 {
-	Terrain* newPos = getTerrainAt(new_x, new_y);
-	if (newPos->getUnit() == unit)
-	{
-		return true;
-	}
 	//ensure unit can move onto newPos
-	else if (newPos->getMoveCost(unit->getMobilityType()) < 1){
+	if (!unit->isActive() || !MoveValidator::isMoveValid(unitPos.first, unitPos.second, new_x, new_y, unit, this)){
 		return false;
 	}
-	//TODO: pathfinding 
+
+	Coordinate unitPos = getUnitPos(unit->getID());
+	Terrain* newTerrain = getTerrainAt(new_x, new_y);
+	if (newTerrain->getUnit() == unit){
+		return true;
+	}
 	//todo: implement fuel (not yet implemented on client)
-	
-	//ensure newPos doesn't already have a unit.
-	else if (newPos->setUnit(unit) == unit)
-	{
+	else if (newTerrain->setUnit(unit) == unit){
+		if (unit->isCapturing()){
+			unit->cancelCapture();
+		}
 		return true;
 	}
 	return false;
 }
 
+//new_x and new_y are the location the attacking unit is moving to
+//returns true if attack was successful
 bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetdamage, int* returndamage)
 {
-	if (!unit->isActive()){
+	Coordinate unitPos = this->getUnitPos(unit->getID());
+	if (!unit->isActive() || !MoveValidator::isAttackValid(unitPos.first, unitPos.second, new_x, new_y, unit, target, this)){
 		return false;
 	}
-	//TODO: check if new_x, new_y is within unit.range of target
-	if (moveUnit(unit, new_x, new_y)) //
+	
+	if (moveUnit(unit, new_x, new_y)) 
   	{
-		//TODO: ammo check, range check
-		unit->attack(target, targetdamage, returndamage);
-		if (target->getHealth() == 0)
+		//TODO: ammo check
+		std::pair<float, float> damage = DamageCalculator::getDamage(unit, target);
+		target->damageUnit(static_cast<int>(damage.first));
+		unit->damageUnit(static_cast<int>(damage.second));
+		unit->deactivate();
+		if (target->getHealth() <= 0)
 		{
 			deleteUnit(target);
 		}
-		if (unit->getHealth() == 0)
+		if (unit->getHealth() <= 0)
 		{
 			deleteUnit(unit);
 		}
 		return true;
-		unit->deactivate();
 	}
 	return false;
 }
@@ -182,6 +190,7 @@ bool Map::unitsRemain(CPlayer* player)
 	return false;
 }
 
+//returns true if captured, false otherwise
 bool Map::captureStructure(uint8 x, uint8 y){
 	Unit *unit = getUnitAt(x, y);
 	Terrain *captureTerrain = getTerrainAt(x, y);

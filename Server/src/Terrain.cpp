@@ -60,6 +60,7 @@ bool Terrain::canBeCaptured(){
 	return false;
 }
 
+//return true if unit has non-zero mobility for this terrian's mobility type
 bool Terrain::canMove(Unit *unit){
 	if (getMoveCost(unit->getMobilityType()) > 0){
 		return true;

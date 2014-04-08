@@ -61,7 +61,7 @@ public class LobbyListWindow extends JPanel implements ActionListener{
 		f.setResizable(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.add(this);
-		f.setSize(100,100);
+		f.setSize(100,100 * (lobbyList.size() + 1));
 	}
 	
 	@Override

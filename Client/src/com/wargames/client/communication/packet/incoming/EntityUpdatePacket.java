@@ -52,6 +52,7 @@ public class EntityUpdatePacket extends PacketFunctor {
 		{
 			// We will update the units with information
 			Unit targetUnit = clientWindow.guiMap.logicalGame.gameMap.getUnitAt(targetUnitCoord.x, targetUnitCoord.y);
+			
 		}
 	}
 	

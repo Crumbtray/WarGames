@@ -4,8 +4,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import com.wargames.client.communication.packet.outgoing.ActionPacket;
 import com.wargames.client.helpers.Coordinate;
 import com.wargames.client.helpers.MoveValidator;
+import com.wargames.client.helpers.PacketSender;
 import com.wargames.client.model.MapException;
 import com.wargames.client.model.Structure;
 import com.wargames.client.model.TerrainType;
@@ -151,8 +153,18 @@ public class GameMouseListener implements MouseListener{
 			Coordinate moveCoordinate = new Coordinate(lastClick.x, lastClick.y);
 
 			//Attack code here!
-			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
+			//this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
 			/////////
+			
+			// Send an action packet.
+			short attackerUnitID = (short) this.client.selectedUnit.getLogicalUnit().id;
+			byte xPos = (byte) moveCoordinate.x;
+			byte yPos = (byte) moveCoordinate.y;
+			byte attackAction = 1;
+			short targetUnitID = (short) client.guiMap.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y).id;
+			ActionPacket packet = new ActionPacket(attackerUnitID, xPos, yPos, attackAction, targetUnitID);
+			PacketSender.sendPacket(packet);
+			
 			this.mouseState = MouseState.NothingSelected;
 			this.client.repaint();
 		}
@@ -201,8 +213,19 @@ public class GameMouseListener implements MouseListener{
 	private void stationaryAttack(Coordinate victimCoordinate)
 	{
 		///////////////
-		this.client.guiMap.AttackUnit(this.client.selectedUnit, victimCoordinate);
+		//this.client.guiMap.AttackUnit(this.client.selectedUnit, victimCoordinate);
 		///////////////
+		
+		// Send an action packet.
+		Coordinate unitCoordinates = client.guiMap.getCoordinateOfUnit(client.selectedUnit);
+		short attackerUnitID = (short) this.client.selectedUnit.getLogicalUnit().id;
+		byte xPos = (byte) unitCoordinates.x;
+		byte yPos = (byte) unitCoordinates.y;
+		byte attackAction = 1;
+		short targetUnitID = (short) client.guiMap.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y).id;
+		ActionPacket packet = new ActionPacket(attackerUnitID, xPos, yPos, attackAction, targetUnitID);
+		PacketSender.sendPacket(packet);		
+		
 		this.client.revalidate();
 		this.client.repaint();
 	}

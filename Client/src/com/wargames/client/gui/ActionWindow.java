@@ -10,6 +10,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import com.wargames.client.communication.packet.outgoing.ActionPacket;
+import com.wargames.client.helpers.Coordinate;
+import com.wargames.client.helpers.PacketSender;
+
 public class ActionWindow extends JDialog implements ActionListener {
 	/**
 	 * 
@@ -62,7 +66,18 @@ public class ActionWindow extends JDialog implements ActionListener {
 			break;
 		case "Move":
 			System.out.println("Moved!");
-			client.guiMap.moveSelectedUnit(client.selectedUnit, client.guiMap.getCoordinate(mouseClickX, mouseClickY));
+			
+			//client.guiMap.moveSelectedUnit(client.selectedUnit, client.guiMap.getCoordinate(mouseClickX, mouseClickY));
+			// Setup and send the action packet to move here.
+			short moverUnitID = (short) this.client.selectedUnit.getLogicalUnit().id;
+			Coordinate moveCoordinate = client.guiMap.getCoordinate(mouseClickX, mouseClickY);
+			byte xPos = (byte) moveCoordinate.x;
+			byte yPos = (byte) moveCoordinate.y;
+			byte moveAction = 0;
+			short targetUnitID = 0;
+			ActionPacket packet = new ActionPacket(moverUnitID, xPos, yPos, moveAction, targetUnitID);
+			PacketSender.sendPacket(packet);
+			
 			listener.mouseState = MouseState.NothingSelected;
 			break;
 		case "Capture":

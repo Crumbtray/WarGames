@@ -12,7 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.wargames.client.communication.packet.outgoing.ActionPacket;
 import com.wargames.client.helpers.Coordinate;
+import com.wargames.client.helpers.PacketSender;
 import com.wargames.client.model.UnitCosts;
 import com.wargames.client.model.UnitType;
 
@@ -80,23 +82,28 @@ public class FactoryWindow extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
+		byte xPos = (byte) factoryLocation.x;
+		byte yPos = (byte)factoryLocation.y;
+		byte createAction = 3;
+		short unitType;
+		short actionCode = 0;
+		ActionPacket packet;
+		
 		switch(action)
 		{
 			case "soldier":
-				//////////////////
-				//this.client.guiMap.CreateUnit(UnitType.SOLDIER, factoryLocation);
-				//////////////////
-				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getSoldierCost();
+				unitType = 0;
+				packet = new ActionPacket(unitType, xPos, yPos, createAction, actionCode);
+				PacketSender.sendPacket(packet);
 				break;
 			case "tank":
-				///////////////////
-				//this.client.guiMap.CreateUnit(UnitType.TANK, factoryLocation);
-				///////////////////
-				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getTankCost();
+				unitType = 1;
+				packet = new ActionPacket(unitType, xPos, yPos, createAction, actionCode);
+				PacketSender.sendPacket(packet);
 				break;
 			default:
-				
 		}
+		
 		client.repaint();
 		this.dispose();
 	}

@@ -192,6 +192,7 @@ public class Map {
 	
 	/**
 	 * Given a unit ID, give the coordinates of that unit.
+	 * If not found, it returns null.
 	 * @param UnitID
 	 * @return
 	 */
@@ -210,4 +211,22 @@ public class Map {
 		}
 		return null;
 	}
+	
+	/**
+	 * Finds a player that matches given the position number.
+	 * If not found, returns null.
+	 * @param ID
+	 * @return
+	 */
+	public Player findPlayerByNumber(int number)
+	{
+		try {
+			return players.get(number);
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+			return null;
+		}
+	}
+	
 }

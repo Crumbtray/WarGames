@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import com.wargames.client.gui.LobbyListWindow;
+import com.wargames.client.gui.LoginWindow;
 import com.wargames.client.model.Lobby;
 
 public class LobbyListPacket extends PacketFunctor {
@@ -34,8 +35,8 @@ public class LobbyListPacket extends PacketFunctor {
 			lobbies.add(newLobby);
 		}
 		
-		LobbyListWindow window = (LobbyListWindow) client;
-		String username = window.username;
+		LoginWindow window = (LoginWindow) client;
+		String username = window.username.getText();
 		
 		// Get rid of current Login Window, and show the lobby window.
 		JFrame topframe = (JFrame) SwingUtilities.getWindowAncestor(client);

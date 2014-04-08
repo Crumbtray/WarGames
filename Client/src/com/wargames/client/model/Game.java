@@ -118,7 +118,7 @@ public class Game {
 	}
 	
 	/**
-	 * 
+	 * Ends the turn of the player.
 	 */
 	public void endTurn(Player player)
 	{		

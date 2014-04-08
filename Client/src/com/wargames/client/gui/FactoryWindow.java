@@ -84,13 +84,13 @@ public class FactoryWindow extends JDialog implements ActionListener{
 		{
 			case "soldier":
 				//////////////////
-				this.client.guiMap.CreateUnit(UnitType.SOLDIER, factoryLocation);
+				//this.client.guiMap.CreateUnit(UnitType.SOLDIER, factoryLocation);
 				//////////////////
 				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getSoldierCost();
 				break;
 			case "tank":
 				///////////////////
-				this.client.guiMap.CreateUnit(UnitType.TANK, factoryLocation);
+				//this.client.guiMap.CreateUnit(UnitType.TANK, factoryLocation);
 				///////////////////
 				client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getTankCost();
 				break;

@@ -28,7 +28,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField username;
+	public JTextField username;
 	private JPasswordField password;
 	private JButton loginButton;
 	private JFrame f;

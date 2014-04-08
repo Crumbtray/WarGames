@@ -33,20 +33,16 @@ public class ActionPacket extends PacketFunctor {
 		if(action == 1)
 		{
 			// Attack
-			Coordinate unitCoord = gameClient.guiMap.logicalGame.gameMap.findCoordinateByUnitID(initiatorID);
-			gameClient.guiMap.logicalGame.damageUnit(unitCoord.x, unitCoord.y, selfdmg);
-			gameClient.guiMap.logicalGame.damageUnit(xPos, yPos, targetdmg);	
+			Coordinate targetCoord = gameClient.guiMap.logicalGame.gameMap.findCoordinateByUnitID(targetID);
+
+			gameClient.guiMap.logicalGame.damageUnit(xPos, yPos, selfdmg);
+			
+			gameClient.guiMap.logicalGame.damageUnit(targetCoord.x, targetCoord.y, targetdmg);
+			
 			gameClient.guiMap.UpdateGui();
 		}
-		else if(action == 2)
-		{
-			// Capture
-		}
-		else if(action == 3)
-		{
-			// Produce
-			
-		}
+		
+		// We ignore if action == 2, or 3.
 	}
 
 }

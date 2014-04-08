@@ -15,6 +15,7 @@ const int DamageCalculator::m_damage[UnitType::UnitTypeCount][UnitType::UnitType
 { 0, 0, 0, 0, 0, 0, 0, 105, 105, 105, 120, 38, 28, 95, 40 },
 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80, 20, 55, 85, } };
 
+//returns (Damage to Target, Return Damage)
 std::pair<float, float> DamageCalculator::getDamage(Unit *unit, Unit *target){
 	int baseDamage = m_damage[unit->getUnitType()][target->getUnitType()];
 	int baseReturnDamage = m_damage[target->getUnitType()][unit->getUnitType()];

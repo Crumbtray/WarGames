@@ -120,11 +120,11 @@ Unit* Map::produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type)
 bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 {
 	//ensure unit can move onto newPos
+	Coordinate unitPos = getUnitPos(unit->getID());
 	if (!unit->isActive() || !MoveValidator::isMoveValid(unitPos.first, unitPos.second, new_x, new_y, unit, this)){
 		return false;
 	}
 
-	Coordinate unitPos = getUnitPos(unit->getID());
 	Terrain* newTerrain = getTerrainAt(new_x, new_y);
 	if (newTerrain->getUnit() == unit){
 		return true;
@@ -141,7 +141,7 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 
 //new_x and new_y are the location the attacking unit is moving to
 //returns true if attack was successful
-bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetdamage, int* returndamage)
+bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetDamage, int* returnDamage)
 {
 	Coordinate unitPos = this->getUnitPos(unit->getID());
 	if (!unit->isActive() || !MoveValidator::isAttackValid(unitPos.first, unitPos.second, new_x, new_y, unit, target, this)){
@@ -152,8 +152,10 @@ bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* ta
   	{
 		//TODO: ammo check
 		std::pair<float, float> damage = DamageCalculator::getDamage(unit, target);
-		target->damageUnit(static_cast<int>(damage.first));
-		unit->damageUnit(static_cast<int>(damage.second));
+		*targetDamage = static_cast<int>(damage.first);
+		*returnDamage = static_cast<int>(damage.second);
+		target->damageUnit(*targetDamage);
+		unit->damageUnit(*returnDamage);
 		unit->deactivate();
 		if (target->getHealth() <= 0)
 		{

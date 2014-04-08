@@ -243,9 +243,20 @@ public class GuiMap {
 	 */
 	public void CreateUnit(UnitType unitType, Coordinate factoryCoordinates)
 	{
-		Player currentPlayer = this.logicalGame.currentTurn;
-		Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, currentPlayer);
-		this.graphicalUnits[factoryCoordinates.x][factoryCoordinates.y] = new GuiUnit(newUnit, factoryCoordinates.x * TILEWIDTH + MapOffsetX, factoryCoordinates.y * TILEHEIGHT + MapOffsetY);
-		newUnit.deactivate();		
+		if (this.client.guiMap.logicalGame.isLocalGame()){
+			//update UI locally
+			Player currentPlayer = this.logicalGame.currentTurn;
+			Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, currentPlayer);
+			this.graphicalUnits[factoryCoordinates.x][factoryCoordinates.y] = new GuiUnit(newUnit, factoryCoordinates.x * TILEWIDTH + MapOffsetX, factoryCoordinates.y * TILEHEIGHT + MapOffsetY);
+			client.guiMap.logicalGame.currentTurn.funds = client.guiMap.logicalGame.currentTurn.funds - UnitCosts.getUnitCost(unitType);
+			newUnit.deactivate();	
+		}
+		else{
+			Player currentPlayer = this.logicalGame.currentTurn;
+			//TODO: SEND PACKET unit creation
+			//wait for server to update UI
+		}
+		
+			
 	}
 }

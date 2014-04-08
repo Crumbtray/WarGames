@@ -111,14 +111,6 @@ public class GameMouseListener implements MouseListener{
 					}
 				}
 				ActionWindow actionWindow = new ActionWindow(client, e, possibleActions, this);
-
-				// Simple attack
-				//TODO: cancel button doesnt work when selecting a unit to attack
-				//stationaryAttack(mouseCoordinate);
-				//if (movePos!= null)
-					//client.guiMap.moveSelectedUnit(client.selectedUnit, movePos);
-				//this.mouseState = MouseState.NothingSelected;
-				//this.client.repaint();
 			}
 			else if(validLocations.contains(mouseCoordinate))
 			{

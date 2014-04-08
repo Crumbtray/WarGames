@@ -17,7 +17,7 @@ import com.wargames.client.model.Player;
 public class GameLoadPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		byte mapID = buff.get();
 		
 		LobbyWindow window = (LobbyWindow) client;
@@ -44,8 +44,9 @@ public class GameLoadPacket extends PacketFunctor {
 			{
 				currentPlayer = players.get(0);
 			}
-			new GameClientGui(game, currentPlayer);
+			return new GameClientGui(game, currentPlayer);
 		}
+		return client;
 	}
 
 }

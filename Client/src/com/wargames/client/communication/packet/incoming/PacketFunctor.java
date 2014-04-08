@@ -11,5 +11,5 @@ import javax.swing.JPanel;
  */
 public abstract class PacketFunctor {
 	
-	public abstract void parse(ByteBuffer buff, JPanel client);
+	public abstract JPanel parse(ByteBuffer buff, JPanel client);
 }

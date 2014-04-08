@@ -10,7 +10,7 @@ import com.wargames.client.model.Player;
 public class GameOverPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		byte winnerNumber = buff.get();
 		int winnerID = buff.getInt();
 		
@@ -32,6 +32,7 @@ public class GameOverPacket extends PacketFunctor {
 			}
 		}
 		window.endGame(winner);
+		return client;
 	}
 
 }

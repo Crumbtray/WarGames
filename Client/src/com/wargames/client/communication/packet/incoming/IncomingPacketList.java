@@ -27,7 +27,7 @@ public class IncomingPacketList {
 		packetParser[0x17] = new GameOverPacket();
 	}
 	
-	public static void parse(byte[] data, JPanel client)
+	public static JPanel parse(byte[] data, JPanel client)
 	{
 		int begin = 0;
 		
@@ -35,18 +35,17 @@ public class IncomingPacketList {
 		{
 			byte type = data[begin];
 			byte size = data[begin+1];
-			if (begin + size < data.length)
-			{
-				//trailing zeroes get cut off for some reason - java "feature"?
-				
-			}
+
+			if (type == 0)
+				break;
+			
 			ByteBuffer buff = ByteBuffer.allocate(size);
 			buff.order(ByteOrder.LITTLE_ENDIAN);
 			buff.put(data, begin+2, (begin+2)+size < data.length ? size : data.length - (begin+2));
 			buff.rewind();
 			try
 			{
-				packetParser[type].parse(buff, client);
+				return packetParser[type].parse(buff, client);
 			}
 			catch (Error e)
 			{
@@ -54,6 +53,7 @@ public class IncomingPacketList {
 			}
 			begin = begin+size;
 		}
+		return client;
 	}
 	
 }

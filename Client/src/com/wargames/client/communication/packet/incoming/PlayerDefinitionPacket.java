@@ -10,7 +10,7 @@ import com.wargames.client.model.Player;
 public class PlayerDefinitionPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		int id = buff.getInt();
 		byte[] name = new byte[10];
 		for (int j = 0; j < 10; j++)
@@ -39,6 +39,8 @@ public class PlayerDefinitionPacket extends PacketFunctor {
 		{
 			player.ID = id;
 		}
+		
+		return client;
 	}
 
 

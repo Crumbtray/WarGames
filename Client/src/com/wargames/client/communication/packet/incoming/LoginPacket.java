@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 public class LoginPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		byte response = buff.get();
 		int wins = buff.getInt();
 		int losses = buff.getInt();
@@ -22,6 +22,7 @@ public class LoginPacket extends PacketFunctor {
 		{
 			System.out.println("Logged in.");
 		}
+		return client;
 	}
 
 }

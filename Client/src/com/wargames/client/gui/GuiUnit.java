@@ -12,12 +12,14 @@ public class GuiUnit {
 	private int x;
 	private int y;
 	private Unit logicalUnit;
+	public boolean isAttacking;
 	
 	public GuiUnit(Unit unit, int x, int y)
 	{
 		this.logicalUnit = unit;
 		this.x = x;
 		this.y = y;
+		this.isAttacking = false;
 		
 		// Assign the img based on terrain type.
 		String filename = "";

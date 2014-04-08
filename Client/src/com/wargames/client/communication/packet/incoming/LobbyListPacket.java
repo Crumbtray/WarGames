@@ -14,7 +14,7 @@ import com.wargames.client.model.Lobby;
 public class LobbyListPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		byte numlobbies = buff.get();
 		ArrayList<Lobby> lobbies = new ArrayList<Lobby>();
 		for (int i = 0; i < numlobbies; i++)
@@ -41,7 +41,7 @@ public class LobbyListPacket extends PacketFunctor {
 		// Get rid of current Login Window, and show the lobby window.
 		JFrame topframe = (JFrame) SwingUtilities.getWindowAncestor(client);
 		topframe.dispose();
-		new LobbyListWindow(lobbies, username);
+		return new LobbyListWindow(lobbies, username);
 	}
 
 }

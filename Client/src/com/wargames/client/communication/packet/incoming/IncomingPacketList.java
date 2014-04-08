@@ -27,7 +27,7 @@ public class IncomingPacketList {
 		packetParser[0x17] = new GameOverPacket();
 	}
 	
-	public static void parse(byte[] data, JPanel client)
+	public static JPanel parse(byte[] data, JPanel client)
 	{
 		int begin = 0;
 		
@@ -45,7 +45,7 @@ public class IncomingPacketList {
 			buff.rewind();
 			try
 			{
-				packetParser[type].parse(buff, client);
+				return packetParser[type].parse(buff, client);
 			}
 			catch (Error e)
 			{
@@ -53,6 +53,7 @@ public class IncomingPacketList {
 			}
 			begin = begin+size;
 		}
+		return client;
 	}
 	
 }

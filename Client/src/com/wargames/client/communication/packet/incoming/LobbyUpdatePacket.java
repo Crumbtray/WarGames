@@ -15,7 +15,7 @@ import com.wargames.client.model.Player;
 public class LobbyUpdatePacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		byte maxSize = buff.get();
 		byte mapID = buff.get();
 		byte players = buff.get();
@@ -57,7 +57,7 @@ public class LobbyUpdatePacket extends PacketFunctor {
 			// Swap out screens
 			JFrame topframe = (JFrame) SwingUtilities.getWindowAncestor(client);
 			topframe.dispose();
-			new LobbyWindow(selectedLobby, currentPlayer);
+			return new LobbyWindow(selectedLobby, currentPlayer);
 		}
 		else
 		{
@@ -65,6 +65,7 @@ public class LobbyUpdatePacket extends PacketFunctor {
 			window.lobby.setPlayers(playerList);
 			window.lobby.setMapID(mapID);
 			window.lobby.setMaxPlayers(maxSize);
+			return window;
 		}
 	}
 }

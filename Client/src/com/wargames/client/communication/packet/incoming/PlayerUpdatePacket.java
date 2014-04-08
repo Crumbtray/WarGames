@@ -10,7 +10,7 @@ import com.wargames.client.model.Player;
 public class PlayerUpdatePacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		int money = buff.getInt();
 		int score = buff.getInt();
 		
@@ -18,6 +18,7 @@ public class PlayerUpdatePacket extends PacketFunctor {
 		GameClientGui clientGui = (GameClientGui) client;
 		Player selfPlayer = clientGui.loggedInPlayer;
 		selfPlayer.addFunds(money);
+		return client;
 	}
 
 }

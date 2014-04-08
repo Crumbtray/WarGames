@@ -10,7 +10,7 @@ import com.wargames.client.model.Player;
 public class TurnChangePacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		byte playernumber = buff.get();
 		
 		GameClientGui window = (GameClientGui) client;
@@ -25,6 +25,7 @@ public class TurnChangePacket extends PacketFunctor {
 			}
 		}
 		window.guiMap.logicalGame.setTurn(nextTurn);
+		return client;
 	}
 
 }

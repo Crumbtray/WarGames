@@ -10,7 +10,7 @@ import com.wargames.client.helpers.Coordinate;
 public class ActionPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		short initiatorID = buff.getShort();
 		byte xPos = buff.get();
 		byte yPos = buff.get();
@@ -43,6 +43,7 @@ public class ActionPacket extends PacketFunctor {
 		}
 		
 		// We ignore if action == 2, or 3.
+		return client;
 	}
 
 }

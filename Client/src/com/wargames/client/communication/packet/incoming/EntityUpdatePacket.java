@@ -13,7 +13,7 @@ import com.wargames.client.model.UnitType;
 public class EntityUpdatePacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		short id = buff.getShort();
 		byte unitType = buff.get();
 		byte color = buff.get();
@@ -67,6 +67,7 @@ public class EntityUpdatePacket extends PacketFunctor {
 				clientWindow.guiMap.UpdateGui();
 			}
 		}
+		return clientWindow;
 	}
 	
 

@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 public class AccountCreatePacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		byte response = buff.get();
 		
 		if(response == 1)
@@ -23,6 +23,7 @@ public class AccountCreatePacket extends PacketFunctor {
 			System.out.println("Server error.");
 		}
 
+		return client;
 	}
 
 }

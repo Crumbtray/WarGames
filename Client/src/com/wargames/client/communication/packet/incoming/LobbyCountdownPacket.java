@@ -7,11 +7,12 @@ import javax.swing.JPanel;
 public class LobbyCountdownPacket extends PacketFunctor {
 
 	@Override
-	public void parse(ByteBuffer buff, JPanel client) {
+	public JPanel parse(ByteBuffer buff, JPanel client) {
 		byte time = buff.get();
 		
 		//TODO: do stuff with response
 		// Not necessary for our implementation.
+		return client;
 	}
 
 }

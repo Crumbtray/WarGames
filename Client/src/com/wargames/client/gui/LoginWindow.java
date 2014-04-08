@@ -12,12 +12,14 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import com.wargames.client.communication.packet.incoming.IncomingPacketList;
+import com.wargames.client.communication.packet.outgoing.AccountCreationPacket;
 import com.wargames.client.communication.packet.outgoing.LoginPacket;
 import com.wargames.client.helpers.PacketSender;
 import com.wargames.client.helpers.SocketSingleton;
@@ -33,9 +35,18 @@ public class LoginWindow extends JPanel implements ActionListener {
 	private JButton loginButton;
 	private JFrame f;
 	private Image imgBackground;
+	private JButton registerButton;
+	private JLabel usernameLabel;
+	private JLabel passwordLabel;
 	
 	public LoginWindow()
 	{
+		usernameLabel = new JLabel("Username:");
+		this.add(usernameLabel);
+		
+		passwordLabel = new JLabel("Password:");
+		this.add(passwordLabel);
+		
 		username = new JTextField(16);
 		this.add(username);
 		password = new JPasswordField(16);
@@ -49,6 +60,12 @@ public class LoginWindow extends JPanel implements ActionListener {
 		loginButton.addActionListener(this);
 
 		this.add(loginButton);
+		
+		registerButton = new JButton("Register");
+		registerButton.setActionCommand("Register");
+		registerButton.addActionListener(this);
+		this.add(registerButton);
+		
 		URL urlBackgroundImg = getClass().getResource("/com/wargames/client/gui/img/mainBackground.png");
 		this.imgBackground = new ImageIcon(urlBackgroundImg).getImage();
 		
@@ -66,9 +83,12 @@ public class LoginWindow extends JPanel implements ActionListener {
 	protected void paintComponent(Graphics g)
 	{
 		g.drawImage(this.imgBackground, 0, 0, null);
+		usernameLabel.setLocation(220, 300);
+		passwordLabel.setLocation(220,340);
 		username.setLocation(300,300);
 		password.setLocation(300,340);
 		loginButton.setLocation(400, 400);
+		registerButton.setLocation(300, 400);
 	}
 
 	@Override
@@ -83,7 +103,13 @@ public class LoginWindow extends JPanel implements ActionListener {
 			System.out.println("Username: " + username.getText());
 			login(username.getText(), inputPassword);
 		}
-
+		else if(cmd.equals("Register"))
+		{
+			char[] input = password.getPassword();
+			String inputPassword = new String(input);
+			AccountCreationPacket packet = new AccountCreationPacket(username.getText(), inputPassword);
+			PacketSender.sendPacket(packet);
+		}
 	}
 
 	public void login(String username, String password)

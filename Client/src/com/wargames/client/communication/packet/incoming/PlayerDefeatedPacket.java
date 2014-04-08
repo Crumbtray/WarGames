@@ -11,7 +11,6 @@ public class PlayerDefeatedPacket extends PacketFunctor {
 		byte playerNumber = buff.get();
 		int playerID = buff.getInt();
 		
-		//TODO: do stuff with response
 		// Not necessary, when Player Defeated, the game should end.
 	}
 

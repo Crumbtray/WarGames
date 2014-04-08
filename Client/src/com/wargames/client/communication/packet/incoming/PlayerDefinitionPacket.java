@@ -4,6 +4,9 @@ import java.nio.ByteBuffer;
 
 import javax.swing.JPanel;
 
+import com.wargames.client.gui.GameClientGui;
+import com.wargames.client.model.Player;
+
 public class PlayerDefinitionPacket extends PacketFunctor {
 
 	@Override
@@ -18,8 +21,24 @@ public class PlayerDefinitionPacket extends PacketFunctor {
 		byte team = buff.get();
 		byte number = buff.get();
 		
-		//TODO: do stuff with response
+		//We update the player here.
+		String newName = new String(name);
 
+		GameClientGui gui = (GameClientGui) client;
+		Player player = gui.guiMap.logicalGame.gameMap.findPlayerByNumber(number);
+		if(player.name != newName)
+		{
+			player.name = newName;
+		}
+		if(player.teamNumber != team)
+		{
+			player.teamNumber = team;
+		}
+		
+		if(player.ID != id)
+		{
+			player.ID = id;
+		}
 	}
 
 

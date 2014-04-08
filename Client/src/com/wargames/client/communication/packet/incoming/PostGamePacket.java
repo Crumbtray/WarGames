@@ -16,8 +16,7 @@ public class PostGamePacket extends PacketFunctor {
 		byte wins = buff.get();
 		byte losses = buff.get();
 		
-		//TODO: do stuff with response
-		
+		// We don't have an end game window.  We will ignore this packet.
 	}
 
 }

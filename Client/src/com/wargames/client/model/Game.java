@@ -6,11 +6,11 @@ public class Game {
 	public Player currentTurn;
 	private boolean localGame;
 	
-	public Game(Map gameMap)
+	public Game(Map gameMap, boolean localGame)
 	{
 		this.gameMap = gameMap;
 		this.currentTurn = gameMap.players.get(gameMap.players.size() - 1);
-		this.localGame = true;
+		this.localGame = localGame;
 		this.endTurn(currentTurn);
 	}
 	

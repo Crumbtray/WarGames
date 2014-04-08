@@ -54,7 +54,10 @@ public class GameClientGui extends JPanel {
 		player1 = new Player(0, "Clinton", 1, 0, "red");
 		player2 = new Player(1, "Jesus", 2, 1, "blue");
 		
-		game = new Game(MapGenerator.generateMap03(player1, player2));
+		//TODO: get game map from server
+		//TODO: set local game 
+		boolean localGame = true;
+		game = new Game(MapGenerator.generateMap03(player1, player2), localGame);
 		
 		// Wrap our Map around the game Map
 		guiMap = new GuiMap(game, this);

@@ -44,9 +44,9 @@ public class ActionPacket extends PacketFunctor {
 			}
 			
 			gameClient.guiMap.logicalGame.damageUnit(xPos, yPos, selfdmg);
+			gameClient.guiMap.UpdateGui();
 			
 			gameClient.guiMap.logicalGame.damageUnit(targetCoord.x, targetCoord.y, targetdmg);
-			
 			gameClient.guiMap.UpdateGui();
 		}
 		

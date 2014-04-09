@@ -61,7 +61,7 @@ CoordinateList MoveValidator::getValidLocations(int x, int y, Unit *unit, Map *g
 			CoordinateList potentialNeighbours = getNeighbours(validCoord.first, validCoord.second, unit, gameMap);
 			for (Coordinate potentialNeighbour : potentialNeighbours)
 			{
-				if (std::find(validLocations.begin(), validLocations.end(), potentialNeighbour) != validLocations.end())
+				if (std::find(validLocations.begin(), validLocations.end(), potentialNeighbour) == validLocations.end())
 				{
 					neighbours.push_back(potentialNeighbour);
 				}
@@ -69,7 +69,7 @@ CoordinateList MoveValidator::getValidLocations(int x, int y, Unit *unit, Map *g
 		}
 		for (Coordinate neighbourCoord : neighbours)
 		{
-			if (std::find(validLocations.begin(), validLocations.end(), neighbourCoord) != validLocations.end())
+			if (std::find(validLocations.begin(), validLocations.end(), neighbourCoord) == validLocations.end())
 			{
 				Terrain *associatedTerrain = gameMap->getTerrainAt(neighbourCoord.first, neighbourCoord.second);
 				if (associatedTerrain->canMove(unit))
@@ -153,7 +153,7 @@ CoordinateList MoveValidator::getAttackableCoordinates(int old_x, int old_y, Uni
 		CoordinateList moveableSpots = getValidLocations(old_x, old_y, playerUnit, gameMap);
 		for (Coordinate moveable : moveableSpots){
 			for (Coordinate attackableCoordinate : getAttackableNeighbours(moveable, playerUnit, gameMap)){
-				if (std::find(attackableCoords.begin(), attackableCoords.end(), attackableCoordinate) != attackableCoords.end()){
+				if (std::find(attackableCoords.begin(), attackableCoords.end(), attackableCoordinate) == attackableCoords.end()){
 					attackableCoords.push_back(attackableCoordinate);
 				}
 			}

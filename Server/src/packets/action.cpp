@@ -13,7 +13,10 @@ CActionPacket::CActionPacket(Unit* initiator, Unit* target, ACTION action, int8 
 	WBUFB(packet, 0x04) = pos.first;
 	WBUFB(packet, 0x05) = pos.second;
 	WBUFB(packet, 0x06) = action;
-	WBUFW(packet, 0x07) = target->getID();
+	if (target)
+	{
+		WBUFW(packet, 0x07) = target->getID();
+	}
 	WBUFB(packet, 0x09) = dmginit;
 	WBUFB(packet, 0x0A) = dmgtarget;
 }

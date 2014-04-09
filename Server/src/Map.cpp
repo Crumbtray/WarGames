@@ -34,12 +34,12 @@ Map::~Map(){
 uint16 Map::newUnitId()
 {
 	uint32 unitId = 1;
-	for (uint32 i = 0; i < m_unitList.size(); i++)
+	for (auto it = std::begin(m_unitList); it != std::end(m_unitList); it++)
 	{
-		if (m_unitList.at(i)->getID() == unitId)
+		if (it->first == unitId)
 		{
 			unitId++;
-			i = 0;
+			it = std::begin(m_unitList);
 		}
 	}
 	return unitId;
@@ -138,6 +138,8 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 		}
 		//todo: implement fuel (not yet implemented on client)
 		else if (newTerrain->setUnit(unit) == unit){
+			Terrain* oldTerrain = getTerrainAt(unitPos.first, unitPos.second);
+			oldTerrain->setUnit(NULL);
 			if (unit->isCapturing()){
 				unit->cancelCapture();
 			}

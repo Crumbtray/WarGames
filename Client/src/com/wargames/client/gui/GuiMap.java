@@ -77,9 +77,9 @@ public class GuiMap {
 		{
 			for(int j = 0; j < mapHeight; j++)
 			{
-				if(logicalGame.gameMap.getUnitAt(i, j) != null)
+				Unit unit = logicalGame.gameMap.getUnitAt(i, j);
+				if(unit != null && unit.health > 0)
 				{
-					Unit unit = logicalGame.gameMap.getUnitAt(i, j);
 					this.graphicalUnits[i][j] = new GuiUnit(unit, i * TILEWIDTH + MapOffsetX, j * TILEHEIGHT + MapOffsetY);
 				}
 			}
@@ -94,16 +94,27 @@ public class GuiMap {
 			{
 				GuiTerrain terrain = this.graphicalTerrain[i][j];
 				g.drawImage(terrain.getImage(), terrain.getX(), terrain.getY(), null);
-				if(graphicalUnits[i][j] != null)
+				GuiUnit guiunit = graphicalUnits[i][j];
+				Unit logicalUnit = logicalGame.gameMap.getUnitAt(i,j);
+				if(logicalUnit != null && logicalUnit.health > 0)
 				{
-					GuiUnit unit = graphicalUnits[i][j];
-					g.drawImage(unit.getImage(), unit.getX(), unit.getY(), null);
-					g.drawImage(unit.getHealthImage(), unit.getX(), unit.getY(), null);
-					if(!unit.getLogicalUnit().isActive())
+					if (guiunit != null && guiunit.getHealthImage() != null){
+						g.drawImage(guiunit.getImage(), guiunit.getX(), guiunit.getY(), null);
+						g.drawImage(guiunit.getHealthImage(), guiunit.getX(), guiunit.getY(), null);
+					} else { //unit is dead
+						UpdateGui();
+					}
+					if(guiunit != null && !guiunit.getLogicalUnit().isActive())
 					{
 						URL urlUnitImage = getClass().getResource("/com/wargames/client/gui/img/disabled.png");
-						g.drawImage(new ImageIcon(urlUnitImage).getImage(), unit.getX(), unit.getY(), null);
+						g.drawImage(new ImageIcon(urlUnitImage).getImage(), guiunit.getX(), guiunit.getY(), null);
 					}
+				}
+				else{
+					if (logicalUnit != null){
+						logicalGame.gameMap.deleteUnitAt(i, j);
+					}
+					graphicalUnits[i][j] = null;
 				}
 			}
 		}

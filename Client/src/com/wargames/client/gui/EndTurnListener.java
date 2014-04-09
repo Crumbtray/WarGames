@@ -26,6 +26,7 @@ public class EndTurnListener implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		if(client.guiMap.logicalGame.isLocalGame())
 		{
+			this.client.selectedUnit = null;
 			this.client.guiMap.logicalGame.endTurn(this.client.guiMap.logicalGame.currentTurn);
 			Player winner = WinChecker.checkWinCondition(client.guiMap.logicalGame.gameMap);
 			if(winner != null)
@@ -38,6 +39,7 @@ public class EndTurnListener implements ActionListener{
 		{
 			TurnEndPacket packet = new TurnEndPacket();
 			PacketSender.sendPacket(packet);
+			this.client.selectedUnit = null;
 		}
 		
 		this.client.repaint();

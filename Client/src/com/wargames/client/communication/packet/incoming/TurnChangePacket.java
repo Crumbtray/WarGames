@@ -24,6 +24,7 @@ public class TurnChangePacket extends PacketFunctor {
 				nextTurn = player;
 			}
 		}
+		window.selectedUnit = null;
 		window.guiMap.logicalGame.setTurn(nextTurn);
 		return client;
 	}

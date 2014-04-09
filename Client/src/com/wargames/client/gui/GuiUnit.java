@@ -48,9 +48,13 @@ public class GuiUnit {
 	
 	public Image getHealthImage()
 	{
-		String filename = this.logicalUnit.health + ".png";
-		URL urlUnitImage = getClass().getResource("/com/wargames/client/gui/img/" + filename);
-		return new ImageIcon(urlUnitImage).getImage();
+		if (this.logicalUnit.health > 0) {
+			String filename = this.logicalUnit.health + ".png";
+			URL urlUnitImage = getClass().getResource("/com/wargames/client/gui/img/" + filename);
+			return new ImageIcon(urlUnitImage).getImage();
+		} else {
+			return null;
+		}
 	}
 	
 	public int getX()

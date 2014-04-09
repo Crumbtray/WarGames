@@ -68,6 +68,9 @@ public class Game {
 	public boolean damageUnit(int x, int y, int damageAmount)
 	{
 		Unit targetUnit = gameMap.getUnitAt(x, y);
+		if (targetUnit == null){
+			return false;
+		}
 		if(damageAmount >= targetUnit.health)
 		{
 			this.gameMap.deleteUnitAt(x, y);

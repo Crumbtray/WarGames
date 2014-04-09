@@ -17,7 +17,8 @@ public class PlayerUpdatePacket extends PacketFunctor {
 		// This is money that the player gets.
 		GameClientGui clientGui = (GameClientGui) client;
 		Player selfPlayer = clientGui.loggedInPlayer;
-		selfPlayer.addFunds(money);
+		selfPlayer.funds = money;
+		selfPlayer.score = score;
 		return client;
 	}
 

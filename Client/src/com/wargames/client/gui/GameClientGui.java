@@ -207,10 +207,9 @@ public class GameClientGui extends JPanel {
 	public String getStateText()
 	{
 		String returnString = "Current Turn: " + this.guiMap.logicalGame.currentTurn.color;
-		for(Player player : guiMap.logicalGame.gameMap.players)
-		{
-			returnString = returnString.concat("\n" + player.color + " funds: " + player.funds);
-		}
+		Player player = loggedInPlayer;
+		returnString = returnString.concat("\nFunds: " + player.funds);
+		returnString = returnString.concat("\nScore: " + player.score);
 		return returnString;
 	}
 	

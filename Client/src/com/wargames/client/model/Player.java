@@ -30,6 +30,11 @@ public class Player {
 	public int playerNumber;
 	
 	/**
+	 * Current score of player.
+	 */
+	public int score;
+	
+	/**
 	 * Adds funds to the player.
 	 * @param newFunds The new funds to add to the player.
 	 * @return The total funds that the player has.

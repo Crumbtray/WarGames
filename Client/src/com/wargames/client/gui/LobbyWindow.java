@@ -50,20 +50,12 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 		this.add(startGameButton);
 		startGameButton.setActionCommand("Start");
 		startGameButton.addActionListener(this);
-		
+
 		playersPanel = new JPanel();
 		playersPanel.setLayout(new GridLayout(lobby.players.size() + 1, 0));
 		playersPanel.setBackground(new Color(0,0,0,0));
-		JLabel playersLabel = new JLabel("   Players in Lobby:   ");
-		playersPanel.add(playersLabel);
-		
-		for(Player player : lobby.players)
-		{
-			JLabel playerLabel = new JLabel("    " + player.name);
-			playersPanel.add(playerLabel);
-		}
-		
 		this.add(playersPanel);
+		UpdateGui();
 		
 		// create application frame and set visible
 		f = new JFrame();
@@ -80,7 +72,8 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 	{
 		g.drawImage(this.imgBackground, 0, 0, null);
 		startGameButton.setLocation(300, 450);
-		playersPanel.setLocation(300,300);
+		playersPanel.setLocation(300,300);				
+		System.out.println("Lobby Host: (" + lobby.host + ")");
 		if(lobby.players.size() >= 2 && lobby.host.equals(this.username))
 		{
 			startGameButton.setEnabled(true);
@@ -89,6 +82,21 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 		{
 			startGameButton.setEnabled(false);
 		}
+	}
+	
+	public void UpdateGui()
+	{
+		playersPanel.removeAll();
+		JLabel playersLabel = new JLabel("   Players in Lobby:   ");
+
+		playersPanel.add(playersLabel);
+		for(Player player : lobby.players)
+		{
+			JLabel playerLabel = new JLabel("    " + player.name);
+			playersPanel.add(playerLabel);
+		}
+		this.revalidate();
+		this.repaint();
 	}
 	
 	/**

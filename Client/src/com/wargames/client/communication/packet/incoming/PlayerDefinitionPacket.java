@@ -22,7 +22,7 @@ public class PlayerDefinitionPacket extends PacketFunctor {
 		byte number = buff.get();
 		
 		//We update the player here.
-		String newName = new String(name);
+		String newName = new String(name).trim();
 
 		GameClientGui gui = (GameClientGui) client;
 		Player player = gui.guiMap.logicalGame.gameMap.findPlayerByNumber(number);

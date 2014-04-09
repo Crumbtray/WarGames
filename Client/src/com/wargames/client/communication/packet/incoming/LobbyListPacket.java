@@ -31,7 +31,7 @@ public class LobbyListPacket extends PacketFunctor {
 			
 			
 			//TODO: do stuff with response
-			Lobby newLobby = new Lobby(id, size, maxSize, mapID, new String(name));
+			Lobby newLobby = new Lobby(id, size, maxSize, mapID, new String(name).trim());
 			lobbies.add(newLobby);
 		}
 		

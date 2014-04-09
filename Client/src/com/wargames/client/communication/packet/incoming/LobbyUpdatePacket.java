@@ -37,11 +37,11 @@ public class LobbyUpdatePacket extends PacketFunctor {
 			Player player;
 			if(color == 1)
 			{
-				player = new Player(id, new String(name), team, i, "red");
+				player = new Player(id, new String(name).trim(), team, i, "red");
 			}
 			else
 			{
-				player = new Player(id, new String(name), team, i, "blue");
+				player = new Player(id, new String(name).trim(), team, i, "blue");
 			}
 			playerList.add(player);
 		}
@@ -65,6 +65,9 @@ public class LobbyUpdatePacket extends PacketFunctor {
 			window.lobby.setPlayers(playerList);
 			window.lobby.setMapID(mapID);
 			window.lobby.setMaxPlayers(maxSize);
+			window.UpdateGui();
+			window.revalidate();
+			window.repaint();
 			return window;
 		}
 	}

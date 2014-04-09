@@ -9,7 +9,7 @@ public class ActionPacket extends Packet {
 	private byte xpos, ypos, action;
 	
 	public ActionPacket(short UID, byte xpos, byte ypos, byte action, short TUID) {
-		this.ID = 0x13;
+		this.ID = 0x15;
 		this.size = 0x09;
 		this.UID = UID;
 		this.TUID = TUID;

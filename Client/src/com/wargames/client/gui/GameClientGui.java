@@ -117,7 +117,7 @@ public class GameClientGui extends JPanel {
 		this.lblSelectedTerrain.setText(this.getSelectedTerrain());
 		this.lblSelectedTerrain.setLocation(600,44);
 		this.lblSelectedUnit.setText(this.getSelectedUnit());
-		this.lblSelectedUnit.setLocation(600,150);
+		this.lblSelectedUnit.setLocation(600,190);
 		this.lblGameState.setLocation(600, 400);
 		this.lblGameState.setText(getStateText());
 		this.endTurnButton.setLocation(602, 520);
@@ -206,11 +206,19 @@ public class GameClientGui extends JPanel {
 	
 	public String getStateText()
 	{
-		String returnString = "Current Turn: " + this.guiMap.logicalGame.currentTurn.color;
-		Player player = loggedInPlayer;
-		returnString = returnString.concat("\nFunds: " + player.funds);
-		returnString = returnString.concat("\nScore: " + player.score);
-		return returnString;
+		if (this.guiMap.logicalGame.isLocalGame()){
+			String returnString = "Current Turn: " + this.guiMap.logicalGame.currentTurn.color;
+			Player player = this.guiMap.logicalGame.currentTurn;
+			returnString = returnString.concat("\nFunds: " + player.funds);
+			returnString = returnString.concat("\nScore: " + player.score);
+			return returnString;
+		} else {
+			String returnString = "Current Turn: " + this.guiMap.logicalGame.currentTurn.color;
+			Player player = loggedInPlayer;
+			returnString = returnString.concat("\nFunds: " + player.funds);
+			returnString = returnString.concat("\nScore: " + player.score);
+			return returnString;
+		}
 	}
 	
 	public void endGame(Player winner)

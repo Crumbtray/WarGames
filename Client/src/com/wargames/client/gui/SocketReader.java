@@ -8,23 +8,8 @@ import java.nio.ByteOrder;
 
 import javax.swing.JPanel;
 
-import com.wargames.client.communication.packet.incoming.AccountCreatePacket;
-import com.wargames.client.communication.packet.incoming.ActionPacket;
-import com.wargames.client.communication.packet.incoming.EntityUpdatePacket;
-import com.wargames.client.communication.packet.incoming.GameLoadPacket;
-import com.wargames.client.communication.packet.incoming.GameOverPacket;
 import com.wargames.client.communication.packet.incoming.IncomingPacketList;
-import com.wargames.client.communication.packet.incoming.LobbyChatPacket;
-import com.wargames.client.communication.packet.incoming.LobbyCountdownPacket;
-import com.wargames.client.communication.packet.incoming.LobbyListPacket;
-import com.wargames.client.communication.packet.incoming.LobbyUpdatePacket;
-import com.wargames.client.communication.packet.incoming.LoginPacket;
-import com.wargames.client.communication.packet.incoming.PacketFunctor;
-import com.wargames.client.communication.packet.incoming.PlayerDefeatedPacket;
-import com.wargames.client.communication.packet.incoming.PlayerDefinitionPacket;
-import com.wargames.client.communication.packet.incoming.PlayerUpdatePacket;
-import com.wargames.client.communication.packet.incoming.PostGamePacket;
-import com.wargames.client.communication.packet.incoming.TurnChangePacket;
+
 import com.wargames.client.helpers.SocketSingleton;
 
 public class SocketReader implements Runnable {

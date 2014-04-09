@@ -33,6 +33,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 	public JTextField username;
 	private JPasswordField password;
 	private JButton loginButton;
+	private JButton backButton;
 	private JFrame f;
 	private Image imgBackground;
 	private JButton registerButton;
@@ -41,6 +42,11 @@ public class LoginWindow extends JPanel implements ActionListener {
 	
 	public LoginWindow()
 	{
+		this.backButton = new JButton("<--Back");
+		backButton.setActionCommand("Back");
+		backButton.addActionListener(this);
+		this.add(backButton);
+		
 		usernameLabel = new JLabel("Username:");
 		this.add(usernameLabel);
 		
@@ -88,6 +94,7 @@ public class LoginWindow extends JPanel implements ActionListener {
 		username.setLocation(300,300);
 		password.setLocation(300,340);
 		loginButton.setLocation(400, 400);
+		backButton.setLocation(10, 10);
 		registerButton.setLocation(300, 400);
 	}
 
@@ -109,6 +116,11 @@ public class LoginWindow extends JPanel implements ActionListener {
 			String inputPassword = new String(input);
 			AccountCreationPacket packet = new AccountCreationPacket(username.getText(), inputPassword);
 			PacketSender.sendPacket(packet);
+		}
+		else if(cmd.equals("Back"))
+		{
+			this.f.dispose();
+			MainGui.main(null);
 		}
 	}
 

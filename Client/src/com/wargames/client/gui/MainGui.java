@@ -81,12 +81,12 @@ public class MainGui extends JPanel implements ActionListener{
 			Player player1 = new Player(0, "Clinton", 1, 0, "red");
 			Player player2 = new Player(1, "Jesus", 2, 1, "blue");
 
-			Game game = new Game(MapGenerator.generateMap03(player1, player2), true);
+			Game game = new Game(MapGenerator.generateMap02(player1, player2), true);
 			new GameClientGui(game, player1);
 			break;
 		case "login":
 			this.f.dispose();
-			new Main().main(null);
+			new LoginWindow();
 			break;
 		default:
 			break;

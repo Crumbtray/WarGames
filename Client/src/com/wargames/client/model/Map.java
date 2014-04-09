@@ -237,7 +237,7 @@ public class Map {
 		int unitId = 1;
 		for(int i = 0; i < this.width; i++){
 			for(int j = 0; j < this.height; j++){
-				if (unitMap[i][j].id == unitId){
+				if (unitMap[i][j]!= null && unitMap[i][j].id == unitId){
 					unitId++;
 					i = 0;
 				}

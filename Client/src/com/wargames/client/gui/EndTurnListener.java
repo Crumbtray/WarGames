@@ -25,7 +25,7 @@ public class EndTurnListener implements ActionListener{
 		// TODO Auto-generated method stub
 		/////////////////
 		this.client.guiMap.logicalGame.endTurn(this.client.guiMap.logicalGame.currentTurn);
-		//////////////
+		this.client.selectedUnit = null;
 		Player winner = WinChecker.checkWinCondition(client.guiMap.logicalGame.gameMap);
 		if(winner != null)
 		{

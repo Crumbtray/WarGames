@@ -35,7 +35,9 @@ public class GameMouseListener implements MouseListener{
 		// TODO Auto-generated method stub
 		int mouseXPosition = e.getX();
 		int mouseYPosition = e.getY();
-
+		if (this.client.selectedUnit == null){
+			this.mouseState = MouseState.NothingSelected;
+		}
 		// Only respond if it is my turn or a local game.
 		if(client.guiMap.logicalGame.isLocalGame() || client.guiMap.logicalGame.currentTurn == client.loggedInPlayer)
 
@@ -172,6 +174,7 @@ public class GameMouseListener implements MouseListener{
 			//Attack code here!
 			this.client.guiMap.moveAttackUnit(this.client.selectedUnit, moveCoordinate, victimCoordinate);
 			/////////
+			this.client.selectedUnit = null;
 			this.mouseState = MouseState.NothingSelected;
 			this.client.repaint();
 		}

@@ -117,6 +117,7 @@ Unit* Map::produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type)
 		//Add unit to unit list
 		m_unitList[newUnit->getID()] = newUnit;
 		owner->SetMoney(owner->GetMoney() - newUnit->getCost());
+		newUnit->deactivate();
 		return newUnit;
 	}
 	return NULL;
@@ -135,6 +136,7 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 
 		Terrain* newTerrain = getTerrainAt(new_x, new_y);
 		if (newTerrain->getUnit() == unit){
+			unit->deactivate();
 			return true;
 		}
 		//todo: implement fuel (not yet implemented on client)
@@ -144,6 +146,7 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 			if (unit->isCapturing()){
 				unit->cancelCapture();
 			}
+			unit->deactivate();
 			return true;
 		}
 	}

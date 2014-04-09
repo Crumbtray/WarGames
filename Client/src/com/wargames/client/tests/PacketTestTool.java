@@ -106,7 +106,7 @@ public class PacketTestTool {
 			byte id = packetData[0];
 			byte size = packetData[1];
 			
-			IncomingPacketList.parse(packetData, null);
+			//IncomingPacketList.parse(packetData, null);
 			
 			System.out.println("ID: " + id);
 			System.out.println("Size: " + size);

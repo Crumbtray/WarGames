@@ -155,29 +155,31 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 
 //new_x and new_y are the location the attacking unit is moving to
 //returns true if attack was successful
-bool Map::attackUnit(Unit* unit, uint8 new_x, uint8 new_y, Unit* target, int* targetDamage, int* returnDamage)
+bool Map::attackUnit(Unit** unit, uint8 new_x, uint8 new_y, Unit** target, int* targetDamage, int* returnDamage)
 {
-	Coordinate unitPos = this->getUnitPos(unit->getID());
-	if (!unit->isActive() || !MoveValidator::isAttackValid(unitPos.first, unitPos.second, new_x, new_y, unit, target, this)){
+	Coordinate unitPos = this->getUnitPos((*unit)->getID());
+	if (!(*unit)->isActive() || !MoveValidator::isAttackValid(unitPos.first, unitPos.second, new_x, new_y, *unit, *target, this)){
 		return false;
 	}
 	
-	if (moveUnit(unit, new_x, new_y)) 
+	if (moveUnit(*unit, new_x, new_y)) 
   	{
 		//TODO: ammo check
-		std::pair<float, float> damage = DamageCalculator::getDamage(unit, target);
+		std::pair<float, float> damage = DamageCalculator::getDamage(*unit, *target);
 		*targetDamage = static_cast<int>(damage.first);
 		*returnDamage = static_cast<int>(damage.second);
-		target->damageUnit(*targetDamage);
-		unit->damageUnit(*returnDamage);
-		unit->deactivate();
-		if (target->getHealth() <= 0)
+		(*target)->damageUnit(*targetDamage);
+		(*unit)->damageUnit(*returnDamage);
+		(*unit)->deactivate();
+		if ((*target)->getHealth() <= 0)
 		{
-			deleteUnit(target);
+			deleteUnit(*target);
+			*target = NULL;
 		}
-		if (unit->getHealth() <= 0)
+		if ((*unit)->getHealth() <= 0)
 		{
-			deleteUnit(unit);
+			deleteUnit(*unit);
+			*unit = NULL;
 		}
 		return true;
 	}

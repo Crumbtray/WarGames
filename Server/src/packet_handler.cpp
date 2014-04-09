@@ -208,17 +208,27 @@ namespace packethandler
 		case ACTION_ATTACK:
 		{
 			int targetdamage = 0, unitdamage = 0;
-			if (map->attackUnit(initiator, xpos, ypos, target, &targetdamage, &unitdamage))
+			if (initiator && target)
 			{
-				game->sendAction(initiator, target, ACTION_ATTACK, targetdamage, unitdamage, std::pair<uint8, uint8>(xpos, ypos));
-				game->updateEntity(initiator);
-				game->updateEntity(target);
-				if (!game->getMap()->unitsRemain(target->getOwner()))
+				CPlayer* owner = target->getOwner();
+				if (map->attackUnit(&initiator, xpos, ypos, &target, &targetdamage, &unitdamage))
 				{
-					game->playerDefeated(target->getOwner());
+					game->sendAction(initiator, target, ACTION_ATTACK, targetdamage, unitdamage, std::pair<uint8, uint8>(xpos, ypos));
+					if (initiator)
+					{
+						game->updateEntity(initiator);
+					}
+					if (target)
+					{
+						game->updateEntity(target);
+					}
+					if (!game->getMap()->unitsRemain(owner))
+					{
+						game->playerDefeated(owner);
+					}
+					player->pushPacket(new CPlayerUpdatePacket(player));
+					game->checkVictoryCondition();
 				}
-				player->pushPacket(new CPlayerUpdatePacket(player));
-				game->checkVictoryCondition();
 			}
 		}
 			break;
@@ -227,8 +237,11 @@ namespace packethandler
 			break;
 		case ACTION_PRODUCE:
 			initiator = game->getMap()->produceUnit(xpos, ypos, player, (UnitType)unitID);
-			game->updateEntity(initiator);
-			player->pushPacket(new CPlayerUpdatePacket(player));
+			if (initiator)
+			{
+				game->updateEntity(initiator);
+				player->pushPacket(new CPlayerUpdatePacket(player));
+			}
 			break;
 		default:
 			break;

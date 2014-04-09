@@ -162,8 +162,9 @@ void CGame::checkVictoryCondition()
 				end(p);
 			}
 		}
+		games::removeGame(this);
+		delete this;
 	}
-	delete this;
 }
 
 void CGame::sendAction(Unit* initiator, Unit* target, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos)
@@ -215,5 +216,16 @@ namespace games
 			}
 		}
 		return NULL;
+	}
+
+	void removeGame(CGame* game)
+	{
+		for (uint16 i = 0; i < gameList.size(); i++)
+		{
+			if (gameList[i] == game)
+			{
+				gameList.erase(std::begin(gameList) + i);
+			}
+		}
 	}
 }

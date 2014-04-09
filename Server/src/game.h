@@ -45,6 +45,7 @@ namespace games
 {
 	CGame* createGame(uint8 mapID,	std::vector<CPlayer*> playerList);
 	CGame* getGame(CPlayer*);
+	void removeGame(CGame*);
 }
 
 #endif

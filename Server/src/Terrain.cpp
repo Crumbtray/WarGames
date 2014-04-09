@@ -37,6 +37,11 @@ Unit *Terrain::setUnit(Unit *unit){
 	return this->m_unit;
 }
 
+void Terrain::clearUnit()
+{
+	this->m_unit = NULL;
+}
+
 CPlayer *Terrain::getOwner(){
 	return this->m_owner;
 }

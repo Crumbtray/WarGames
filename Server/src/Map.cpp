@@ -142,7 +142,7 @@ bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 		//todo: implement fuel (not yet implemented on client)
 		else if (newTerrain->setUnit(unit) == unit){
 			Terrain* oldTerrain = getTerrainAt(unitPos.first, unitPos.second);
-			oldTerrain->setUnit(NULL);
+			oldTerrain->clearUnit();
 			if (unit->isCapturing()){
 				unit->cancelCapture();
 			}

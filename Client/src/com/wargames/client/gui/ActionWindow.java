@@ -28,7 +28,7 @@ public class ActionWindow extends JDialog implements ActionListener {
 	private JPanel myPanel = null;
 	private GameClientGui client;
 	private GameMouseListener listener;
-	
+
 	private int mouseClickX;
 	private int mouseClickY;
 
@@ -39,18 +39,18 @@ public class ActionWindow extends JDialog implements ActionListener {
 		myPanel = new JPanel();
 		getContentPane().add(myPanel);
 		myPanel.setLayout(new GridLayout(actions.size() + 1, 1));
-		
+
 		for(UnitActionType actionType : actions)
 		{
 			JButton actionButton = new JButton(actionType.toString());
 			actionButton.addActionListener(this);
 			myPanel.add(actionButton);
 		}
-		
+
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		myPanel.add(cancelButton);
-		
+
 		// Set location
 		mouseClickX = e.getX();
 		mouseClickY = e.getY();
@@ -92,7 +92,7 @@ public class ActionWindow extends JDialog implements ActionListener {
 			System.out.println("Moved!");
 			listener.lastClick = client.guiMap.getCoordinate(mouseClickX, mouseClickY);
 			client.guiMap.moveSelectedUnit(client.selectedUnit, listener.lastClick);
-			
+
 			listener.mouseState = MouseState.NothingSelected;
 			break;
 		case "Capture":

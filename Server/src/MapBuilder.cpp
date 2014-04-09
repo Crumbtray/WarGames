@@ -8,6 +8,8 @@ Map *MapBuilder::getResult(){
 MapBuilder::MapBuilder(uint8 mapID, std::vector<CPlayer*> playerList){
 	m_mapID = mapID;
 	m_playerList = playerList;
+	m_width = DEFAULT_WIDTH;
+	m_height = DEFAULT_HEIGHT;
 
 	switch (mapID){
 	case 1:

@@ -32,5 +32,6 @@ public:
 	int getDefense();
 	bool canMove(Unit *unit);
 	bool canBeCaptured();
+	void clearUnit();
 };
 

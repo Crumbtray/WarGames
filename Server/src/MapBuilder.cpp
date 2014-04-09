@@ -102,11 +102,11 @@ void MapBuilder::buildMap03(){
 
 	//delete players units at 0,0 and 15,15
 	Unit *unit1 = m_terrain[0][0]->getUnit();
-	m_terrain[0][0]->setUnit(NULL);
+	m_terrain[0][0]->clearUnit();
 	m_unitList.erase(1);
 	delete unit1;
 	Unit *unit2 = m_terrain[15][15]->getUnit();
-	m_terrain[15][15]->setUnit(NULL);
+	m_terrain[15][15]->clearUnit();
 	m_unitList.erase(2);
 	delete unit2;
 

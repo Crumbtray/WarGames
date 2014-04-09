@@ -85,11 +85,9 @@ CoordinateList MoveValidator::getValidLocations(int x, int y, Unit *unit, Map *g
 							// Unoccupied. Add it to the list.
 							validLocations.push_back(neighbourCoord);
 						}
-
 					}
 				}
 			}
-
 		}
 
 		remainingMobility = remainingMobility - 1;

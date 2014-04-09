@@ -32,10 +32,10 @@ public class EntityUpdatePacket extends PacketFunctor {
 			UnitType newUnitType;
 			switch(unitType)
 			{
-				case 1:
+				case 0:
 					newUnitType = UnitType.SOLDIER;
 					break;
-				case 2:
+				case 1:
 					newUnitType = UnitType.TANK;
 					break;
 				default:

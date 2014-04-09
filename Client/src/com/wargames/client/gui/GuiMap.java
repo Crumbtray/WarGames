@@ -289,6 +289,15 @@ public class GuiMap {
 		}
 		else{
 			//TODO: SEND PACKET attacker_id, attackerCoordinate.x, attackerCoordinate.y, ACTION_ATTACK, targetID 
+			// Send an action packet.
+			short attackerUnitID = (short) this.client.selectedUnit.getLogicalUnit().id;
+			Coordinate attackerCoordinates = this.client.guiMap.getCoordinateOfUnit(selectedUnit);
+			byte xPos = (byte) attackerCoordinates.x;
+			byte yPos = (byte) attackerCoordinates.y;
+			byte attackAction = 1;
+			short targetUnitID = (short) client.guiMap.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y).id;
+			ActionPacket packet = new ActionPacket(attackerUnitID, xPos, yPos, attackAction, targetUnitID);
+			PacketSender.sendPacket(packet);
 			//wait for server to update UI
 		}
 	}
@@ -309,9 +318,12 @@ public class GuiMap {
 			newUnit.deactivate();	
 		}
 		else{
-			Player currentPlayer = this.logicalGame.currentTurn;
 			//TODO: SEND PACKET unit creation
 			//wait for server to update UI
+			Unit newUnit = this.logicalGame.createUnit(factoryCoordinates.x, factoryCoordinates.y, unitType, owner, UnitID);
+			this.graphicalUnits[factoryCoordinates.x][factoryCoordinates.y] = new GuiUnit(newUnit, factoryCoordinates.x * TILEWIDTH + MapOffsetX, factoryCoordinates.y * TILEHEIGHT + MapOffsetY);
+			this.UpdateGui();
+			newUnit.deactivate();
 		}
 	}
 }

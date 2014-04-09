@@ -253,32 +253,4 @@ public class GameMouseListener implements MouseListener{
 			e1.printStackTrace();
 		}
 	}
-
-	private void stationaryAttack(Coordinate victimCoordinate)
-	{
-		Coordinate unitCoordinates = client.guiMap.getCoordinateOfUnit(client.selectedUnit);
-		int distance = Math.abs(unitCoordinates.x - victimCoordinate.x) + Math.abs(unitCoordinates.y - victimCoordinate.y);
-			
-		if (client.guiMap.logicalGame.isLocalGame()){
-			if (client.selectedUnit.getLogicalUnit().getRange() >= distance){
-				this.client.guiMap.AttackUnit(this.client.selectedUnit, victimCoordinate);
-			}
-			client.selectedUnit = null;
-			this.mouseState = MouseState.NothingSelected;
-		}
-		else{
-			// Send an action packet.
-			short attackerUnitID = (short) this.client.selectedUnit.getLogicalUnit().id;
-			byte xPos = (byte) unitCoordinates.x;
-			byte yPos = (byte) unitCoordinates.y;
-			byte attackAction = 1;
-			short targetUnitID = (short) client.guiMap.logicalGame.gameMap.getUnitAt(victimCoordinate.x, victimCoordinate.y).id;
-			if (client.selectedUnit.getLogicalUnit().getRange() >= distance){
-				ActionPacket packet = new ActionPacket(attackerUnitID, xPos, yPos, attackAction, targetUnitID);
-				PacketSender.sendPacket(packet);		
-			}
-		}
-		this.client.revalidate();
-		this.client.repaint();
-	}
 }

@@ -67,6 +67,8 @@ public class EntityUpdatePacket extends PacketFunctor {
 				clientWindow.guiMap.UpdateGui();
 			}
 		}
+		clientWindow.revalidate();
+		clientWindow.repaint();
 		return clientWindow;
 	}
 	

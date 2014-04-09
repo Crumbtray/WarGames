@@ -34,7 +34,15 @@ public class ActionPacket extends PacketFunctor {
 		{
 			// Attack
 			Coordinate targetCoord = gameClient.guiMap.logicalGame.gameMap.findCoordinateByUnitID(targetID);
-
+			
+			Coordinate initiatorCoord = gameClient.guiMap.logicalGame.gameMap.findCoordinateByUnitID(initiatorID);
+			if(initiatorCoord.x != xPos || initiatorCoord.y != yPos)
+			{
+				// We need to move the unit into position first, before applying damage.
+				gameClient.guiMap.logicalGame.moveUnit(initiatorCoord.x, initiatorCoord.y, xPos, yPos);
+				gameClient.guiMap.UpdateGui();
+			}
+			
 			gameClient.guiMap.logicalGame.damageUnit(xPos, yPos, selfdmg);
 			
 			gameClient.guiMap.logicalGame.damageUnit(targetCoord.x, targetCoord.y, targetdmg);

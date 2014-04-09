@@ -21,6 +21,7 @@ public class EntityUpdatePacket extends PacketFunctor {
 		byte xPos = buff.get();
 		byte yPos = buff.get();
 		byte hp = buff.get();
+		byte active = buff.get();
 		
 		//TODO: do stuff with response
 
@@ -66,6 +67,10 @@ public class EntityUpdatePacket extends PacketFunctor {
 				clientWindow.guiMap.logicalGame.moveUnit(targetUnitCoord.x, targetUnitCoord.y, xPos, yPos);
 				clientWindow.guiMap.UpdateGui();
 			}
+			if (active == 0)
+				targetUnit.deactivate();
+			else
+				targetUnit.activate();
 		}
 		return clientWindow;
 	}

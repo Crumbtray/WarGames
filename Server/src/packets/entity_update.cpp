@@ -9,7 +9,7 @@
 CEntityUpdatePacket::CEntityUpdatePacket(Unit* unit, std::pair<uint8, uint8> pos)
 {
 	this->type = 0x11;
-	this->size = 0x0A;
+	this->size = 0x0B;
 
 	WBUFW(packet, 0x02) = unit->getID();
 	WBUFB(packet, 0x04) = unit->getUnitType();
@@ -18,4 +18,5 @@ CEntityUpdatePacket::CEntityUpdatePacket(Unit* unit, std::pair<uint8, uint8> pos
 	WBUFB(packet, 0x07) = pos.first;
 	WBUFB(packet, 0x08) = pos.second;
 	WBUFB(packet, 0x09) = unit->getHealth();
+	WBUFB(packet, 0x0A) = unit->isActive();
 }

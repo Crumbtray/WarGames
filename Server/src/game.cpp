@@ -47,9 +47,12 @@ void CGame::endTurn()
 
 	active->pushPacket(new CPlayerUpdatePacket(active));
 
+	m_map->turnChange(active);
+
 	for (auto player : m_playerList)
 	{
 		player->pushPacket(new CTurnChangePacket(m_activePlayer));
+		m_map->updateAllUnits(player);
 	}
 }
 

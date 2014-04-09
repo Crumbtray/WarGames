@@ -2,7 +2,7 @@
 #include "UnitBuilder.h"
 
 Map *MapBuilder::getResult(){
-	return new Map(m_mapID, m_width, m_height, m_terrain, m_unitList, m_playerList);
+	return new Map(m_width, m_height, m_mapID, m_terrain, m_unitList, m_playerList);
 }
 
 MapBuilder::MapBuilder(uint8 mapID, std::vector<CPlayer*> playerList){

@@ -66,6 +66,9 @@ public class SocketReader implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
+			client.revalidate();
+			client.repaint();
 		}
 	}
 }

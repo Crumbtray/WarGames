@@ -116,6 +116,7 @@ Unit* Map::produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type)
 
 		//Add unit to unit list
 		m_unitList[newUnit->getID()] = newUnit;
+		owner->SetMoney(owner->GetMoney() - newUnit->getCost());
 		return newUnit;
 	}
 	return NULL;

@@ -32,6 +32,8 @@ int Terrain::getIncome(){
 Unit *Terrain::setUnit(Unit *unit){
 	if (this->m_unit == NULL)
 		this->m_unit = unit;
+	else if (this->m_unit != NULL && unit == NULL)
+		this->m_unit = NULL;
 	return this->m_unit;
 }
 

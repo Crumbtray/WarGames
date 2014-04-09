@@ -73,7 +73,6 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 		g.drawImage(this.imgBackground, 0, 0, null);
 		startGameButton.setLocation(300, 450);
 		playersPanel.setLocation(300,300);				
-		System.out.println("Lobby Host: (" + lobby.host + ")");
 		if(lobby.players.size() >= 2 && lobby.host.equals(this.username))
 		{
 			startGameButton.setEnabled(true);

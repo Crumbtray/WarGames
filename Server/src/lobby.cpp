@@ -204,6 +204,7 @@ namespace lobbies
 						game->addPlayer(player);
 						player->pushPacket(new CGameLoadPacket(lobby->getMapID()));
 					}
+					game->start();
 					lobbyList.erase(lobbyList.begin() + i);
 					delete lobby;
 				}

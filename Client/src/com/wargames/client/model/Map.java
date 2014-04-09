@@ -203,7 +203,7 @@ public class Map {
 			for(int j = 0; j < this.height; j++)
 			{
 				Unit possibleUnit = this.getUnitAt(i, j);
-				if(possibleUnit.id == UnitID)
+				if(possibleUnit != null && possibleUnit.id == UnitID)
 				{
 					return new Coordinate(i, j);
 				}

@@ -71,6 +71,9 @@ void CGame::start()
 
 			active->pushPacket(new CPlayerUpdatePacket(active));
 		}
+
+		m_map->updateAllUnits(player);
+
 		player->pushPacket(new CTurnChangePacket(m_activePlayer));
 	}
 }

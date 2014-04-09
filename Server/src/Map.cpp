@@ -6,6 +6,7 @@
 #include "TerrainBuilder.h"
 #include "UnitBuilder.h"
 #include "player.h"
+#include "packets/entity_update.h"
 
 Map::Map(uint8 width, uint8 height, uint8 mapID, TerrainMatrix terrain, UnitList unitList, PlayerList playerList):
 m_mapID(mapID),
@@ -91,7 +92,11 @@ std::pair<uint8, uint8> Map::getUnitPos(uint16 id){
 }
 
 Unit* Map::getUnit(uint16 id){
-	return m_unitList.find(id)->second;
+	UnitList::iterator it =  m_unitList.find(id);
+	if (it != std::end(m_unitList))
+		return it->second;
+	else
+		return NULL;
 }
 
 Unit* Map::getUnitAt(uint8 x, uint8 y){
@@ -119,22 +124,25 @@ Unit* Map::produceUnit(uint8 x, uint8 y, CPlayer* owner, UnitType type)
 //returns false if move is invalid or destination is occupied
 bool Map::moveUnit(Unit* unit, uint8 new_x, uint8 new_y)
 {
-	//ensure unit can move onto newPos
-	Coordinate unitPos = getUnitPos(unit->getID());
-	if (!unit->isActive() || !MoveValidator::isMoveValid(unitPos.first, unitPos.second, new_x, new_y, unit, this)){
-		return false;
-	}
-
-	Terrain* newTerrain = getTerrainAt(new_x, new_y);
-	if (newTerrain->getUnit() == unit){
-		return true;
-	}
-	//todo: implement fuel (not yet implemented on client)
-	else if (newTerrain->setUnit(unit) == unit){
-		if (unit->isCapturing()){
-			unit->cancelCapture();
+	if (unit)
+	{
+		//ensure unit can move onto newPos
+		Coordinate unitPos = getUnitPos(unit->getID());
+		if (!unit->isActive() || !MoveValidator::isMoveValid(unitPos.first, unitPos.second, new_x, new_y, unit, this)){
+			return false;
 		}
-		return true;
+
+		Terrain* newTerrain = getTerrainAt(new_x, new_y);
+		if (newTerrain->getUnit() == unit){
+			return true;
+		}
+		//todo: implement fuel (not yet implemented on client)
+		else if (newTerrain->setUnit(unit) == unit){
+			if (unit->isCapturing()){
+				unit->cancelCapture();
+			}
+			return true;
+		}
 	}
 	return false;
 }
@@ -217,5 +225,13 @@ void Map::turnChange(CPlayer* player){
 		}else{
 			u.second->deactivate();
 		}
+	}
+}
+
+void Map::updateAllUnits(CPlayer* player)
+{
+	for (auto u : m_unitList)
+	{
+		player->pushPacket(new CEntityUpdatePacket(u.second, getUnitPos(u.second->getID())));
 	}
 }

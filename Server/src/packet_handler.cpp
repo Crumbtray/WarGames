@@ -188,9 +188,9 @@ namespace packethandler
 		Map* map = game->getMap();
 
 		uint16 unitID = WBUFW(data, 0x02);
-		uint8 xpos = WBUFB(data, 0x03);
-		uint8 ypos = WBUFB(data, 0x04);
-		uint8 action = WBUFB(data, 0x05);
+		uint8 xpos = WBUFB(data, 0x04);
+		uint8 ypos = WBUFB(data, 0x05);
+		uint8 action = WBUFB(data, 0x06);
 		uint16 targetID = WBUFW(data, 0x07);
 
 		Unit* initiator = game->getUnit(unitID);

@@ -53,5 +53,6 @@ public:
 	bool deleteUnit(Unit* unit);
 	bool captureStructure(uint8 x, uint8 y); 
 	void turnChange(CPlayer* player);
+	void updateAllUnits(CPlayer* player);
 };
 

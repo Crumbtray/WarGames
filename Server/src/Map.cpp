@@ -221,7 +221,7 @@ void Map::turnChange(CPlayer* player){
 		if (u.second->getOwner() == player){
 			u.second->activate();
 		}else{
-			u.second->deactivate();
+			u.second->activate();
 		}
 	}
 }

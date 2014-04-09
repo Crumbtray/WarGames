@@ -171,16 +171,6 @@ bool Map::attackUnit(Unit** unit, uint8 new_x, uint8 new_y, Unit** target, int* 
 		(*target)->damageUnit(*targetDamage);
 		(*unit)->damageUnit(*returnDamage);
 		(*unit)->deactivate();
-		if ((*target)->getHealth() <= 0)
-		{
-			deleteUnit(*target);
-			*target = NULL;
-		}
-		if ((*unit)->getHealth() <= 0)
-		{
-			deleteUnit(*unit);
-			*unit = NULL;
-		}
 		return true;
 	}
 	return false;

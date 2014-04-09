@@ -201,7 +201,7 @@ namespace packethandler
 		case ACTION_MOVE:
 			if (map->moveUnit(initiator, xpos, ypos))
 			{
-				game->sendAction(initiator, target, ACTION_MOVE, 0, 0, std::pair<uint8, uint8>(xpos, ypos));
+				game->sendAction(initiator, 0, ACTION_MOVE, 0, 0, std::pair<uint8, uint8>(xpos, ypos));
 				game->updateEntity(initiator);
 			}
 			break;
@@ -210,21 +210,25 @@ namespace packethandler
 			int targetdamage = 0, unitdamage = 0;
 			if (initiator && target)
 			{
-				CPlayer* owner = target->getOwner();
 				if (map->attackUnit(&initiator, xpos, ypos, &target, &targetdamage, &unitdamage))
 				{
-					game->sendAction(initiator, target, ACTION_ATTACK, targetdamage, unitdamage, std::pair<uint8, uint8>(xpos, ypos));
-					if (initiator)
+					game->sendAction(initiator, target->getID(), ACTION_ATTACK, targetdamage, unitdamage, std::pair<uint8, uint8>(xpos, ypos));
+					game->updateEntity(initiator);
+					game->updateEntity(target);
+
+					if (!game->getMap()->unitsRemain(target->getOwner()))
 					{
-						game->updateEntity(initiator);
+						game->playerDefeated(target->getOwner());
 					}
-					if (target)
+					if (target->getHealth() <= 0)
 					{
-						game->updateEntity(target);
+						map->deleteUnit(target);
+						target = NULL;
 					}
-					if (!game->getMap()->unitsRemain(owner))
+					if (initiator->getHealth() <= 0)
 					{
-						game->playerDefeated(owner);
+						map->deleteUnit(initiator);
+						initiator = NULL;
 					}
 					player->pushPacket(new CPlayerUpdatePacket(player));
 					game->checkVictoryCondition();

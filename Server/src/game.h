@@ -32,7 +32,7 @@ public:
 	void end(CPlayer* winner);
 
 	void updateEntity(Unit*);
-	void sendAction(Unit* initiator, Unit* target, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos);
+	void sendAction(Unit* initiator, uint16 targetid, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos);
 	void checkVictoryCondition();
 	uint8 getPlayerNumber(CPlayer*);
 	void playerDefeated(CPlayer*);

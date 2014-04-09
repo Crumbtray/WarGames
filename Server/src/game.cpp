@@ -167,11 +167,11 @@ void CGame::checkVictoryCondition()
 	}
 }
 
-void CGame::sendAction(Unit* initiator, Unit* target, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos)
+void CGame::sendAction(Unit* initiator, uint16 targetid, ACTION action, int8 dmginit, int8 dmgtarget, std::pair<uint8, uint8> pos)
 {
 	for (auto p : m_playerList)
 	{
-		p->pushPacket(new CActionPacket(initiator, target, action, dmginit, dmgtarget, pos));
+		p->pushPacket(new CActionPacket(initiator, targetid, action, dmginit, dmgtarget, pos));
 	}
 }
 

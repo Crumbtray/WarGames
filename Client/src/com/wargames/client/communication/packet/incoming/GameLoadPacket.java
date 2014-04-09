@@ -46,7 +46,7 @@ public class GameLoadPacket extends PacketFunctor {
 					gameMap = MapGenerator.generateMap03(players.get(0), players.get(1));
 					break;
 				default:
-					gameMap = MapGenerator.generateMap01(players.get(0), players.get(1));
+					gameMap = MapGenerator.generateMap02(players.get(0), players.get(1));
 				
 			}
 			Game game = new Game(gameMap, false);

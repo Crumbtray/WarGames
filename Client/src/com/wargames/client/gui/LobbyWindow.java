@@ -94,6 +94,7 @@ public class LobbyWindow  extends JPanel implements ActionListener{
 			JLabel playerLabel = new JLabel("    " + player.name);
 			playersPanel.add(playerLabel);
 		}
+		
 		this.revalidate();
 		this.repaint();
 	}

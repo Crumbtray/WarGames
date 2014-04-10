@@ -1,5 +1,7 @@
 package com.wargames.client.gui;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -15,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
@@ -39,6 +42,8 @@ public class LoginWindow extends JPanel implements ActionListener {
 	private JButton registerButton;
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
+	private JTextArea textResponse;
+	public String responseText;
 	
 	public LoginWindow()
 	{
@@ -72,6 +77,17 @@ public class LoginWindow extends JPanel implements ActionListener {
 		registerButton.addActionListener(this);
 		this.add(registerButton);
 		
+		textResponse = new JTextArea(5, 30);
+		textResponse.setLineWrap(true);
+		textResponse.setBackground(Color.gray);
+		textResponse.setForeground(Color.WHITE);
+		this.add(textResponse);
+		Font font = new Font("Verdana", Font.BOLD, 12);
+		textResponse.setFont(font);
+		textResponse.getCaret().setVisible(false);
+		textResponse.getCaret().setSelectionVisible(false);
+		responseText = "";
+		
 		URL urlBackgroundImg = getClass().getResource("/com/wargames/client/gui/img/mainBackground.png");
 		this.imgBackground = new ImageIcon(urlBackgroundImg).getImage();
 		
@@ -96,6 +112,8 @@ public class LoginWindow extends JPanel implements ActionListener {
 		loginButton.setLocation(400, 400);
 		backButton.setLocation(10, 10);
 		registerButton.setLocation(300, 400);
+		textResponse.setLocation(220,450);
+		textResponse.setText(responseText);
 	}
 
 	@Override

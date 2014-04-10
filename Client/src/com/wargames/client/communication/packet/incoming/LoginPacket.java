@@ -4,6 +4,8 @@ import java.nio.ByteBuffer;
 
 import javax.swing.JPanel;
 
+import com.wargames.client.gui.LoginWindow;
+
 
 public class LoginPacket extends PacketFunctor {
 
@@ -13,14 +15,15 @@ public class LoginPacket extends PacketFunctor {
 		int wins = buff.getInt();
 		int losses = buff.getInt();
 		
-		//TODO: do stuff with response
-		System.out.println("Response: " + response);
-		System.out.println("Wins: " + wins);
-		System.out.println("Losses: " + losses);
+		LoginWindow window = (LoginWindow) client;
 		
 		if(response == 1)
 		{
-			System.out.println("Logged in.");
+			window.responseText = "Authentication Successful.";
+		}
+		else
+		{
+			window.responseText = "Authentication Failure.";
 		}
 		return client;
 	}

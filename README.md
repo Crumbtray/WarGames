@@ -17,11 +17,23 @@ Description
 
 WarGames is a project to try and emulate the popular Advance Wars games on the Nintendo Game Boy and Nintendo DS systems.
 We have created a multiplayer turn-based strategy war game that features two players battling each other with military units, across a map laid with changing terrain.
+This project contains:
 
+	- A front-end user client built with Java using the Abstract Window Toolkit
+	- A back-end server written in C
 
 Design Project: 
 https://docs.google.com/a/ualberta.ca/document/d/1Q4VHVbrJBAGd1EREbsnPZtKtSGJbTkagsE_u6-nMJKk/edit?usp=sharing
 
+Additional Credit
+===============
+
+We use Vicki Wenderlich's free Isometric Army set of sprites in our user client.
+Her art can be found here: http://www.gameartguppy.com/shop/free-isometric-army/
+
+
+License
+============
 
 Copyright (C) 2014 Tyler Schneider, Clinton Wong, AJ Sharpe.
 This program is free software: you can redistribute it and/or modify

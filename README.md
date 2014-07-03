@@ -19,8 +19,8 @@ WarGames is a project to try and emulate the popular Advance Wars games on the N
 We have created a multiplayer turn-based strategy war game that features two players battling each other with military units, across a map laid with changing terrain.
 This project contains:
 
-	- A front-end user client built with Java using the Abstract Window Toolkit
-	- A back-end server written in C
+* A front-end user client built with Java using the Abstract Window Toolkit
+* A back-end server written in C
 
 Design Project: 
 https://docs.google.com/a/ualberta.ca/document/d/1Q4VHVbrJBAGd1EREbsnPZtKtSGJbTkagsE_u6-nMJKk/edit?usp=sharing
